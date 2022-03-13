@@ -20,7 +20,7 @@ Ce projet consiste à ...
 ## Structure du projet
 
 ```
-Laser_Game
+Graph
 ├── Headers
 |   ├──
 |   └──
@@ -33,7 +33,7 @@ Laser_Game
 ## Contributions au projet
 
 Professeur(s) encadrant(s) :\
-\- M. ELBAZ Elmounir
+\- M. ELBAZ Mounir
 
 L'équipe du MOE :
 | Membre            | Rôle                  |
