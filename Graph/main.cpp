@@ -1,7 +1,8 @@
+
 #include "mainwindow.h"
-
 #include <QApplication>
-
+#include <vector>
+#include "noeud.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

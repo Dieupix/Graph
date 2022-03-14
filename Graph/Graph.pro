@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    noeud.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    noeud.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
