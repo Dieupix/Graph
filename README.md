@@ -22,11 +22,26 @@ Ce projet consiste à ...
 ```
 Graph
 ├── Headers
-|   ├──
-|   └──
+|	├── Graph.h
+|	└── Noeud.h
 └── Sources
-    ├──
-    └──
+	├── Graph.cpp
+	└── Noeud.cpp
+    
+testLaser_Game
+├── Headers
+|	├── Graph
+|	|	├── Graph.h
+|	|	└── Noeud.h
+|	└── test_Graph
+|		└── doctest.h
+└── Sources
+	├── Graph
+	|	├── Graph.cpp
+	|	└── Noeud.cpp
+	└── test_Graph
+		├── graphTest.cpp
+		└── noeudTest.cpp
 ```
 
 <a id="user-content-contributions" class="anchor" href="#contributions" aria-hidden="true"></a>
@@ -36,11 +51,11 @@ Professeur(s) encadrant(s) :\
 \- M. ELBAZ Mounir
 
 L'équipe du MOE :
-| Membre            | Rôle                  |
+| Membre			| Rôle 								|
 |:---|:---|
-| BARRÈRE Manuel    | Responsable projet & développeur   |
-| CHARRIER Mathis   | Développeur           |
-| JANON Alexandre   | Développeur           |
+| BARRÈRE Manuel	| Responsable projet & développeur	|
+| CHARRIER Mathis 	| Développeur 						|
+| JANON	Alexandre	| Développeur						|
 
 Merci à [Discord](https://discord.com) pour la communication au sein du groupe.\
 Merci à [Doctest](https://github.com/doctest/doctest) pour le framework.\
