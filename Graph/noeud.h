@@ -1,8 +1,9 @@
 #ifndef NOEUD_H
 #define NOEUD_H
-#include <vector>
-#include <string>
+
 #include <iostream>
+#include <string>
+#include <vector>
 
 class Noeud
 {
