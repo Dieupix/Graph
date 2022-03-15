@@ -2,7 +2,7 @@
 
 # Projet de Graph-Algo
 
-[![License MIT](https://img.shields.io/github/license/Dieupix/Graph?color=dark&style=for-the-badge)](https://github.com/Dieupix/Graph/blob/main/LICENSE)
+[![License MIT](https://img.shields.io/github/license/Dieupix/Graph?color=dark&style=for-the-badge)](https://github.com/Dieupix/Graph/blob/main/LICENSE.md)
 [![Faculté FST](https://img.shields.io/badge/Faculté-FST-blue?style=for-the-badge)](https://www.fst.uha.fr)
 [![Université UHA](https://img.shields.io/badge/Université-UHA-darkblue?style=for-the-badge)](https://www.uha.fr)
 
