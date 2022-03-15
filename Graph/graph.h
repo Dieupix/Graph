@@ -43,9 +43,9 @@ public:
 
     // Constructors
     /**
-     * @brief Graph
+     * @brief Default constructor
      *
-     * @returns
+     * @returns Creates a graph
      */
     Graph();
     /**
@@ -55,7 +55,7 @@ public:
      *
      * @returns
      */
-    Graph(bool est_oriente);
+    Graph(bool est_oriente, bool a_des_poids);
     /**
      * @brief Graph
      *
@@ -128,7 +128,7 @@ public:
      *
      * @param ost
      */
-    void print(std::ostream& ost);
+    void print(std::ostream& ost) const;
     /**
      * @brief toString
      *
