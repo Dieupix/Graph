@@ -3,6 +3,9 @@
 
 #include "noeud.h"
 
+/**
+ * @brief The Graph class
+ */
 class Graph
 {
 private:
