@@ -13,12 +13,12 @@ private:
      * @brief fs
      * @details Représente la file des successeurs de chaque sommet
      */
-    vector<int> fs;
+    vector<int> FS;
     /**
      * @brief aps
      * @details
      */
-    vector<int> aps;
+    vector<int> APS;
     /**
      * @brief matAdj
      * @details
@@ -41,6 +41,9 @@ private:
      * @details
      */
     bool a_des_poids;
+
+    // Private functions
+
 
 public:
 
@@ -126,6 +129,19 @@ public:
     // Setters
 
     // Functions
+    /**
+     * @brief FS_APS_to_MatAdj
+     *
+     * @param matAdj
+     */
+    void FS_APS_to_MatAdj(vector<vector<int>>& matAdj) const;
+    /**
+     * @brief matAdj_to_FS_APS
+     *
+     * @param FS
+     * @param APS
+     */
+    void matAdj_to_FS_APS(vector<int>& FS, vector<int>& APS) const;
     /**
      * @brief print
      *
