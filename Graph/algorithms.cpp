@@ -1,9 +1,6 @@
 #include "algorithms.h"
-#include<iostream>
-#include<vector>
-using std::vector;
 
-void algorithms::distance(const vector<int> fs, const vector<int> aps, int s, vector<int>& dist)
+void distance(const vector<int> fs, const vector<int> aps, int s, vector<int>& dist)
 {
    int n = aps[0];
    int it, iit;
@@ -30,5 +27,4 @@ void algorithms::distance(const vector<int> fs, const vector<int> aps, int s, ve
            iit = fs[it];
        }
    }
-}
 
