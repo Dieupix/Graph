@@ -97,7 +97,7 @@ void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
 {
-    //@TODO - to be fixed
+    ///@todo - to be fixed
     unsigned size = matAdj[0][0];
 
     APS.resize(size + 1, 0);
@@ -124,7 +124,7 @@ void Graph::print(std::ostream& ost) const
 
 string Graph::toString() const
 {
-    //@TODO To be implemented
+    ///@todo To be implemented
     return "";
 }
 // ---------- End of funtions ----------
