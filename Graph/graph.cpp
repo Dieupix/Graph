@@ -70,12 +70,12 @@ vector<Noeud> Graph::getSommets() const
 
 
 
-// ---------- Functions ----------
+// ---------- Public functions ----------
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 {
     unsigned size = APS[0];
     matAdj.resize(size + 1);
-    matAdj[0].resize(2, 0);
+    matAdj[0].resize(2);
     matAdj[0][0] = size;
     matAdj[0][1] = FS[0] - size;
 
@@ -129,10 +129,53 @@ void Graph::print(std::ostream& ost) const
 
 string Graph::toString() const
 {
-    ///@todo To be implemented
-    return "";
+    string str = "";
+    if(matAdj.size() != 0)
+    {
+        unsigned i = 0, j = 0;
+        str.append("MatAdj:[{");
+        for(i = 1; i < matAdj.size() - 1; ++i)
+        {
+            for(j = 1; j < matAdj[i].size() - 1; ++j)
+            {
+                str += matAdj[i][j];
+                str.append(", ");
+            }
+            str += matAdj[i][j];
+            str.append("}, {");
+        }
+        for(j = 1; j < matAdj[i].size() - 1; ++j)
+        {
+            str += matAdj[i][j];
+            str.append(", ");
+        }
+        str += matAdj[i][j];
+        str.append("}]");
+
+    }else
+    {
+        str.append("FS:{");
+        unsigned i = 0;
+        for(i = 0; i < FS.size() - 1; ++i)
+        {
+            str += FS[i];
+            str.append(", ");
+        }
+        str += FS[i];
+        str.append("}, APS;{");
+
+        for(i = 0; i < APS.size() - 1; ++i)
+        {
+            str += APS[i];
+            str.append(", ");
+        }
+        str += APS[i];
+        str.append("}");
+    }
+
+    return str;
 }
-// ---------- End of funtions ----------
+// ---------- End of public funtions ----------
 
 
 
