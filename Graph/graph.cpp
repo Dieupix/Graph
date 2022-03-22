@@ -74,14 +74,14 @@ vector<Noeud> Graph::getSommets() const
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 {
     unsigned size = APS[0];
-    matAdj.resize(size+1);
-    matAdj[0].resize(size+1, 0);
+    matAdj.resize(size + 1);
+    matAdj[0].resize(2, 0);
     matAdj[0][0] = size;
     matAdj[0][1] = FS[0] - size;
 
     for(unsigned i = 1; i < APS.size(); ++i)
     {
-        matAdj[i].resize(size+1, 0);
+        matAdj[i].resize(size + 1, 0);
 
         unsigned j = APS[i];
         unsigned k = FS[j];
@@ -97,24 +97,29 @@ void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
 {
-    ///@todo - to be fixed
     unsigned size = matAdj[0][0];
 
     APS.resize(size + 1, 0);
-    FS.resize(size + matAdj[0][1], 0);
+    FS.resize(size + matAdj[0][1] + 1, 0);
 
-    for(unsigned i = 1; i < matAdj.size(); ++i)
+    APS[0] = size;
+    FS[0] = FS.size();
+
+    unsigned k = 1;
+
+    for(unsigned i = 1; i <= size; ++i)
     {
-        for(unsigned j = 1; j < matAdj[i].size(); ++j)
+        APS[i] = k;
+        for(unsigned j = 1; j <= size; ++j)
         {
             if(matAdj[i][j] != 0)
             {
-                FS.push_back(j+1);
+                FS[k] = j + 1;
+                ++k;
             }
         }
-        FS.push_back(0);
+        ++k;
     }
-    FS[0] = (unsigned) FS.size()-1;
 }
 
 void Graph::print(std::ostream& ost) const
