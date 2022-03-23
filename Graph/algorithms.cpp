@@ -100,16 +100,22 @@ void rang(vector<int>& rang, const vector<int>& fs, const vector<int>& aps)
 
 void rangToString(const vector<int>& FS, const vector<int>& APS)
 {
+    // ON VA PAS SE MENTIR MAIS C'EST PAAAAS VRAIMENT UN TO_STRING QUOI
+
     vector<int> rangT;
     rang(rangT, FS, APS);
 
     cout<<"Rang : "<<endl;
     cout<<"APS : ";
     for(unsigned i = 0 ; i < APS.size(); i++)
-        cout<<APS[i];
+        cout<<APS[i]<<", ";
+    cout << endl;
     cout<<"FS : ";
     for(unsigned i = 0 ; i < FS.size(); i++)
-        cout<<FS[i];
+        cout<<FS[i]<<", ";
+    cout << endl;
+    cout << "RangT : ";
     for(unsigned i = 0 ; i < rangT.size(); i++)
-         cout<<rangT[i];
+         cout<<rangT[i]<<", ";
+    cout << endl;
 }
