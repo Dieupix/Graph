@@ -1,6 +1,6 @@
 #include "algorithms.h"
 
-void distance(const vector<int> fs, const vector<int> aps, int s, vector<int>& dist)
+void distance(const vector<int>& fs, const vector<int>& aps, int s, vector<int>& dist)
 {
    int n = aps[0];
    int it, iit; ///@todo - Que faire avec ça?
@@ -29,13 +29,13 @@ void distance(const vector<int> fs, const vector<int> aps, int s, vector<int>& d
    }
 }
 
-void empiler (int x, vector<int> &pilch)
+void empiler (int x, vector<int>& pilch)
 {
     pilch[x] = pilch[0];
     pilch[0] = x;
 }
 
-void demi_degre_interieur(vector<int> FS, vector<int> APS, vector<int> &DDI)
+void demi_degre_interieur(const vector<int>& FS, const vector<int>& APS, vector<int> &DDI)
 {
     DDI.resize(APS[0] + 1);
     DDI[0] = APS[0];
@@ -50,7 +50,7 @@ void demi_degre_interieur(vector<int> FS, vector<int> APS, vector<int> &DDI)
     }
 }
 
-void rang(vector<int> &rang, vector<int> fs, vector<int> aps)
+void rang(vector<int>& rang, const vector<int>& fs, const vector<int>& aps)
 {
         int n = aps[0];
         int s,rangActuel,h,t;
@@ -98,18 +98,18 @@ void rang(vector<int> &rang, vector<int> fs, vector<int> aps)
         }
 }
 
-void rangToString(vector<int> FS, vector<int> APS)
+void rangToString(const vector<int>& FS, const vector<int>& APS)
 {
     vector<int> rangT;
     rang(rangT, FS, APS);
 
-    std::cout<<"Rang : "<<std::endl;
-    std::cout<<"APS : ";
+    cout<<"Rang : "<<endl;
+    cout<<"APS : ";
     for(unsigned i = 0 ; i < APS.size(); i++)
-        std::cout<<APS[i];
-    std::cout<<"FS : ";
+        cout<<APS[i];
+    cout<<"FS : ";
     for(unsigned i = 0 ; i < FS.size(); i++)
-        std::cout<<FS[i];
+        cout<<FS[i];
     for(unsigned i = 0 ; i < rangT.size(); i++)
-         std::cout<<rangT[i];
+         cout<<rangT[i];
 }
