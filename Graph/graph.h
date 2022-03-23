@@ -71,7 +71,7 @@ public:
      *
      * @returns
      */
-    Graph(vector<int> fs, vector<int> aps, bool est_oriente, bool a_des_poids);
+    Graph(const vector<int>& fs, const vector<int>& aps, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids);
     /**
      * @brief Graph
      *
@@ -81,7 +81,7 @@ public:
      *
      * @returns
      */
-    Graph(vector<vector<int>> matAdj, bool est_oriente, bool a_des_poids);
+    Graph(const vector<vector<int>>& matAdj, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids);
 
     // Destructor
 

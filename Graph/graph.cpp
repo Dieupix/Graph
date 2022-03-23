@@ -12,10 +12,12 @@ Graph::Graph() : est_oriente{false}, a_des_poids{false}
 Graph::Graph(bool est_oriente, bool a_des_poids) : est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {}
 
-Graph::Graph(vector<int> FS, vector<int> APS, bool est_oriente, bool a_des_poids) : FS{FS}, APS{APS}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
-{}
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
+    FS{FS}, APS{APS}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
+{} ///@todo vérifier l'intégrité des sommets
 
-Graph::Graph(vector<vector<int>> matAdj, bool est_oriente, bool a_des_poids) : matAdj{matAdj}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
+Graph::Graph(const vector<vector<int>>& matAdj, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
+    matAdj{matAdj}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {}
 // ---------- End of constructeurs ----------
 
@@ -74,6 +76,7 @@ vector<Noeud> Graph::getSommets() const
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 {
     unsigned size = APS[0];
+    matAdj.clear();
     matAdj.resize(size + 1);
     matAdj[0].resize(2);
     matAdj[0][0] = size;
