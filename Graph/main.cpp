@@ -1,7 +1,8 @@
 #include "mainwindow.h"
+#include <QApplication>
+
 #include "algorithms.h"
 #include "graph.h"
-#include <QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -53,9 +54,6 @@ int main(int argc, char *argv[])
             cout<<matriceDistance[i][j]<<" ";
         cout<<endl;
     }
-
-
-    Graph g = Graph(FS, APS, vector<Noeud>(), true, false);
 
     return exe;
 }

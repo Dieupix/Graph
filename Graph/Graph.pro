@@ -13,13 +13,15 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
-    noeud.cpp
+    noeud.cpp \
+    sommetnonreliesexception.cpp
 
 HEADERS += \
     algorithms.h \
     graph.h \
     mainwindow.h \
-    noeud.h
+    noeud.h \
+    sommetsnonreliesexception.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
