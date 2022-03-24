@@ -132,6 +132,14 @@ public:
      */
     void FS_APS_to_MatAdj(vector<vector<int>>& matAdj) const;
     /**
+     * @brief loadFrom
+     *
+     * @param ist
+     *
+     * @return
+     */
+    bool loadFrom(std::istream& ist); ///@todo - Alex : to be implemented
+    /**
      * @brief matAdj_to_FS_APS
      *
      * @param FS
@@ -144,6 +152,14 @@ public:
      * @param ost
      */
     void print(std::ostream& ost) const;
+    /**
+     * @brief saveIn
+     *
+     * @param ost
+     *
+     * @return
+     */
+    bool saveIn(std::ostream& ost) const; ///@todo - Alex : to be implemented
     /**
      * @brief toString
      *
