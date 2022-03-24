@@ -1,24 +1,48 @@
 #include "graph.h"
 
 // ---------- Private functions ----------
+void Graph::verifIntegritee()
+{
+    if(sommets.size() < 2) throw PasAssezDeSommetsException("ERREUR: Graph: Un graphe doit posseder au moins deux sommets");
+    if(!verifIntegriteeSommets()) throw SommetsNonReliesException("ERREUR: Graph: Au moins l'un des sommets n'est pas relie");
+}
+
+bool Graph::verifIntegriteeSommets()
+{
+    bool verif = true;
+    int nbSommets = APS[0];
+    vector<bool> integritee(nbSommets, false);
+
+    for(unsigned i = 1; i < FS.size(); ++i)
+    {
+        integritee[FS[i]] = true;
+    }
+
+    unsigned k = 0;
+    while(k < integritee.size() and verif)
+    {
+        if(!integritee[k]) verif = false;
+        ++k;
+    }
+
+    return verif;
+}
 // ---------- End of private functions ----------
 
 
 
 // ---------- Constructors ----------
-Graph::Graph() : est_oriente{false}, a_des_poids{false}
-{}
-
-Graph::Graph(bool est_oriente, bool a_des_poids) : est_oriente{est_oriente}, a_des_poids{a_des_poids}
-{}
-
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
     FS{FS}, APS{APS}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
-{} ///@todo vérifier l'intégrité des sommets
+{
+    verifIntegritee();
+}
 
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
     matAdj{matAdj}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
-{}
+{
+    verifIntegritee();
+}
 // ---------- End of constructeurs ----------
 
 

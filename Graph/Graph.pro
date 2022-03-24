@@ -10,18 +10,18 @@ CONFIG += c++11
 
 SOURCES += \
     algorithms.cpp \
+    exceptions.cpp \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
-    noeud.cpp \
-    sommetnonreliesexception.cpp
+    noeud.cpp
 
 HEADERS += \
     algorithms.h \
+    exceptions.h \
     graph.h \
     mainwindow.h \
-    noeud.h \
-    sommetsnonreliesexception.h
+    noeud.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

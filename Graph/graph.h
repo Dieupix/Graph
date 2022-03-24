@@ -2,6 +2,9 @@
 #define GRAPH_H
 
 #include "noeud.h"
+#include "exceptions.h"
+
+using namespace exceptions;
 
 /**
  * @brief The Graph class
@@ -43,31 +46,22 @@ private:
     bool a_des_poids;
 
     // Private functions
+    void verifIntegritee();
+    bool verifIntegriteeSommets();
 
 public:
 
     // Constructors
     /**
-     * @brief Default constructor
-     *
-     * @returns Creates a graph
-     */
-    Graph();
-    /**
      * @brief Graph
      *
-     * @param est_oriente
+     * @param fs :
+     * @param aps:
+     * @param est_oriente :
+     * @param a_des_poids :
      *
-     * @returns
-     */
-    Graph(bool est_oriente, bool a_des_poids);
-    /**
-     * @brief Graph
-     *
-     * @param fs
-     * @param aps
-     * @param est_oriente
-     * @param a_des_poids
+     * @throws PasAssezDeSommetsException() :
+     * @throws SommetsNonReliesException() :
      *
      * @returns
      */
@@ -75,9 +69,12 @@ public:
     /**
      * @brief Graph
      *
-     * @param matAdj
-     * @param est_oriente
-     * @param a_des_poids
+     * @param matAdj :
+     * @param est_oriente :
+     * @param a_des_poids :
+     *
+     * @throws PasAssezDeSommetsException() :
+     * @throws SommetsNonReliesException() :
      *
      * @returns
      */
