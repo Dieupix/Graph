@@ -1,32 +1,60 @@
 #include "algorithms.h"
 
-void distance(const vector<int>& fs, const vector<int>& aps, int s, vector<int>& dist)
+void descente_largeur(int r,const vector<int>& fs, const vector<int>& aps, vector<int>& dist)
 {
-   int n = aps[0];
-   int it, iit; ///@todo - Que faire avec ça?
-   vector<int> fa; //file d'attente
-   fa.reserve(n+1);
-   int t = 0 , q = 1, p = 1, d = 0;
-   fa[1] = s;
+    int nb_sommets = aps[0];
+    int i = 0;
+    int j = 1;
+    int k = 0;
+    int ifin;
+    int s;
+    int t;
+    int it;
+    //int* fil = new int[nb_sommets+1];
+    vector<int> fil(nb_sommets+1);
+    fil[0] = nb_sommets;
+    dist.resize(nb_sommets+1);
+    dist[0] = nb_sommets;
+    fil[1] = r;
 
-   //Par défaut l'infini vaut -1
-   for(int i=1; i <= n; ++i)
-   {
-       dist[i] = -1;
-   }
+    for(int h = 1 ; h <= nb_sommets ; ++h)
+    {
+        dist[h] = -1;
+    }
+    dist[r] = 0;
 
-   while(t < q) //Tant que la file d'attente n'est pas vide
-   {
-       ++d;
-       q = p;
-       while(t < q)
-       {
-           ++t;
-           s = fa[t];
-           it = aps[s];
-           iit = fs[it];
-       }
-   }
+    while(i<j) //Tq la file d'attente n'est pas vide
+    {
+        ++k;
+        ifin = j;
+        while(i<ifin) //On parcourt le bloc courant
+        {
+            ++i;
+            s = fil[i];
+            it = aps[s];
+            t = fs[it];
+            while(t>0) //On parcourt tous les successeurs de chaque sommet du bloc courant
+            {
+                if(dist[t] == -1) //Si le successeur du sommet courant n'est pas encore marqué
+                {
+                    ++j;
+                    fil[j] = t; //On le place dans le bloc suivant en préparation et on lui affecte la distance courante
+                    dist[t] = dist[fil[i]]+1;//dist[t] = k;//Variante : dist[t] = dist[fil[i]]+1;
+                }
+                t = fs[++it];
+            }
+        }
+    }
+}
+void Mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<int>>& matriceDistance)
+{
+    int n = APS[0];
+    matriceDistance.resize(n+1);
+    for(int r = 1 ; r <= n ; r++)
+    {
+        descente_largeur(r,FS,APS,matriceDistance[r]);
+    }
+    matriceDistance[0][0] = n;
 }
 
 void empiler (int x, vector<int>& pilch)
