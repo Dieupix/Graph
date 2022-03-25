@@ -1,24 +1,46 @@
 #include "graph.h"
 
 // ---------- Private functions ----------
+void Graph::initialiserSommets(unsigned size)
+{
+    sommets.resize(size);
+    for(unsigned i = 0; i < sommets.size(); ++i)
+    {
+        sommets[i] = make_unique<Noeud>(i, vector<string>());
+    }
+}
+
 void Graph::verifIntegritee()
 {
-    if(sommets.size() < 2) throw PasAssezDeSommetsException("ERREUR: Graph: Un graphe doit posseder au moins deux sommets");
-    if(!verifIntegriteeSommets()) throw SommetsNonReliesException("ERREUR: Graph: Au moins l'un des sommets n'est pas relie");
+    if(sommets.size() < 1) throw PasAssezDeSommetsException("ERREUR: Graph: Un graphe doit posseder au moins un sommet");
+    if(!verifIntegriteeSommets()) throw SommetsNonReliesException("ERREUR: Graph: Au moins l'un des sommets du graphe n'est pas relie");
 }
 
 bool Graph::verifIntegriteeSommets()
 {
+    return false;
+}
+
+bool Graph::verifIntegriteeSommets_FS_APS()
+{
     bool verif = true;
     int nbSommets = APS[0];
-    vector<bool> integritee(nbSommets, false);
+    vector<bool> integritee(nbSommets + 1, false);
 
-    for(unsigned i = 1; i < FS.size(); ++i)
+    for(unsigned i = 0; i < FS.size(); ++i)
     {
         integritee[FS[i]] = true;
     }
 
-    unsigned k = 0;
+    for(unsigned i = 1; i < APS.size(); ++i)
+    {
+        if(!integritee[i])
+        {
+            integritee[i] = FS[APS[i]] == 0 ? false : true;
+        }
+    }
+
+    unsigned k = 1;
     while(k < integritee.size() and verif)
     {
         if(!integritee[k]) verif = false;
@@ -27,21 +49,69 @@ bool Graph::verifIntegriteeSommets()
 
     return verif;
 }
+
+bool Graph::verifIntegriteeSommets_MatAdj()
+{
+    int nbSommets = matAdj[0][0];
+    vector<bool> integritee(nbSommets + 1, false);
+
+    for(unsigned i = 1; i < matAdj.size(); ++i)
+    {
+        unsigned j = 1;
+        bool verif = false;
+        while(j < matAdj[i].size() and !verif)
+        {
+            if(matAdj[i][j] != 0) verif = true;
+            ++j;
+        }
+    }
+
+    for(unsigned i = 1; i < integritee.size(); ++i)
+    {
+        if(!integritee[i])
+        {
+            unsigned j = 1;
+            bool verif = false;
+            while(j < matAdj.size() and !verif)
+            {
+                if(matAdj[j][i] != 0) verif = true;
+                ++j;
+            }
+            if(!verif) return false;
+        }
+    }
+
+    return true;
+}
 // ---------- End of private functions ----------
 
 
 
 // ---------- Constructors ----------
-Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
-    FS{FS}, APS{APS}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
+Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_oriente{est_oriente}
+{}
+
+Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{false}
 {
-    verifIntegritee();
+    initialiserSommets(APS[0] + 1);
+
 }
 
-Graph::Graph(const vector<vector<int>>& matAdj, const vector<Noeud>& sommets, bool est_oriente, bool a_des_poids) :
-    matAdj{matAdj}, sommets{sommets}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
+Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAdj}, usingFsAndAps{false}, est_oriente{est_oriente}
 {
-    verifIntegritee();
+    initialiserSommets(matAdj[0][0] + 1);
+}
+
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& coûts) : FS{FS}, APS{APS},
+    usingFsAndAps{true}, couts{coûts}, est_oriente{false}
+{
+    initialiserSommets(APS[0] + 1);
+}
+
+Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& coûts, bool est_oriente) : matAdj{matAdj},
+    usingFsAndAps{false}, couts{coûts}, est_oriente{est_oriente}
+{
+    initialiserSommets(matAdj[0][0] + 1);
 }
 // ---------- End of constructeurs ----------
 
@@ -83,7 +153,12 @@ vector<vector<int>> Graph::getMatAdj() const
     return matAdj;
 }
 
-vector<Noeud> Graph::getSommets() const
+bool Graph::isUsingFsAndAps() const
+{
+    return usingFsAndAps;
+}
+
+const vector<unique_ptr<Noeud>>& Graph::getSommets() const
 {
     return sommets;
 }
@@ -97,6 +172,12 @@ vector<Noeud> Graph::getSommets() const
 
 
 // ---------- Public functions ----------
+void Graph::ajouterNoeud(unique_ptr<Noeud>& n)
+{
+    ///@todo - Alex : to be implemented
+    sommets.push_back(move(n));
+}
+
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
 {
     unsigned size = APS[0];
@@ -120,6 +201,12 @@ void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
             k = FS[j];
         }
     }
+}
+
+bool Graph::loadFrom(std::istream& ist)
+{
+    ///@todo - Alex : to be implemented
+    return false;
 }
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
@@ -152,6 +239,12 @@ void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
 void Graph::print(std::ostream& ost) const
 {
     ost << toString();
+}
+
+bool Graph::saveIn(std::ostream& ost) const
+{
+    ///@todo - Alex : to be implemented
+    return false;
 }
 
 string Graph::toString() const
@@ -207,7 +300,7 @@ string Graph::toString() const
 
 
 // ---------- Global functions ----------
-std::ostream& operator<<(std::ostream& ost, const Graph g)
+std::ostream& operator<<(std::ostream& ost, const Graph& g)
 {
     g.print(ost);
     return ost;

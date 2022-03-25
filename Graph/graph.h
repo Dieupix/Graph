@@ -4,7 +4,12 @@
 #include "noeud.h"
 #include "exceptions.h"
 
+#include <memory>
+
 using namespace exceptions;
+
+using std::make_unique;
+using std::unique_ptr;
 
 /**
  * @brief The Graph class
@@ -27,13 +32,21 @@ private:
      * @details
      */
     vector<vector<int>> matAdj;
-
+    /**
+     * @brief isUsingFsAndAps
+     * @details
+     */
+    bool usingFsAndAps;
     /**
      * @brief sommets
      * @details
      */
-    vector<Noeud> sommets;
-
+    vector<unique_ptr<Noeud>> sommets;
+    /**
+     * @brief couts
+     * @details
+     */
+    vector<vector<int>> couts;
     /**
      * @brief est_oriente
      * @details
@@ -46,12 +59,23 @@ private:
     bool a_des_poids;
 
     // Private functions
+    void initialiserSommets(unsigned size);
     void verifIntegritee();
     bool verifIntegriteeSommets();
+    bool verifIntegriteeSommets_FS_APS();
+    bool verifIntegriteeSommets_MatAdj();
 
 public:
 
     // Constructors
+
+    Graph(bool est_oriente = true); // couts vide
+    Graph(const vector<int>& FS, const vector<int>& APS); // est_oriente = false, couts vide
+    Graph(const vector<vector<int>>& matAdj, bool est_oriente = true); // couts vide
+    Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& coûts); // est_oriente = false
+    Graph(const vector<vector<int>>& matAdj, const vector<int>& coûts, bool est_oriente = true);
+
+
     /**
      * @brief Graph
      *
@@ -116,15 +140,22 @@ public:
      */
     vector<vector<int>> getMatAdj() const;
     /**
+     * @brief isUsingFsAndAps
+     *
+     * @return
+     */
+    bool isUsingFsAndAps() const;
+    /**
      * @brief getSommets
      *
      * @return
      */
-    vector<Noeud> getSommets() const;
+    const vector<unique_ptr<Noeud>>& getSommets() const;
 
     // Setters
 
     // Functions
+    void ajouterNoeud(unique_ptr<Noeud>& n);
     /**
      * @brief FS_APS_to_MatAdj
      *
@@ -177,6 +208,6 @@ public:
  *
  * @return Returns the output stream itselft
  */
-std::ostream& operator<<(std::ostream& ost, const Graph g);
+std::ostream& operator<<(std::ostream& ost, const Graph& g);
 
 #endif // GRAPH_H
