@@ -18,7 +18,8 @@ void Graph::verifIntegritee()
 
 bool Graph::verifIntegriteeSommets()
 {
-    return false;
+    if(usingFsAndAps) return verifIntegriteeSommets_FS_APS();
+    else return verifIntegriteeSommets_MatAdj();
 }
 
 bool Graph::verifIntegriteeSommets_FS_APS()
