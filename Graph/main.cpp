@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     vector<int> FS {24, 2, 7, 0, 3, 5, 0, 4, 0, 6, 0, 0, 2, 5, 7, 0, 9, 0, 9, 0, 10, 0, 8, 9, 0};
     vector<int> APS {10, 1, 4, 7, 9, 11, 12, 16, 18, 20, 22};
     vector<vector<int>> matAdj {
-        {10, 14},
+        {12, 19},
         {0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0},
         {0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -33,15 +33,7 @@ int main(int argc, char *argv[])
     rangToString(FS, APS);
 
     //INITIALISATION DE LA MATRICE DES DISTANCES
-        vector<vector<int>> matriceDistance(APS[0]+1);
-        for(int i = 0 ; i <= APS[0] ; ++i)
-            matriceDistance[i].resize(APS[0]+1);
-
-        for(unsigned i = 1 ; i < matriceDistance.size() ; ++i)
-        {
-            for(unsigned j = 1 ; j < matriceDistance[i].size() ; ++j)
-                matriceDistance[i][j] = 0;
-        }
+        vector<vector<int>> matriceDistance(APS[0]+1, vector<int>(APS[0]+1, 0));
     //FIN
 
     mat_distance(FS,APS,matriceDistance);
@@ -50,15 +42,13 @@ int main(int argc, char *argv[])
 // TEST distance -- Affichage OK
     for(unsigned i = 0 ; i < matriceDistance.size() ; ++i)
     {
-        cout<<"LIGNE "<<i<<"   ";
-        for(unsigned j = 0 ; j < matriceDistance[i].size() ; ++j)
-            cout<<matriceDistance[i][j]<<" ";
+        cout<<"LIGNE "<<i<<"\t";
+        for(auto j : matriceDistance[i]) cout << j << " ";
         cout<<endl;
     }
 
     // TEST TARJAN
-    Tarjan(FS, APS);
-
+    // Tarjan(FS, APS);
     // FIN TARJAN
 
     return exe;
