@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    int exe = a.exec();
+    //int exe = a.exec();
+    int exe = 0;
 
     // FS-APS et matAdj correspondent
     vector<int> FS {24, 2, 7, 0, 3, 5, 0, 4, 0, 6, 0, 0, 2, 5, 7, 0, 9, 0, 9, 0, 10, 0, 8, 9, 0};
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
         }
     //FIN
 
-    Mat_distance(FS,APS,matriceDistance);
+    mat_distance(FS,APS,matriceDistance);
 
 
 // TEST distance -- Affichage OK
@@ -54,6 +55,11 @@ int main(int argc, char *argv[])
             cout<<matriceDistance[i][j]<<" ";
         cout<<endl;
     }
+
+    // TEST TARJAN
+    Tarjan(FS, APS);
+
+    // FIN TARJAN
 
     return exe;
 }
