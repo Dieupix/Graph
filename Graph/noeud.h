@@ -11,19 +11,20 @@ using std::vector;
 class Noeud
 {
 public:
-    Noeud(int id, const vector<string>& info);
-    Noeud(int id, const vector<string>& info, const vector<int>& poids_arcs);
+    Noeud(int id);
+    Noeud(int id, const string& info);
     int getId() const;
-    vector<string> getInfo() const;
-    vector<int> getPoids() const;
+    string getInfo() const;
     void setId(int id);
-    void setInfo(const vector<string>& info);
-    void setPoids(const vector<int>& poids_arcs);
-    friend std::ostream& operator<<(std::ostream& os, const Noeud& n);
+    void setInfo(const string& info);
+
+    void print(std::ostream& os) const;
+    string toString() const;
 private:
     int d_id;
-    vector<string> d_info;
-    vector<int> d_poids_arcs;
+    string d_info;
 };
+
+std::ostream& operator<<(std::ostream& os, const Noeud& n);
 
 #endif // NOEUD_H

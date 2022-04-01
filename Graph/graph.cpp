@@ -6,7 +6,7 @@ void Graph::initialiserSommets(unsigned size)
     sommets.resize(size);
     for(unsigned i = 0; i < sommets.size(); ++i)
     {
-        sommets[i] = make_unique<Noeud>(i, vector<string>());
+        sommets[i] = make_unique<Noeud>(i);
     }
 }
 
@@ -242,10 +242,46 @@ void Graph::print(std::ostream& ost) const
     ost << toString();
 }
 
-bool Graph::saveIn(std::ostream& ost) const
+void Graph::saveIn(std::ostream& ost) const
 {
     ///@todo - Alex : to be implemented
-    return false;
+    string toPrint = "";
+
+    if(usingFsAndAps)
+    {
+        toPrint += "FS: [";
+        unsigned i = 0;
+        for(i = 0; i < FS.size() - 1; ++i)
+        {
+            toPrint += std::to_string(FS[i]) + ", ";
+        }
+        toPrint += std::to_string(FS[i]) + "]\n";
+
+        toPrint += "APS: [";
+        for(i = 0; i < APS.size() - 1; ++i)
+        {
+            toPrint += std::to_string(APS[i]) + ", ";
+        }
+        toPrint += std::to_string(APS[i]) + "]\n";
+
+    } else {
+        toPrint += "MATADJ: {\n";
+        unsigned i = 0, j = 0;
+        for(i = 0; i < matAdj.size(); ++i)
+        {
+            toPrint += "{";
+            for(j = 0; j < matAdj[i].size() - 1; ++j)
+            {
+                toPrint += std::to_string(matAdj[i][j]) + ", ";
+            }
+            toPrint += std::to_string(matAdj[i][j]) + "}\n";
+        }
+        toPrint += "}\n";
+    }
+
+
+
+    ost << toPrint;
 }
 
 string Graph::toString() const

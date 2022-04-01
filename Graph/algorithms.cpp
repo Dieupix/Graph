@@ -1,5 +1,20 @@
 #include "algorithms.h"
 
+void demi_degre_interieur(const vector<int>& FS, const vector<int>& APS, vector<int> &DDI)
+{
+    DDI.resize(APS[0] + 1);
+    DDI[0] = APS[0];
+    for(int i = 1; i <= APS[0]; ++i)
+    {
+        DDI[i] = 0;
+    }
+    for(int i = 1; i < FS[0]; ++i)
+    {
+        if(FS[i] != 0)
+            DDI[FS[i]]++;
+    }
+}
+
 void descente_largeur(int r,const vector<int>& fs, const vector<int>& aps, vector<int>& dist)
 {
     int nb_sommets = aps[0];
@@ -46,7 +61,55 @@ void descente_largeur(int r,const vector<int>& fs, const vector<int>& aps, vecto
         }
     }
 }
-void Mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<int>>& matriceDistance)
+
+void empiler (int x, vector<int>& pilch)
+{
+    pilch[x] = pilch[0];
+    pilch[0] = x;
+}
+
+void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem)
+{
+    int n = APS[0], p = 0;
+
+    cfc.clear();
+    cfc.resize(n + 1);
+
+    pilch.clear();
+    pilch.resize(n + 1);
+
+    pred.clear();
+    pred.resize(n + 1, 0);
+
+    prem.clear();
+    prem.resize(n + 1);
+
+    vector<int> tarj;
+    tarj.reserve(n + 1);
+    vector<bool> entarj(n + 1, false);
+    vector<int> num(n + 1, 0);
+    vector<int> ro(n + 1, 0);
+
+    int k = 0;
+
+    pilch[0] = 0;
+    tarj[0] = 0;
+
+    for(int s = 1; s <= n; ++s)
+    {
+        if(num[s] == 0)
+        {
+            traversee(s, p, k, FS, APS, cfc, pilch, pred, prem, tarj, entarj, num, ro);
+        }
+    }
+
+    prem[0] = k;
+
+    cout << "num:   "; printVector(num);
+    cout << "ro:    "; printVector(ro);
+}
+
+void mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<int>>& matriceDistance)
 {
     int n = APS[0];
     matriceDistance.resize(n+1);
@@ -57,24 +120,83 @@ void Mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<i
     matriceDistance[0][0] = n;
 }
 
-void empiler (int x, vector<int>& pilch)
+void printVector(const vector<int>& v)
 {
-    pilch[x] = pilch[0];
-    pilch[0] = x;
+    unsigned i = 0;
+    cout << "[";
+    for(i = 0; i < v.size() - 1; ++i)
+    {
+        cout << v[i] << ", ";
+    }
+    cout << v[i] << "]\n";
 }
 
-void demi_degre_interieur(const vector<int>& FS, const vector<int>& APS, vector<int> &DDI)
+void Prufer_encode(vector<vector<int>> mat, vector<int>& p)
 {
-    DDI.resize(APS[0] + 1);
-    DDI[0] = APS[0];
-    for(int i = 1; i <= APS[0]; ++i)
+    unsigned n = mat[0][0];
+    p.clear();
+    p.resize(n-1);
+    p[0] = n-2;
+
+    for(unsigned i = 1; i <= n; ++i)
     {
-        DDI[i] = 0;
+        mat[i][0] = 0;
+        for(unsigned j = 1; j <= n; ++j)
+        {
+            mat[i][0] += mat[i][j];
+        }
     }
-    for(int i = 1; i < FS[0]; ++i)
+
+    for(unsigned k = 1; k <= n-2; ++k)
     {
-        if(FS[i] != 0)
-            DDI[FS[i]]++;
+        int i = 1, j = 1;
+        while(mat[i][0] != 1) ++i;
+        while(mat[i][j] != 1) ++j;
+
+        p[k] = j;
+        mat[i][j] = 0;
+        mat[j][i] = 0;
+        mat[i][0] = 0;
+        --mat[j][0];
+    }
+}
+
+void Prufer_decode(const vector<int>& p, vector<vector<int>>& mat)
+{
+    unsigned m = p[0], n = m + 2;
+    vector<int> s(m + 3);
+
+    mat.clear();
+    mat.resize(n + 1);
+    for(unsigned i = 0; i <= n; ++i) mat[i].resize(n + 1, 0);
+
+    for(unsigned i = 1; i <= n; ++i) s[i] = 0;
+    for(unsigned i = 1; i <= m; ++i) ++s[p[i]];
+
+    for(unsigned i = 1; i <= m; ++i)
+    {
+        unsigned k = 1;
+        while(s[k] != 0) ++k;
+
+        mat[p[i]][k] = 1;
+        mat[k][p[i]] = 1;
+
+        s[k] = -1;
+        --s[p[i]];
+    }
+
+    int k = -1;
+    for(unsigned i = 1; i <= n; ++i)
+    {
+        if(s[i] == 0)
+        {
+            if(k == -1) k = i;
+            else
+            {
+                mat[i][k] = 1;
+                mat[k][i] = 1;
+            }
+        }
     }
 }
 
@@ -147,3 +269,80 @@ void rangToString(const vector<int>& FS, const vector<int>& APS)
          cout<<rangT[i]<<", ";
     cout << endl;
 }
+
+void Tarjan(const vector<int>& FS, const vector<int>& APS)
+{
+    vector<int> cfc, pilch, pred, prem;
+    fortconnexe(FS, APS, cfc, pilch, pred, prem);
+
+    cout << "cfc:   "; printVector(cfc);
+    cout << "pilch: "; printVector(pilch);
+    cout << "pred:  "; printVector(pred);
+    cout << "prem:  "; printVector(prem);
+}
+
+void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro)
+{
+    ++p;
+    num[s] = p;
+    ro[s] = p;
+
+    tarj.push_back(s);
+    entarj[s] = true;
+
+    int i = APS[s];
+    int t = FS[i];
+    while(t != 0)
+    {
+        if(num[t] == 0)
+        {
+            pred[t] = i;
+            traversee(t, p, k, FS, APS, cfc, pilch, pred, prem, tarj, entarj, num, ro);
+            if(ro[t] < ro[s]) ro[s] = ro[t];
+            else if(num[t] < ro[s] and entarj[t]) ro[s] = num[t];
+        }
+
+        ++i;
+        t = FS[i];
+    }
+
+    if(ro[s] == num[s]) ++k;
+
+    int u = 0;
+    do
+    {
+        u = tarj.back();
+        tarj.pop_back();
+        entarj[u] = false;
+        empiler(u, pilch);
+        cfc[u] = k;
+    } while(u != s);
+
+    prem[i] = pilch[0];
+    pilch[0] = 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
