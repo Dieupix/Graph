@@ -190,7 +190,7 @@ public:
      *
      * @return
      */
-    bool saveIn(std::ostream& ost) const; ///@todo - Alex : to be implemented
+    void saveIn(std::ostream& ost) const; ///@todo - Alex : to be implemented
     /**
      * @brief toString
      *
