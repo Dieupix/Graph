@@ -20,5 +20,7 @@ void rang                   (vector<int>& rang, const vector<int>& FS, const vec
 void rangToString           (const vector<int>& FS, const vector<int>& APS);
 void Tarjan                 (const vector<int>& FS, const vector<int>& APS);
 void traversee              (int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro);
+void Ordonnancement         (const vector<int> file_pred, const vector<int> adr_prem_pred, const vector<int> duree_taches, vector<int>& file_pred_critique, vector<int>& adr_prem_pred_critique, vector<int>& longueur_critique);
+void englobe_ordonnancement (const vector<int>& fs, const vector<int>& aps);
 
 #endif // ALGORITHMS_H
