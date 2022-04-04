@@ -14,14 +14,16 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
-    noeud.cpp
+    noeud.cpp \
+    test.cpp
 
 HEADERS += \
     algorithms.h \
     exceptions.h \
     graph.h \
     mainwindow.h \
-    noeud.h
+    noeud.h \
+    test.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
