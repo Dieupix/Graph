@@ -3,6 +3,7 @@
 // ---------- Private functions ----------
 void Graph::initialiserSommets(unsigned size)
 {
+    /* L'indice du tableau représente le numéro du sommet */
     sommets.resize(size + 1);
     for(unsigned i = 0; i < sommets.size(); ++i)
     {

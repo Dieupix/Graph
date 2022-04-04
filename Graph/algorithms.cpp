@@ -93,7 +93,6 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     int k = 0;
 
     pilch[0] = 0;
-    tarj[0] = 0;
 
     for(int s = 1; s <= n; ++s)
     {
@@ -318,7 +317,7 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
         cfc[u] = k;
     } while(u != s);
 
-    prem[i] = pilch[0];
+    prem[s] = pilch[0];
     pilch[0] = 0;
 }
 
