@@ -3,7 +3,7 @@
 // ---------- Private functions ----------
 void Graph::initialiserSommets(unsigned size)
 {
-    sommets.resize(size);
+    sommets.resize(size + 1);
     for(unsigned i = 0; i < sommets.size(); ++i)
     {
         sommets[i] = make_unique<Noeud>(i);
@@ -12,7 +12,8 @@ void Graph::initialiserSommets(unsigned size)
 
 void Graph::verifIntegritee()
 {
-    if(sommets.size() < 1) throw PasAssezDeSommetsException("ERREUR: Graph: Un graphe doit posseder au moins un sommet");
+    /* Sommet est initalisé avec au moins 1 élément */
+    if(sommets.size() < 2) throw PasAssezDeSommetsException("ERREUR: Graph: Un graphe doit posseder au moins un sommet");
     if(!verifIntegriteeSommets()) throw SommetsNonReliesException("ERREUR: Graph: Au moins l'un des sommets du graphe n'est pas relie");
 }
 
@@ -94,25 +95,28 @@ Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_o
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{false}
 {
-    initialiserSommets(APS[0] + 1);
-
+    initialiserSommets(APS[0]);
+    verifIntegritee();
 }
 
 Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAdj}, usingFsAndAps{false}, est_oriente{est_oriente}
 {
-    initialiserSommets(matAdj[0][0] + 1);
+    initialiserSommets(matAdj[0][0]);
+    verifIntegritee();
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& coûts) : FS{FS}, APS{APS},
     usingFsAndAps{true}, couts{coûts}, est_oriente{false}
 {
-    initialiserSommets(APS[0] + 1);
+    initialiserSommets(APS[0]);
+    verifIntegritee();
 }
 
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& coûts, bool est_oriente) : matAdj{matAdj},
     usingFsAndAps{false}, couts{coûts}, est_oriente{est_oriente}
 {
-    initialiserSommets(matAdj[0][0] + 1);
+    initialiserSommets(matAdj[0][0]);
+    verifIntegritee();
 }
 // ---------- End of constructeurs ----------
 
