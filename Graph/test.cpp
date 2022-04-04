@@ -19,6 +19,22 @@ void testDistance()
     }
 }
 
+void testPrufer()
+{
+    vector<int> p;
+    vector<vector<int>> mat;
+
+    Prufer_encode(matAdj_3, p);
+
+    cout << "p: "; printVector(p);
+
+    Prufer_decode(p, mat);
+
+    cout << "mat:";
+    for(unsigned i = 0 ; i < mat.size() ; ++i)
+        printVector(mat[i]);
+}
+
 void testRang()
 {
 

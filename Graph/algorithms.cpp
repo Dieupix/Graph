@@ -86,7 +86,7 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
 
     vector<int> tarj;
     tarj.reserve(n + 1);
-    vector<bool> entarj(n + 1, false);
+    vector<bool> entarj(n + 1, true);
     vector<int> num(n + 1, 0);
     vector<int> ro(n + 1, 0);
 
@@ -206,7 +206,7 @@ void rang(vector<int>& rang, const vector<int>& fs, const vector<int>& aps)
         rang.resize(n+1);
         vector<int> pilch(n+1);
         vector<int> prem(n+1);
-
+        rang[0] = n;
         vector<int> ddi;
         demi_degre_interieur(fs, aps, ddi);
 
@@ -287,7 +287,7 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
     ro[s] = p;
 
     tarj.push_back(s);
-    entarj[s] = true;
+    //entarj[s] = true;
 
     int i = APS[s];
     int t = FS[i];
