@@ -29,9 +29,9 @@ const vector<int> APS_2 {7, 1, 4, 7, 9, 11, 14, 16};
 /** FS_3 & APS_3 + matAdj_3
  * @todo définir ce qu'il y a de-dans
  */
-vector<int> FS_3 {22, 2, 3, 4, 0, 0, 6, 0, 7, 0, 1, 2, 6, 0, 3, 4, 7, 8, 0, 4, 0, 7, 0};
-vector<int> APS_3 {8, 1, 5, 6, 8, 10, 14, 19, 21};
-vector<vector<int>> matAdj_3 {
+const vector<int> FS_3 {22, 2, 3, 4, 0, 0, 6, 0, 7, 0, 1, 2, 6, 0, 3, 4, 7, 8, 0, 4, 0, 7, 0};
+const vector<int> APS_3 {8, 1, 5, 6, 8, 10, 14, 19, 21};
+const vector<vector<int>> matAdj_3 {
     {8, 14},
     {0, 0, 0, 1, 0, 0, 0, 0, 0},
     {0, 0, 0, 1, 0, 0, 0, 0, 0},

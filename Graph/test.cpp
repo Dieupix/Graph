@@ -3,7 +3,13 @@
 void test()
 {
     testTarjan();
+
+    cout << endl;
+
+    testPrufer();
 }
+
+/* -------------------------------------------------- */
 
 void testDistance()
 {
@@ -26,13 +32,14 @@ void testPrufer()
 
     Prufer_encode(matAdj_3, p);
 
-    cout << "p: "; printVector(p);
+    cout << "p:     "; printVector(p);
 
     Prufer_decode(p, mat);
 
-    cout << "mat:";
-    for(unsigned i = 0 ; i < mat.size() ; ++i)
-        printVector(mat[i]);
+    cout << "mat:   "; printVector(mat[0]);
+    for(unsigned i = 1; i < mat.size(); ++i){
+        cout << "       "; printVector(mat[i]);
+    }
 }
 
 void testRang()
