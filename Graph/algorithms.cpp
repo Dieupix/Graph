@@ -73,6 +73,7 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     int n = APS[0], p = 0;
 
     cfc.clear();
+    cfc[0] = n;
     cfc.resize(n + 1);
 
     pilch.clear();
@@ -82,7 +83,8 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     pred.resize(n + 1, 0);
 
     prem.clear();
-    prem.resize(n + 1);
+    prem.push_back(0);
+    prem.reserve(n + 1);
 
     vector<int> tarj;
     tarj.reserve(n + 1);
@@ -278,6 +280,9 @@ void Tarjan(const vector<int>& FS, const vector<int>& APS)
     cout << "pilch: "; printVector(pilch);
     cout << "pred:  "; printVector(pred);
     cout << "prem:  "; printVector(prem);
+
+    cout << "FS:    "; printVector(FS);
+    cout << "APS:   "; printVector(APS);
 }
 
 void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro)
@@ -287,7 +292,6 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
     ro[s] = p;
 
     tarj.push_back(s);
-    //entarj[s] = true;
 
     int i = APS[s];
     int t = FS[i];
@@ -297,6 +301,9 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
         {
             pred[t] = i;
             traversee(t, p, k, FS, APS, cfc, pilch, pred, prem, tarj, entarj, num, ro);
+        }
+
+        if(entarj[t]){
             if(ro[t] < ro[s]) ro[s] = ro[t];
             else if(num[t] < ro[s] and entarj[t]) ro[s] = num[t];
         }
@@ -305,20 +312,23 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
         t = FS[i];
     }
 
-    if(ro[s] == num[s]) ++k;
-
-    int u = 0;
-    do
+    if(ro[s] == num[s])
     {
-        u = tarj.back();
-        tarj.pop_back();
-        entarj[u] = false;
-        empiler(u, pilch);
-        cfc[u] = k;
-    } while(u != s);
+        ++k;
 
-    prem[s] = pilch[0];
-    pilch[0] = 0;
+        int u = 0;
+        do
+        {
+            u = tarj.back();
+            tarj.pop_back();
+            entarj[u] = false;
+            empiler(u, pilch);
+            cfc[u] = k;
+        } while(u != s);
+
+        prem.push_back(pilch[0]);
+        pilch[0] = 0;
+    }
 }
 
 void Ordonnancement(const vector<int> file_pred, const vector<int> adr_prem_pred, const vector<int> duree_taches, vector<int>& file_pred_critique, vector<int>& adr_prem_pred_critique, vector<int>& longueur_critique)
