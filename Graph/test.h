@@ -43,6 +43,15 @@ const vector<vector<int>> matAdj_3 {
     {0, 0, 0, 0, 1, 0, 0, 0, 0},
 };
 
+/** FS_4 & APS_4
+ * 2 noeuds sans prédécesseurs (1 - 8)
+ * 2 composantes fortement connexes (5 - 6 - 4 - 3 - 2) (10 - 9 - 8)
+ *
+ * @details Représente le graphe utilisé pour l'exemple de Tarjan dans le cours
+ */
+const vector<int> FS_4 {26, 2, 7, 0, 3, 5, 0, 4, 0, 6, 0, 4, 0, 2, 5, 7, 0, 0, 1, 9, 0, 10, 0, 3, 8, 9, 0};
+const vector<int> APS_4 {10, 1, 4, 7, 9, 11, 13, 17, 18, 21, 23};
+
 void testDistance();
 void testPrufer();
 void testRang();

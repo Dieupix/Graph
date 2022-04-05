@@ -49,5 +49,6 @@ void testRang()
 
 void testTarjan()
 {
-    Tarjan(FS_2, APS_2);
+    cout << "Tarjan: " << endl;
+    Tarjan(FS_4, APS_4);
 }

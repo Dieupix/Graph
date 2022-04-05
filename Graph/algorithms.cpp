@@ -73,8 +73,8 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     int n = APS[0], p = 0;
 
     cfc.clear();
-    cfc[0] = n;
     cfc.resize(n + 1);
+    cfc[0] = n;
 
     pilch.clear();
     pilch.resize(n + 1);
@@ -83,8 +83,8 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     pred.resize(n + 1, 0);
 
     prem.clear();
-    prem.push_back(0);
     prem.reserve(n + 1);
+    prem.push_back(0);
 
     vector<int> tarj;
     tarj.reserve(n + 1);
