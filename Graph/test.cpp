@@ -68,23 +68,20 @@ void testOrdonnancement()
 void testDantzig()
 {
     //Graph g = new Graph(FS_6,APS_6, COUTS_6);
-/*
+    vector<vector<int>> couts = COUTS_6;
     cout<<"Matrice des Couts Initiale: "<<endl;
-    for(unsigned i = 0 ; i < cout_1.size() ;++i)
+    for(unsigned i = 0 ; i < couts.size() ;++i)
     {
-        printVector(cout_1[i]);
-        cout<<endl;
+        printVector(couts[i]);
     }
     cout<<endl;
     cout<<endl;
     cout<<"Dantzig : "<<endl;
-    Dantzig(cout_1);
+    Dantzig(couts);
 
     cout<<"Nouvelle Matrice des Couts : "<<endl;
-    for(unsigned i = 0 ; i < cout_1.size() ;++i)
+    for(unsigned i = 0 ; i < couts.size() ;++i)
     {
-        printVector(cout_1[i]);
-        cout<<endl;
+        printVector(couts[i]);
     }
-*/
 }

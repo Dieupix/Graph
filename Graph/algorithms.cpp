@@ -469,17 +469,19 @@ bool Dantzig(vector<vector<int>>& c)
     {
         for( i = 1 ; i <= k ; ++i)
         {
-            if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
-                c[i][k+1] = x;
-            if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
-                c[k+1][i] = x;
+            for(j = 1 ; j <= k ; ++j)
+            {
+                if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
+                    c[i][k+1] = x;
+                if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
+                    c[k+1][i] = x;
+            }
+            if(c[i][k+1] + c[k+1][i] < 0)
+            {
+                cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
+                return false;
+            }
         }
-        if(c[i][k+1] + c[k+1][i] < 0)
-        {
-            cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
-            return false;
-        }
-
         for(i = 1 ; i <= k ; ++i)
             for( j = 1 ; j <= k ; ++j)
                 if( (x = c[i][k+1] + c[k+1][j]) < c[i][j])
