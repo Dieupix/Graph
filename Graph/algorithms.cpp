@@ -380,22 +380,113 @@ void Ordonnancement(const vector<int> file_pred, const vector<int> adr_prem_pred
 }
 
 
-void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps)
+void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps, const vector<int>& duree_taches, vector<int>& new_fs, vector<int>& new_aps)
 {
-    //@TODO Manu : transformer fs et aps en fp et app + cout en duree_taches
-    //@TODO Manu : fpc et appc et lc devient un Graphe !
+    ///Initialisation :
     vector<int> file_pred;
     vector<int> adr_prem_pred;
-    vector<int> duree_taches;
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
     vector<int> longueur_critique;
 
+    ///Tranformation de fs/pas --> fp/app :
+    transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
+
     Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+
+    cout<<"Longueur critique : "<<endl;
+    printVector(longueur_critique);
+    cout<<endl;
+    cout<<endl;
+
+    ///Transformation de fp/app --> fs/aps :
+    transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
+
+    cout<<"Nouveau FS & APS : "<<endl;
+    printVector(new_fs);
+    cout<<endl;
+    printVector(new_aps);
 }
 
+void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app)
+{
+    int n = aps[0] ;
+    app.push_back(n);
+    fp.push_back(fs[0]);
+    for(int i = 1 ; i <= n ; ++i)
+    {
+        app.push_back(fp.size());
+        for(int j = 1 ; j <= fs[0] ; ++j)
+        {
+            if(fs[j] == i)
+            {
+                int k = 1;
+                while(aps[k] <= j)
+                {
+                    k++;
+                }
+                fp.push_back(k-1);
+            }
+        }
+        fp.push_back(0);
+    }
+}
 
+void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, vector<int>& fs, vector<int>& aps)
+{
+    int n = app[0];
 
+    aps.push_back(n);
+    fs.push_back(fp[0]);
+
+    for(int i = 1 ; i <= n ; ++i)
+    {
+        aps.push_back(fs.size());
+        for(int j = 1 ; j <= fp[0] ; ++j)
+        {
+            if(fp[j] == i)
+            {
+                int k = 1;
+                while(app[k] <= j)
+                {
+                    k++;
+                }
+                fs.push_back(k-1);
+            }
+        }
+        fs.push_back(0);
+    }
+}
+
+bool Dantzig(vector<vector<int>>& c)
+{
+    //Matrice des couts qui sera remplacee par la matrice des distances et renvoie faux si le graphe contient un circuit absorbant
+    int n = c[0][0];
+    int k, i, j;
+    double x;
+
+    for(k = 1 ; k < n ; ++k)
+    {
+        for( i = 1 ; i <= k ; ++i)
+        {
+            if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
+                c[i][k+1] = x;
+            if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
+                c[k+1][i] = x;
+        }
+        if(c[i][k+1] + c[k+1][i] < 0)
+        {
+            cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
+            return false;
+        }
+
+        for(i = 1 ; i <= k ; ++i)
+            for( j = 1 ; j <= k ; ++j)
+                if( (x = c[i][k+1] + c[k+1][j]) < c[i][j])
+                    c[i][j] = x;
+    }
+    return true;
+}
 
 
 

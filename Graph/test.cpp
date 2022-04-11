@@ -1,12 +1,17 @@
 #include "test.h"
+#include "graph.h"
 
 void test()
 {
+    /*
     testTarjan();
 
     cout << endl;
 
     testPrufer();
+    */
+    //testOrdonnancement();
+    testDantzig();
 }
 
 /* -------------------------------------------------- */
@@ -51,4 +56,35 @@ void testTarjan()
 {
     cout << "Tarjan: " << endl;
     Tarjan(FS_4, APS_4);
+}
+
+void testOrdonnancement()
+{
+    vector<int> new_fs, new_aps;
+    englobe_ordonnancement(FS_5, APS_5, duree_taches,new_fs,new_aps);
+    Graph ng = new Graph(new_aps,new_fs); ///QU'ON PEUT ENSUITE MANIPULER
+}
+
+void testDantzig()
+{
+    //Graph g = new Graph(FS_6,APS_6, COUTS_6);
+/*
+    cout<<"Matrice des Couts Initiale: "<<endl;
+    for(unsigned i = 0 ; i < cout_1.size() ;++i)
+    {
+        printVector(cout_1[i]);
+        cout<<endl;
+    }
+    cout<<endl;
+    cout<<endl;
+    cout<<"Dantzig : "<<endl;
+    Dantzig(cout_1);
+
+    cout<<"Nouvelle Matrice des Couts : "<<endl;
+    for(unsigned i = 0 ; i < cout_1.size() ;++i)
+    {
+        printVector(cout_1[i]);
+        cout<<endl;
+    }
+*/
 }

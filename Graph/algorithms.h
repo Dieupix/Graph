@@ -21,6 +21,9 @@ void rangToString           (const vector<int>& FS, const vector<int>& APS);
 void Tarjan                 (const vector<int>& FS, const vector<int>& APS);
 void traversee              (int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro);
 void Ordonnancement         (const vector<int> file_pred, const vector<int> adr_prem_pred, const vector<int> duree_taches, vector<int>& file_pred_critique, vector<int>& adr_prem_pred_critique, vector<int>& longueur_critique);
-void englobe_ordonnancement (const vector<int>& fs, const vector<int>& aps);
+void englobe_ordonnancement (const vector<int>& fs, const vector<int>& aps, const vector<int>& duree_taches, vector<int>& new_fs, vector<int>& new_aps);
+void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app);
+void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, vector<int>& fs, vector<int>& aps);
+bool Dantzig                (vector<vector<int>>& c);
 
 #endif // ALGORITHMS_H

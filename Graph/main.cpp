@@ -1,3 +1,4 @@
+/*
 #include "mainwindow.h"
 #include <QApplication>
 
@@ -5,9 +6,9 @@
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     MainWindow w;
-    w.show();*/
+    w.show();
 
     //int exe = a.exec();
     int exe = 0;
@@ -15,4 +16,14 @@ int main(int argc, char *argv[])
     test(); // Pour lancer les tests
 
     return exe;
+}
+*/
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello world!" << endl;
+    return 0;
 }
