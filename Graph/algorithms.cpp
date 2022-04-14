@@ -460,7 +460,7 @@ void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, 
 
 bool Dantzig(vector<vector<int>>& c)
 {
-    //Matrice des couts qui sera remplacee par la matrice des distances et renvoie faux si le graphe contient un circuit absorbant
+    //Initialisation
     int n = c[0][0];
     int k, i, j;
     double x;
@@ -473,6 +473,7 @@ bool Dantzig(vector<vector<int>>& c)
             {
                 if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
                     c[i][k+1] = x;
+
                 if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
                     c[k+1][i] = x;
             }
@@ -484,9 +485,13 @@ bool Dantzig(vector<vector<int>>& c)
         }
         for(i = 1 ; i <= k ; ++i)
             for( j = 1 ; j <= k ; ++j)
+            {
                 if( (x = c[i][k+1] + c[k+1][j]) < c[i][j])
                     c[i][j] = x;
+            }
     }
+
+
     return true;
 }
 

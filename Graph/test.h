@@ -1,10 +1,9 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "limits.h"
 #include "algorithms.h"
 
-
+const int COUT_INFINI = 500000;
 
 /** FS_1 & APS_1 + cout_1
  *  Un noeud sans prédécesseurs (1)
@@ -71,14 +70,14 @@ const vector<int> duree_taches{5, 4, 5, 7, 2, 1};
 */
 const vector<int> FS_6 {13, 2, 4, 0, 4, 5, 0, 4, 0, 0, 1, 3, 4, 0};
 const vector<int> APS_6 {5, 1, 4, 7, 9, 10};
-/*vector<vector<int>> COUTS_6 {
+vector<vector<int>> COUTS_6 {
     {5, 8},
-    {0, 0      ,  -2     ,  4      ,  INT_MAX, INT_MAX},
-    {0, INT_MAX,  0      ,  INT_MAX,  4      , 3      },
-    {0, INT_MAX,  INT_MAX,  0      ,  1      , INT_MAX},
-    {0, INT_MAX,  INT_MAX,  INT_MAX,  0      , INT_MAX},
-    {0, 0      ,  INT_MAX,  -1     ,  -1     , 0      },
-};*/
+    {0, 0      ,  -2,  4      ,  COUT_INFINI, COUT_INFINI},
+    {0, COUT_INFINI     ,  0      ,  COUT_INFINI,  4      , 3      },
+    {0, COUT_INFINI,  COUT_INFINI,  0      ,  1      , COUT_INFINI},
+    {0, COUT_INFINI,  COUT_INFINI,  COUT_INFINI,  0      , COUT_INFINI},
+    {0, 0      ,  COUT_INFINI,  -1     ,  -1     , 0      },
+};/*
 vector<vector<int>> COUTS_6 {
     {5, 8},
     {0,0,-2,4 ,0 ,0},
@@ -86,6 +85,20 @@ vector<vector<int>> COUTS_6 {
     {0,0,0 ,0 ,1 ,0},
     {0,0,0 ,0 ,0 ,0},
     {0,0,0 ,-1,-1,0},
+};
+*/
+
+/** FS_7 & APS_7 + COUTS_7
+ *
+ *
+*/
+const vector<int> FS_7 {6, 2, 3, 0, 3, 0, 0};
+const vector<int> APS_7 {3, 1, 4, 6};
+vector<vector<int>> COUTS_7 {
+    {3,6},
+    {0,0,0,3},
+    {0,COUT_INFINI,0,2},
+    {0,COUT_INFINI,COUT_INFINI,0},
 };
 
 void testDistance();

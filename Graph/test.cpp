@@ -69,6 +69,7 @@ void testDantzig()
 {
     //Graph g = new Graph(FS_6,APS_6, COUTS_6);
     vector<vector<int>> couts = COUTS_6;
+
     cout<<"Matrice des Couts Initiale: "<<endl;
     for(unsigned i = 0 ; i < couts.size() ;++i)
     {
