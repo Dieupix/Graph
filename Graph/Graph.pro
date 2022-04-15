@@ -15,7 +15,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     noeud.cpp \
-    test.cpp
+    test.cpp \
+    vue.cpp
 
 HEADERS += \
     algorithms.h \
@@ -23,7 +24,8 @@ HEADERS += \
     graph.h \
     mainwindow.h \
     noeud.h \
-    test.h
+    test.h \
+    vue.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
