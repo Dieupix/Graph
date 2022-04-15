@@ -169,7 +169,10 @@ void Prufer_decode(const vector<int>& p, vector<vector<int>>& mat)
 
     mat.clear();
     mat.resize(n + 1);
-    for(unsigned i = 0; i <= n; ++i) mat[i].resize(n + 1, 0);
+    mat[0].resize(2);
+    mat[0][0] = n;
+    mat[0][1] = n + m;
+    for(unsigned i = 1; i <= n; ++i) mat[i].resize(n + 1, 0);
 
     for(unsigned i = 1; i <= n; ++i) s[i] = 0;
     for(unsigned i = 1; i <= m; ++i) ++s[p[i]];

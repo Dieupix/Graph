@@ -3,15 +3,13 @@
 
 void test()
 {
-    /*
-    testTarjan();
-
-    cout << endl;
+    //testTarjan();
 
     testPrufer();
-    */
+
     //testOrdonnancement();
-    testDantzig();
+
+    //testDantzig();
 }
 
 /* -------------------------------------------------- */
@@ -34,6 +32,11 @@ void testPrufer()
 {
     vector<int> p;
     vector<vector<int>> mat;
+
+    cout << "mat:   "; printVector(matAdj_3[0]);
+    for(unsigned i = 1; i < matAdj_3.size(); ++i){
+        cout << "       "; printVector(matAdj_3[i]);
+    }
 
     Prufer_encode(matAdj_3, p);
 
