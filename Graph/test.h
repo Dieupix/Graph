@@ -70,7 +70,7 @@ const vector<int> duree_taches{5, 4, 5, 7, 2, 1};
 */
 const vector<int> FS_6 {13, 2, 4, 0, 4, 5, 0, 4, 0, 0, 1, 3, 4, 0};
 const vector<int> APS_6 {5, 1, 4, 7, 9, 10};
-vector<vector<int>> COUTS_6 {
+const vector<vector<int>> COUTS_6 {
     {5, 8},
     {0, 0      ,  -2,  4      ,  COUT_INFINI, COUT_INFINI},
     {0, COUT_INFINI     ,  0      ,  COUT_INFINI,  4      , 3      },
@@ -78,7 +78,7 @@ vector<vector<int>> COUTS_6 {
     {0, COUT_INFINI,  COUT_INFINI,  COUT_INFINI,  0      , COUT_INFINI},
     {0, 0      ,  COUT_INFINI,  -1     ,  -1     , 0      },
 };/*
-vector<vector<int>> COUTS_6 {
+const vector<vector<int>> COUTS_6 {
     {5, 8},
     {0,0,-2,4 ,0 ,0},
     {0,0,0 ,0 ,4 ,3},
@@ -94,7 +94,7 @@ vector<vector<int>> COUTS_6 {
 */
 const vector<int> FS_7 {6, 2, 3, 0, 3, 0, 0};
 const vector<int> APS_7 {3, 1, 4, 6};
-vector<vector<int>> COUTS_7 {
+const vector<vector<int>> COUTS_7 {
     {3,6},
     {0,0,0,3},
     {0,COUT_INFINI,0,2},
