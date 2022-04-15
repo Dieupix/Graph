@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include<QObject>
 #include<QWidget>
 #include "graph.h"
 #include "vue.h"

@@ -6,7 +6,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    Graph g = new Graph();
+    MainWindow w{g};
     w.show();
 
     //int exe = a.exec();
