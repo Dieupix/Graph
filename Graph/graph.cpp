@@ -138,10 +138,9 @@ Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est
     }
 
     sommets.resize(g.getSommets().size());
-    auto gSommets = g.getSommets();
     for(unsigned i = 0; i < sommets.size(); ++i)
     {
-        sommets[i] = make_unique<Noeud>(*gSommets[i]);
+        sommets[i] = make_unique<Noeud>(*g.getSommets()[i]);
     }
 }
 // ---------- End of constructeurs ----------

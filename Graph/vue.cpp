@@ -2,8 +2,6 @@
 #include<QBoxLayout>
 #include<QLabel>
 
-
-
 vue::vue(QWidget* fenetre) : d_fenetre{fenetre}
 {}
 
@@ -16,6 +14,16 @@ void vue::creeInterface(const Graph& g)
 
 
     d_fenetre->setLayout(mainLayout);
+}
+
+void vue::metAJourGraphe(const Graph& g)
+{
+
+}
+
+void vue::metAJourNoeud(const Noeud& n)
+{
+
 }
 
 //Faire la suite...
