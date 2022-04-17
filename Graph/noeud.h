@@ -13,6 +13,7 @@ class Noeud
 public:
     Noeud(int id);
     Noeud(int id, const string& info);
+    Noeud(const Noeud& n);
     int getId() const;
     string getInfo() const;
     void setId(int id);

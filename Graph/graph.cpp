@@ -119,6 +119,31 @@ Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool e
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
 }
+
+Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est_oriente}, a_des_poids{g.a_des_poids}
+{
+    if(usingFsAndAps)
+    {
+        FS = g.getFS();
+        APS = g.getAPS();
+    }
+    else
+    {
+        matAdj = g.getMatAdj();
+    }
+
+    if(a_des_poids)
+    {
+        couts = g.couts;
+    }
+
+    sommets.resize(g.getSommets().size());
+    auto gSommets = g.getSommets();
+    for(unsigned i = 0; i < sommets.size(); ++i)
+    {
+        sommets[i] = make_unique<Noeud>(*gSommets[i]);
+    }
+}
 // ---------- End of constructeurs ----------
 
 

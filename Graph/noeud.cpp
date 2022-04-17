@@ -6,6 +6,9 @@ Noeud::Noeud(int id) : d_id{id}, d_info{}
 Noeud::Noeud(int id, const string& info) : d_id{id}, d_info{info}
 {}
 
+Noeud::Noeud(const Noeud& n) : d_id{n.d_id}, d_info{n.d_info}
+{}
+
 int Noeud::getId() const
 {
     return d_id;
