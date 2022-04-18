@@ -9,7 +9,8 @@ class widgetGraph : public QWidget
     Q_OBJECT
 public:
     widgetGraph(QWidget* parent = 0);
-    widgetGraph(const widgetGraph& g);
+    widgetGraph(const widgetGraph& g, QWidget* parent = 0);
+
 private:
     vector<int> d_fs;
     vector<int> d_aps;

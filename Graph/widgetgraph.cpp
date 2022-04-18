@@ -5,7 +5,7 @@
 widgetGraph::widgetGraph(QWidget *parent) : QWidget{parent}
 {}
 
-widgetGraph::widgetGraph(const widgetGraph& g) :  d_fs{g.d_fs}, d_aps{g.d_aps}, d_sommets{g.d_sommets}
+widgetGraph::widgetGraph(const widgetGraph& g, QWidget *parent) : QWidget{parent}, d_fs{g.d_fs}, d_aps{g.d_aps}, d_sommets{g.d_sommets}
 {}
 
 void widgetGraph::paintEvent(QPaintEvent*)

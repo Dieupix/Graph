@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(const widgetGraph& g, QWidget* parent) : QWidget{parent}, d_g{g}, d_vue{this}
+MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, d_g{new widgetGraph()}, d_vue{this}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe(d_g);

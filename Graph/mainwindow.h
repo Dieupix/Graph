@@ -9,7 +9,7 @@ class MainWindow : public QWidget
 {
     Q_OBJECT
 public:
-    MainWindow(const widgetGraph& g, QWidget* parent = nullptr);
+    MainWindow(QWidget* parent = nullptr);
 
 private:
     widgetGraph d_g;
