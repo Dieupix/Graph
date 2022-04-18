@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(const Graph& g, QWidget* parent) : QWidget{parent}, d_g{g}, d_vue{this}
+MainWindow::MainWindow(const widgetGraph& g, QWidget* parent) : QWidget{parent}, d_g{g}, d_vue{this}
 {
-    d_vue.creeInterface(d_g);
+    d_vue.creeInterface();
     d_vue.metAJourGraphe(d_g);
     connect(&d_vue, &vue::OrienteeChange, this, &MainWindow::onCheck_OrienteeChange);
     connect(&d_vue, &vue::A_des_PoidsChange, this, &MainWindow::onCheck_A_des_PoidsChange);
