@@ -202,10 +202,69 @@ const vector<unique_ptr<Noeud>>& Graph::getSommets() const
 
 
 // ---------- Public functions ----------
-void Graph::ajouterNoeud(unique_ptr<Noeud>& n)
+void Graph::ajouterNoeud(unique_ptr<Noeud>& noeud, const vector<int>& pred, const vector<int>& succ)
 {
     ///@todo - Alex : to be implemented
-    sommets.push_back(move(n));
+
+    int id = noeud->getId();
+    if(usingFsAndAps)
+    {
+        unsigned i = 1;
+        for(auto ite = FS.begin()+1; ite < FS.end(); ++ite)
+        {
+            if(*ite == 0)
+            {
+                if(pred[i])
+                {
+                    ite = FS.insert(ite, id) + 1;
+                    for(unsigned tmp = i+1; tmp < APS.size(); ++tmp) ++APS[tmp];
+                }
+                ++i;
+            }
+        }
+
+        for(i = 1; i < succ.size(); ++i)
+        {
+            if(succ[i]) FS.push_back(i);
+        }
+        FS.push_back(0);
+        FS[0] = FS.size() - 1;
+
+        i = FS.size()-2;
+        while(FS[i] != 0)
+        {
+            --i;
+        }
+
+        APS.push_back(i+1);
+        ++APS[0];
+    }
+    else
+    {
+        unsigned n = matAdj.size();
+        unsigned nbArcs = 0;
+        matAdj.resize(n+1);
+        for(unsigned i = 1; i < n; ++i)
+        {
+            matAdj[i].resize(n+1, 0);
+            if(pred[i])
+            {
+                matAdj[i][id] = 1;
+                ++nbArcs;
+            }
+            if(succ[i])
+            {
+                matAdj[id][i] = 1;
+                ++nbArcs;
+            }
+        }
+
+        ++matAdj[0][0];
+        matAdj[0][1] += nbArcs;
+
+    }
+
+    sommets.push_back(move(noeud));
 }
 
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const

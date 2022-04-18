@@ -157,7 +157,12 @@ public:
     // Setters
 
     // Functions
-    void ajouterNoeud(unique_ptr<Noeud>& n);
+    /**
+     * @brief ajouterNoeud
+     *
+     * @param n
+     */
+    void ajouterNoeud(unique_ptr<Noeud>& n, const vector<int>& pred, const vector<int>& succ);
     /**
      * @brief FS_APS_to_MatAdj
      *

@@ -101,12 +101,16 @@ const vector<vector<int>> COUTS_7 {
     {0,COUT_INFINI,COUT_INFINI,0},
 };
 
+/* -------------------------------------------------- */
+
+void test();
+
+void testAjoutNoeud();
+void testDantzig();
 void testDistance();
+void testOrdonnancement();
 void testPrufer();
 void testRang();
 void testTarjan();
-void testOrdonnancement();
-void testDantzig();
-void test();
 
 #endif // TEST_H
