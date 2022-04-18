@@ -6,14 +6,15 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Graph g = new Graph();
+    widgetGraph g = new widgetGraph();
     MainWindow w{g};
     w.show();
 
-    //int exe = a.exec();
-    int exe = 0;
 
-    test(); // Pour lancer les tests
+
+    int exe = a.exec();
+
+    //test(); // Pour lancer les tests
 
     return exe;
 }

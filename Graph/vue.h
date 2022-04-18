@@ -2,6 +2,7 @@
 #define VUE_H
 
 #include <QObject>
+#include "widgetgraph.h"
 #include "graph.h"
 
 class vue : public QObject
@@ -9,8 +10,8 @@ class vue : public QObject
     Q_OBJECT
 public:
     vue(QWidget* fenetre);
-    void creeInterface(const Graph& g);
-    void metAJourGraphe(const Graph& g);
+    void creeInterface();
+    void metAJourGraphe(const widgetGraph& g);
     void metAJourNoeud(const Noeud& n);
 
 private://FENETRE DONT ON GERE L'INTERFACE

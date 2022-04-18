@@ -2,17 +2,17 @@
 #define MAINWINDOW_H
 
 #include<QWidget>
-#include "graph.h"
+#include "widgetgraph.h"
 #include "vue.h"
 
 class MainWindow : public QWidget
 {
     Q_OBJECT
 public:
-    MainWindow(const Graph& g, QWidget* parent = nullptr);
+    MainWindow(const widgetGraph& g, QWidget* parent = nullptr);
 
 private:
-    Graph d_g;
+    widgetGraph d_g;
     vue d_vue;
 
 private slots :
