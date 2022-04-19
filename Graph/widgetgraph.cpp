@@ -89,16 +89,14 @@ void widgetGraph::enleveSommet(const QPoint& s)
 
 Graph widgetGraph::toGraph()
 {
-    vector<int> fs = d_fs;
-    vector<int> aps = d_aps;
     vector<unique_ptr<Noeud>> sommets;
     sommets.reserve(d_sommets.size());
     for(unsigned i = 1 ; i < d_sommets.size() ; ++i)
     {
-        sommets.push_back(std::unique_ptr<Noeud>(new Noeud(i)));
+        sommets.push_back(std::make_unique<Noeud>(i));
     }
     //Est oriente par défaut et n'a pas de poids predefini
-    return new Graph(fs,aps,sommets,true,false);
+    return Graph(d_fs,d_aps,sommets,true,false);
 }
 
 void widgetGraph::fromGraph(const Graph& g)

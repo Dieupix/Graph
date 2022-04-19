@@ -2,15 +2,15 @@
 #include <QApplication>
 
 #include "test.h"
+#include "graphwidget.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
-    const vector<int> aps {3, 1, 4, 6};
-    Graph g(fs,aps);
-    MainWindow w{nullptr,g};
+    MainWindow w{};
     w.show();
+    //GraphWidget gw;
+    //gw.show();
 
     int exe = a.exec();
 

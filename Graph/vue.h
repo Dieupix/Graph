@@ -10,6 +10,7 @@ class vue : public QObject
     Q_OBJECT
 public:
     vue(QWidget* fenetre);
+
     void creeInterface();
     void metAJourGraphe(const widgetGraph& g);
     void metAJourNoeud(const Noeud& n);
