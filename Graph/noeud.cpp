@@ -29,6 +29,16 @@ void Noeud::setInfo(const string& info)
     d_info = info;
 }
 
+Noeud& Noeud::operator=(const Noeud& n)
+{
+    if(this == &n) return *this;
+
+    d_id = n.d_id;
+    d_info = n.d_info;
+
+    return *this;
+}
+
 void Noeud::print(std::ostream& os) const
 {
     os << toString();

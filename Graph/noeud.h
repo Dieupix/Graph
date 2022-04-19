@@ -19,6 +19,8 @@ public:
     void setId(int id);
     void setInfo(const string& info);
 
+    Noeud& operator=(const Noeud& n);
+
     void print(std::ostream& os) const;
     string toString() const;
 private:
