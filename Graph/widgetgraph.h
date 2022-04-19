@@ -2,6 +2,7 @@
 #define WIDGETGRAPH_H
 
 #include<QWidget>
+#include "graph.h"
 using std::vector;
 
 class widgetGraph : public QWidget
@@ -10,7 +11,7 @@ class widgetGraph : public QWidget
 public:
     widgetGraph(QWidget* parent = 0);
     widgetGraph(const widgetGraph& g, QWidget* parent = 0);
-
+    widgetGraph(const Graph& g, QWidget* parent = 0);
 private:
     vector<int> d_fs;
     vector<int> d_aps;
@@ -21,6 +22,8 @@ private:
     void enleveSommet(const QPoint& s);
     void dessineGraphe(QPainter& paint);
     void dessineSommet(QPainter& paint, const QPoint& s);
+    Graph toGraph();
+    void fromGraph(const Graph& g);
 };
 
 #endif // WIDGETGRAPH_H

@@ -10,7 +10,7 @@ class MainWindow : public QWidget
     Q_OBJECT
 public:
     MainWindow(QWidget* parent = nullptr);
-
+    MainWindow(QWidget* parent = nullptr, const Graph& g = new Graph());
 private:
     widgetGraph d_g;
     vue d_vue;

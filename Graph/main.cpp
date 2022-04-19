@@ -6,7 +6,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w{};
+    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
+    const vector<int> aps {3, 1, 4, 6};
+    Graph g(fs,aps);
+    MainWindow w{nullptr,g};
     w.show();
 
     int exe = a.exec();
