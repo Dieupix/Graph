@@ -1,7 +1,6 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
-#include <iostream>
-#include <vector>
+
 #include "graph.h"
 
 class application
@@ -11,6 +10,7 @@ public:
     void load();
     void FSandAPS();
     void matrice();
+    void arete();
 private:
     Graph d_graphe;
 };

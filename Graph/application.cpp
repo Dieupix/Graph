@@ -10,6 +10,7 @@ void application::load()
         std::cout<<"> 1. Via FS/APS ?"<<std::endl;
         std::cout<<"> 2. Via la matrice ?"<<std::endl;
         std::cout<<"> 3. Via un fichier ?"<<std::endl;
+        std::cout<<"> 4. Via la position des arretes ?"<<std::endl;
         std::cin>>choix;
     }while(choix < 0 || choix > 3);
 
@@ -20,6 +21,8 @@ void application::load()
         case 2: matrice();
                 break;
         case 3: break; //A FAIRE
+        case 4: arete();
+                break;
     }
 }
 
@@ -52,12 +55,10 @@ void application::FSandAPS()
         std::cout<<"Case de APS n°"<<i;
         std::cin>>APS[i];
     }
-    Graph graphe;
+    Graph graphe = new Graph(FS, APS);;
     if(choixOriente)
-        graphe = new Graph(choixOriente);
-    else
-        graphe = new Graph(FS, APS);
-    d_graphe = graphe;
+        d_graphe.set
+
 }
 
 void application::matrice()
@@ -84,4 +85,19 @@ void application::matrice()
     Graph graphe;
     graphe = new Graph(Matrice, choixOriente);
     d_graphe = graphe;
+}
+
+void application::arete()
+{
+    int nbSommet;
+    int nbArete;
+    std::cout<<"Donnez le nombre de sommets : ";
+    std::cin>>nbSommet;
+
+    do{
+        std::cout<<"Donnez le nombre d'aretes : ";
+        std::cin>>nbArete;
+    }while(nbArete < nbSommet);
+
+
 }
