@@ -26,6 +26,7 @@ void widgetEdge::adjust()
         return;
 
     QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
+    //QLineF line(mapFromItem(source, -widgetNode::size / 2, -widgetNode::size / 2), mapFromItem(dest, -widgetNode::size / 2, -widgetNode::size / 2));
     qreal length = line.length();
 
     prepareGeometryChange();

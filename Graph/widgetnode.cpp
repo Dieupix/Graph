@@ -7,8 +7,8 @@
 #include<QPainter>
 #include<QStyleOptionGraphicsItem>
 
-widgetNode::widgetNode(GraphWidget *graphWidget)
-    : graph(graphWidget)
+widgetNode::widgetNode(GraphWidget *graphWidget, std::unique_ptr<Noeud> noeud)
+    : graph(graphWidget), noeud{std::make_unique<Noeud>(*noeud.get())}
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -81,39 +81,52 @@ bool widgetNode::advancePosition()
 
 QRectF widgetNode::boundingRect() const
 {
-    qreal adjust = 2;
-    return QRectF( -10 - adjust, -10 - adjust, 23 + adjust, 23 + adjust);
+    return {-size / 2, -size / 2, size, size};
 }
 
 
 QPainterPath widgetNode::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    path.addEllipse(-size / 2, -size / 2, size, size);
     return path;
 }
 
 
 void widgetNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
+    // Dessin du noeud
     painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::darkGray);
-    painter->drawEllipse(-7, -7, 20, 20);
-
-    QRadialGradient gradient(-3, -3, 10);
-    if (option->state & QStyle::State_Sunken) {
-        gradient.setCenter(3, 3);
-        gradient.setFocalPoint(3, 3);
-        gradient.setColorAt(1, QColor(Qt::yellow).lighter(120));
-        gradient.setColorAt(0, QColor(Qt::darkYellow).lighter(120));
-    } else {
-        gradient.setColorAt(0, Qt::yellow);
-        gradient.setColorAt(1, Qt::darkYellow);
-    }
-    painter->setBrush(gradient);
+    if(option->state & QStyle::State_Sunken) // Si le noeud est cliqué
+        painter->setBrush(QColor(Qt::darkGray).lighter(120));
+    else
+        painter->setBrush(Qt::darkGray);
+    painter->drawPath(shape());
 
     painter->setPen(QPen(Qt::black, 0));
-    painter->drawEllipse(-10, -10, 20, 20);
+    painter->drawPath(shape());
+
+    // Dessin de l'id du noeud
+    QString number;
+    number.setNum(noeud->getId());
+
+    QFont font(painter->font());
+    QPointF idPos;
+    if(noeud->getId() < 10)
+    {
+        font.setPointSize(13);
+        idPos = {-4, 6};
+    }
+    else if(noeud->getId() < 100)
+    {
+        font.setPointSize(10);
+        idPos = {-7, 5};
+    }
+
+    painter->setFont(font);
+    painter->setPen(Qt::black);
+    painter->setBrush(Qt::NoBrush);
+    painter->drawText(idPos, number);
 }
 
 QVariant widgetNode::itemChange(GraphicsItemChange change, const QVariant &value)

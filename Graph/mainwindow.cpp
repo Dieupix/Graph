@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, d_g{new widgetGraph()}, d_vue{this}
+MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, d_g{widgetGraph()}, d_vue{this}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe(d_g);
@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget{parent}, d_g{new widgetGraph()
 
 void MainWindow::onCheck_OrienteeChange(bool estoriente)
 {
-    //COMPLETER + MAJ la vue   
+    //COMPLETER + MAJ la vue
     d_vue.metAJourGraphe(d_g);
 }
 void MainWindow::onCheck_A_des_PoidsChange(bool a_des_poids)

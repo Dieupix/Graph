@@ -1,14 +1,19 @@
 #ifndef WIDGETNODE_H
 #define WIDGETNODE_H
 
+#include "noeud.h"
+
 #include<QGraphicsItem>
+
 class widgetEdge;
 class GraphWidget;
 
 class widgetNode : public QGraphicsItem
 {
 public:
-    widgetNode(GraphWidget *graphWidget);
+    static inline qreal size = 20;
+
+    widgetNode(GraphWidget *graphWidget, std::unique_ptr<Noeud> noeud);
 
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;
@@ -33,5 +38,7 @@ private:
     QList<widgetEdge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
+
+    std::unique_ptr<Noeud> noeud;
 };
 #endif // WIDGETNODE_H

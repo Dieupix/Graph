@@ -1,21 +1,23 @@
 #include "graphwidget.h"
-#include<QKeyEvent>
+#include <QKeyEvent>
 
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
-    setScene(scene);
+    setMinimumSize(400, 400);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
     setWindowTitle(tr("Elastic Nodes"));
-    widgetNode *node1 = new widgetNode(this);
+
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    scene->setSceneRect(-200, -200, 400, 400);
+    setScene(scene);
+
+    /*widgetNode *node1 = new widgetNode(this);
     widgetNode *node2 = new widgetNode(this);
     widgetNode *node3 = new widgetNode(this);
     widgetNode *node4 = new widgetNode(this);
@@ -24,6 +26,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     widgetNode *node7 = new widgetNode(this);
     widgetNode *node8 = new widgetNode(this);
     widgetNode *node9 = new widgetNode(this);
+    widgetNode *node10 = new widgetNode(this);
     scene->addItem(node1);
     scene->addItem(node2);
     scene->addItem(node3);
@@ -33,6 +36,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(node7);
     scene->addItem(node8);
     scene->addItem(node9);
+    scene->addItem(node10);
     scene->addItem(new widgetEdge(node1, node2));
     scene->addItem(new widgetEdge(node2, node3));
     scene->addItem(new widgetEdge(node2, centerNode));
@@ -45,6 +49,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(new widgetEdge(node7, node4));
     scene->addItem(new widgetEdge(node8, node7));
     scene->addItem(new widgetEdge(node9, node8));
+    scene->addItem(new widgetEdge(node9, node10));
+    scene->addItem(new widgetEdge(node3, node10));
 
     node1->setPos(-50, -50);
     node2->setPos(0, -50);
@@ -55,6 +61,22 @@ GraphWidget::GraphWidget(QWidget *parent)
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
     node9->setPos(50, 50);
+    node10->setPos(75, 0);*/
+
+    centerNode = new widgetNode(this, std::make_unique<Noeud>(1));
+    auto node2 = new widgetNode(this, std::make_unique<Noeud>(2));
+    auto node3 = new widgetNode(this, std::make_unique<Noeud>(10));
+    scene->addItem(centerNode);
+    scene->addItem(node2);
+    scene->addItem(node3);
+
+    scene->addItem(new widgetEdge(centerNode, node2));
+    scene->addItem(new widgetEdge(centerNode, node3));
+
+
+    centerNode->setPos(0, 0);
+    node2->setPos(50, 0);
+    node3->setPos(0, 50);
 }
 
 void GraphWidget::itemMoved()
@@ -121,7 +143,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow(2., -event->angleDelta().y() / 240.0));
+    scaleView(pow(2., event->angleDelta().y() / 240.0));
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
@@ -171,9 +193,15 @@ void GraphWidget::scaleView(qreal scaleFactor)
 }
 
 void GraphWidget::zoomIn()
-{}
+{
+    scaleView(1.2);
+}
+
 void GraphWidget::zoomOut()
-{}
+{
+    scaleView(1 / 1.2);
+}
+
 void GraphWidget::shuffle()
 {}
 
