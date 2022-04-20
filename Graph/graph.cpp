@@ -119,7 +119,11 @@ Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool e
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
 }
-
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente) : FS{FS}, APS{APS},  usingFsAndAps{true} ,est_oriente{est_oriente}
+{
+    initialiserSommets(APS[0]);
+    verifIntegritee();
+}
 Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est_oriente}, a_des_poids{g.a_des_poids}
 {
     if(usingFsAndAps)
@@ -222,6 +226,24 @@ vector<vector<int>> Graph::getCouts() const
 
 
 // ---------- Setters ----------
+void Graph::setFSandAPS(const vector<int>& fs, const vector<int>& aps)
+{
+    FS = fs;
+    APS = aps;
+    usingFsAndAps = true;
+    verifIntegritee();
+}
+void Graph::setOriente(bool oriente)
+{
+    est_oriente = oriente;
+    verifIntegritee();
+}
+void Graph::setMatrice(const vector<vector<int>>& mat)
+{
+    matAdj = mat;
+    usingFsAndAps = false;
+    verifIntegritee();
+}
 // ---------- End of setters ----------
 
 
