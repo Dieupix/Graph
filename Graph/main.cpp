@@ -2,18 +2,19 @@
 #include <QApplication>
 
 #include "test.h"
+#include "graphwidget.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Graph g = new Graph();
-    MainWindow w{g};
+    MainWindow w{};
     w.show();
+    //GraphWidget gw;
+    //gw.show();
 
-    //int exe = a.exec();
-    int exe = 0;
+    int exe = a.exec();
 
-    test(); // Pour lancer les tests
+    //test(); // Pour lancer les tests
 
     return exe;
 }

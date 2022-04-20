@@ -3,16 +3,47 @@
 
 void test()
 {
-    //testTarjan();
-
-    testPrufer();
-
-    //testOrdonnancement();
-
-    //testDantzig();
+    testAjoutNoeud();
 }
 
 /* -------------------------------------------------- */
+
+void testAjoutNoeud()
+{
+    Graph g = Graph(FS_7, APS_7);
+
+    auto n = make_unique<Noeud>(g.getAPS()[0]+1);
+
+    auto pred = {3, 1, 0, 1};
+    auto succ = {3, 1, 0, 1};
+
+    g.ajouterNoeud(n, pred, succ);
+
+    cout << "FS:    "; printVector(g.getFS());
+    cout << "APS:   "; printVector(g.getAPS());
+}
+
+void testDantzig()
+{
+    //Graph g = Graph(FS_6,APS_6, COUTS_6);
+    vector<vector<int>> couts = COUTS_6;
+
+    cout<<"Matrice des Couts Initiale: "<<endl;
+    for(unsigned i = 0 ; i < couts.size() ;++i)
+    {
+        printVector(couts[i]);
+    }
+    cout<<endl;
+    cout<<endl;
+    cout<<"Dantzig : "<<endl;
+    Dantzig(couts);
+
+    cout<<"Nouvelle Matrice des Couts : "<<endl;
+    for(unsigned i = 0 ; i < couts.size() ;++i)
+    {
+        printVector(couts[i]);
+    }
+}
 
 void testDistance()
 {
@@ -26,6 +57,13 @@ void testDistance()
         for(auto j : matriceDistance[i]) cout << j << " ";
         cout<<endl;
     }
+}
+
+void testOrdonnancement()
+{
+    vector<int> new_fs, new_aps;
+    englobe_ordonnancement(FS_5, APS_5, duree_taches,new_fs,new_aps);
+    Graph ng = Graph(new_aps,new_fs); ///QU'ON PEUT ENSUITE MANIPULER
 }
 
 void testPrufer()
@@ -59,33 +97,4 @@ void testTarjan()
 {
     cout << "Tarjan: " << endl;
     Tarjan(FS_4, APS_4);
-}
-
-void testOrdonnancement()
-{
-    vector<int> new_fs, new_aps;
-    englobe_ordonnancement(FS_5, APS_5, duree_taches,new_fs,new_aps);
-    Graph ng = new Graph(new_aps,new_fs); ///QU'ON PEUT ENSUITE MANIPULER
-}
-
-void testDantzig()
-{
-    //Graph g = new Graph(FS_6,APS_6, COUTS_6);
-    vector<vector<int>> couts = COUTS_6;
-
-    cout<<"Matrice des Couts Initiale: "<<endl;
-    for(unsigned i = 0 ; i < couts.size() ;++i)
-    {
-        printVector(couts[i]);
-    }
-    cout<<endl;
-    cout<<endl;
-    cout<<"Dantzig : "<<endl;
-    Dantzig(couts);
-
-    cout<<"Nouvelle Matrice des Couts : "<<endl;
-    for(unsigned i = 0 ; i < couts.size() ;++i)
-    {
-        printVector(couts[i]);
-    }
 }

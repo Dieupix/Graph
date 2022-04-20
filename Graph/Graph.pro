@@ -13,21 +13,29 @@ SOURCES += \
     application.cpp \
     exceptions.cpp \
     graph.cpp \
+    graphwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     noeud.cpp \
     test.cpp \
-    vue.cpp
+    vue.cpp \
+    widgetedge.cpp \
+    widgetgraph.cpp \
+    widgetnode.cpp
 
 HEADERS += \
     algorithms.h \
     application.h \
     exceptions.h \
     graph.h \
+    graphwidget.h \
     mainwindow.h \
     noeud.h \
     test.h \
-    vue.h
+    vue.h \
+    widgetedge.h \
+    widgetgraph.h \
+    widgetnode.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
