@@ -4,6 +4,7 @@
 #include<QGraphicsView>
 #include "widgetnode.h"
 #include "widgetedge.h"
+#include "graph.h"
 
 class GraphWidget : public QGraphicsView
 {
@@ -11,6 +12,8 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget *parent = nullptr);
+    GraphWidget(unsigned sceneSize, QWidget *parent = nullptr);
+    GraphWidget(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *parent = nullptr);
 
     void itemMoved();
 
@@ -32,6 +35,11 @@ protected:
 private:
     int timerId = 0;
     widgetNode *centerNode;
+    unsigned sceneSizeW, sceneSizeH;
+
+    QList<widgetNode *> nodes;
+
+    void setup();
 };
 
 #endif // GRAPHWIDGET_H

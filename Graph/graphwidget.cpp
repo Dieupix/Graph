@@ -2,9 +2,26 @@
 #include <QKeyEvent>
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent), sceneSizeW{400}, sceneSizeH{400}
 {
-    setMinimumSize(400, 400);
+    setup();
+}
+
+GraphWidget::GraphWidget(unsigned sceneSize, QWidget *parent)
+    : QGraphicsView(parent), sceneSizeW{sceneSize}, sceneSizeH{sceneSize}
+{
+    setup();
+}
+
+GraphWidget::GraphWidget(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *parent)
+    : QGraphicsView(parent), sceneSizeW{sceneSizeW}, sceneSizeH{sceneSizeH}
+{
+    setup();
+}
+
+void GraphWidget::setup()
+{
+    setMinimumSize(sceneSizeW, sceneSizeH);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
@@ -14,7 +31,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    scene->setSceneRect(-(int)sceneSizeW / 2, -(int)sceneSizeH / 2, sceneSizeW, sceneSizeH);
     setScene(scene);
 
     /*widgetNode *node1 = new widgetNode(this);
@@ -72,7 +89,6 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     scene->addItem(new widgetEdge(centerNode, node2));
     scene->addItem(new widgetEdge(centerNode, node3));
-
 
     centerNode->setPos(0, 0);
     node2->setPos(50, 0);

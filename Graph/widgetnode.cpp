@@ -97,10 +97,13 @@ void widgetNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 {
     // Dessin du noeud
     painter->setPen(Qt::NoPen);
+
+    auto color = QColor(Qt::red).darker(120);
+
     if(option->state & QStyle::State_Sunken) // Si le noeud est cliqué
-        painter->setBrush(QColor(Qt::darkGray).lighter(120));
+        painter->setBrush(color.lighter(120));
     else
-        painter->setBrush(Qt::darkGray);
+        painter->setBrush(color);
     painter->drawPath(shape());
 
     painter->setPen(QPen(Qt::black, 0));
