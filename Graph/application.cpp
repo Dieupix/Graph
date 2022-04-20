@@ -52,12 +52,8 @@ void application::FSandAPS()
         std::cout<<"Case de APS n°"<<i;
         std::cin>>APS[i];
     }
-    Graph graphe;
-    if(choixOriente)
-        graphe = new Graph(choixOriente);
-    else
-        graphe = new Graph(FS, APS);
-    d_graphe = graphe;
+    d_graphe.setFSandAPS(FS,APS);
+    d_graphe.setOriente(choixOriente);
 }
 
 void application::matrice()
@@ -81,7 +77,6 @@ void application::matrice()
             std::cin>>Matrice[i][j];
         }
     }
-    Graph graphe;
-    graphe = new Graph(Matrice, choixOriente);
-    d_graphe = graphe;
+    d_graphe.setMatrice(Matrice);
+    d_graphe.setOriente(choixOriente);
 }
