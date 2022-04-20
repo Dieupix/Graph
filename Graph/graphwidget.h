@@ -23,21 +23,19 @@ public slots:
     void zoomOut();
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
-    void timerEvent(QTimerEvent *event) override;
+    void drawBackground (QPainter *painter, const QRectF &rect) override;
+    void keyPressEvent  (QKeyEvent *event) override;
+    void scaleView      (qreal scaleFactor);
+    void timerEvent     (QTimerEvent *event) override;
 #if QT_CONFIG(wheelevent)
-    void wheelEvent(QWheelEvent *event) override;
+    void wheelEvent     (QWheelEvent *event) override;
 #endif
-    void drawBackground(QPainter *painter, const QRectF &rect) override;
-
-    void scaleView(qreal scaleFactor);
 
 private:
-    int timerId = 0;
-    widgetNode *centerNode;
-    unsigned sceneSizeW, sceneSizeH;
-
     QList<widgetNode *> nodes;
+    widgetNode          *centerNode;
+    unsigned            sceneSizeW, sceneSizeH;
+    int                 timerId = 0;
 
     void setup();
 };
