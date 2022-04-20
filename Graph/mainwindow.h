@@ -5,11 +5,11 @@
 #include "widgetgraph.h"
 #include "vue.h"
 
-class MainWindow : public QWidget
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    MainWindow(QWidget* parent = nullptr);
+    MainWindow(QMainWindow* parent = nullptr);
 private:
     widgetGraph d_g;
     vue d_vue;

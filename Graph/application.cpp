@@ -21,8 +21,6 @@ void application::load()
         case 2: matrice();
                 break;
         case 3: break; //A FAIRE
-        case 4: arete();
-                break;
     }
 }
 
@@ -82,19 +80,4 @@ void application::matrice()
     }
     d_graphe.setMatrice(Matrice);
     d_graphe.setOriente(choixOriente);
-}
-
-void application::arete()
-{
-    int nbSommet;
-    int nbArete;
-    std::cout<<"Donnez le nombre de sommets : ";
-    std::cin>>nbSommet;
-
-    do{
-        std::cout<<"Donnez le nombre d'aretes : ";
-        std::cin>>nbArete;
-    }while(nbArete < nbSommet);
-
-
 }

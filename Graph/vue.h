@@ -2,21 +2,22 @@
 #define VUE_H
 
 #include <QObject>
+#include <QMainWindow>
 #include "widgetgraph.h"
 #include "graph.h"
 
-class vue : public QObject
+class vue : public QMainWindow
 {
     Q_OBJECT
 public:
-    vue(QWidget* fenetre);
+    vue(QMainWindow* fenetre);
 
     void creeInterface();
     void metAJourGraphe(const widgetGraph& g);
     void metAJourNoeud(const Noeud& n);
 
 private://FENETRE DONT ON GERE L'INTERFACE
-    QWidget* d_fenetre;
+    QMainWindow* d_fenetre;
     //ICI, on insère les objets QCheckBox, QLabel, ...
 
 signals: //SIGNAUX EMIS
