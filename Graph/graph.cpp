@@ -192,6 +192,11 @@ const vector<unique_ptr<Noeud>>& Graph::getSommets() const
 {
     return sommets;
 }
+
+vector<vector<int>> Graph::getCouts() const
+{
+    return couts;
+}
 // ---------- End of getters ----------
 
 

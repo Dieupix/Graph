@@ -153,7 +153,12 @@ public:
      * @return
      */
     const vector<unique_ptr<Noeud>>& getSommets() const;
-
+    /**
+     * @brief getCouts
+     *
+     * @return
+     */
+    vector<vector<int>> getCouts() const;
     // Setters
 
     // Functions

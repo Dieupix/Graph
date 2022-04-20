@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     algorithms.cpp \
+    application.cpp \
     exceptions.cpp \
     graph.cpp \
     main.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     algorithms.h \
+    application.h \
     exceptions.h \
     graph.h \
     mainwindow.h \
