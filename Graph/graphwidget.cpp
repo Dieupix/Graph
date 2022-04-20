@@ -83,6 +83,7 @@ void GraphWidget::setup()
     centerNode = new widgetNode(this, std::make_unique<Noeud>(1));
     auto node2 = new widgetNode(this, std::make_unique<Noeud>(2));
     auto node3 = new widgetNode(this, std::make_unique<Noeud>(10));
+
     scene->addItem(centerNode);
     scene->addItem(node2);
     scene->addItem(node3);
