@@ -107,6 +107,7 @@ void test();
 
 void testAjoutNoeud();
 void testDantzig();
+void testDijkstra();
 void testDistance();
 void testOrdonnancement();
 void testPrufer();

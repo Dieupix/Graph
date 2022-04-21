@@ -14,8 +14,10 @@ void vue::creeInterface()
 {
     d_fenetre->setWindowTitle("Graphe");
 
+    auto central = new QWidget;
     auto mainLayout = new QVBoxLayout;
-    d_fenetre->setLayout(mainLayout);
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
 
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
     //MATHIS
@@ -96,10 +98,6 @@ void vue::creeInterface()
     GraphWidget* gw = new GraphWidget();
     gwLayout->addWidget(gw);
     gw->show();
-
-    auto central = new QWidget;
-    central->setLayout(mainLayout);
-    d_fenetre->setCentralWidget(central);
 
     //gw->close();
 }
