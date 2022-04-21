@@ -129,25 +129,43 @@ void MainWindow::onClick_Tarjan()
 }
 void MainWindow::onClick_Ordonnancement()
 {
-    d_vue.metAJourGraphe();
+    if(verifieOrdonnancement())
+    {
+        d_vue.metAJourGraphe();
+    }
 }
 void MainWindow::onClick_Dijkstra()
 {
-    d_vue.metAJourGraphe();
+    if(verifieDijkstra())
+    {
+        d_vue.metAJourGraphe();
+    }
 }
 void MainWindow::onClick_Dantzig()
 {
-    d_vue.metAJourGraphe();
+    if(verifieDantzig())
+    {
+        d_vue.metAJourGraphe();
+    }
 }
 void MainWindow::onClick_Kruskal()
 {
-    d_vue.metAJourGraphe();
+    if(verifieKruskal())
+    {
+        d_vue.metAJourGraphe();
+    }
 }
 void MainWindow::onClick_Prufer_encode()
 {
-    d_vue.metAJourGraphe();
+    if(verifiePruferEncode())
+    {
+        d_vue.metAJourGraphe();
+    }
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    d_vue.metAJourGraphe();
+    if(verifiePruferDecode())
+    {
+        d_vue.metAJourGraphe();
+    }
 }

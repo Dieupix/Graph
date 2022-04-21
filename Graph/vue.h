@@ -15,14 +15,9 @@ public:
     vue(QMainWindow* fenetre);
 
     void creeInterface();
-<<<<<<< HEAD
     void metAJourGraphe();
     void metAJourNoeuds();
-=======
-    void metAJourGraphe(const widgetGraph& g);
-    void metAJourNoeud(const Noeud& n);
     void setMenu();
->>>>>>> f811137d84cb66ccf843ccf52fae5286ab6686e5
 
 private://FENETRE DONT ON GERE L'INTERFACE
     QMainWindow* d_fenetre;

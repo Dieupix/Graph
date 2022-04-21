@@ -22,7 +22,7 @@ public:
     vector<int> englobe_Rang();
     widgetGraph englobe_Tarjan();
     widgetGraph englobe_Ordonnancement();
-    void englobe_Dijkstra();
+    void englobe_Dijkstra(int sommet_depart);
     void englobe_Dantzig();
     void englobe_Kruskal();
     vector<int> englobe_Prufer_encode();

@@ -3,7 +3,6 @@
 
 void test()
 {
-<<<<<<< HEAD
     //testAjoutNoeud();
     //testTarjan();
 /*
@@ -42,9 +41,8 @@ void test()
     for(unsigned i = 1 ; i < mat.size() ;++i)
         printVector(mat[i]);
         */
-=======
-    testDijkstra();
->>>>>>> f811137d84cb66ccf843ccf52fae5286ab6686e5
+
+    //testDijkstra();
 }
 
 /* -------------------------------------------------- */

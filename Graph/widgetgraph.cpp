@@ -68,9 +68,11 @@ widgetGraph widgetGraph::englobe_Ordonnancement()
 
     return {new Graph{new_fs,new_aps}};
 }
-void widgetGraph::englobe_Dijkstra()
+void widgetGraph::englobe_Dijkstra(int sommet_depart)
 {
-    //A faire quand Dijkstra fini
+    vector<int> d, pr;
+    Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
+    //Resultat d et pr ??
 }
 void widgetGraph::englobe_Dantzig()
 {

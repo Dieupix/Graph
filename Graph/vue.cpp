@@ -1,4 +1,5 @@
 #include "vue.h"
+
 #include<QBoxLayout>
 #include<QLabel>
 #include<QMenu>
@@ -22,12 +23,6 @@ void vue::creeInterface()
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
 
     setMenu();
-/*
-    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
-    const vector<int> aps {3, 1, 4, 6};
-    Graph g(fs,aps);
-    auto widGraph = new widgetGraph(g);
-    mainLayout->addWidget(widGraph);*/
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
     auto gwLayout = new QVBoxLayout();
@@ -118,27 +113,10 @@ void vue::setMenu()
     SousMenuPrufer->addAction(actionPruferEncode);
     connect(actionPruferEncode, &QAction::triggered, this, &vue::onPruferEncode);
 
-<<<<<<< HEAD
     auto actionPruferDecode = new QAction{"Prufer_decode"};
     actionPruferDecode->setToolTip("Prufer decode");
     SousMenuPrufer->addAction(actionPruferDecode);
     connect(actionPruferDecode, &QAction::triggered, this, &vue::onPruferDecode);
-
-/*
-    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
-    const vector<int> aps {3, 1, 4, 6};
-    Graph g(fs,aps);
-    auto widGraph = new widgetGraph(g);
-    mainLayout->addWidget(widGraph);
-*/
-    // POUR AJOUTER LE GRAPH DANS LA VUE
-    auto gwLayout = new QVBoxLayout();
-    mainLayout->addLayout(gwLayout);
-
-    GraphWidget* gw = new GraphWidget();
-    gwLayout->addWidget(gw);
-    gw->show();
-    //gw->close();
 }
 
 void vue::metAJourGraphe()
@@ -149,12 +127,7 @@ void vue::metAJourGraphe()
 
 void vue::metAJourNoeuds()
 {
-    //Ici, on modifie fs / aps / matrice voire meme le graphe jsp
-=======
-    auto actionPrufer = new QAction{"Prufer"};
-    actionPrufer->setToolTip("Prufer algorithme");
-    menuAlgo->addAction(actionPrufer);
->>>>>>> f811137d84cb66ccf843ccf52fae5286ab6686e5
+    //Ici, on modifie fs / aps / matrice voire meme le graphe jsp 
 }
 
 void vue::onQuitter()
