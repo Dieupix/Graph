@@ -83,9 +83,12 @@ void GraphWidget::setup()
     centerNode = new widgetNode(this, std::make_unique<Noeud>(1));
     auto node2 = new widgetNode(this, std::make_unique<Noeud>(2));
     auto node3 = new widgetNode(this, std::make_unique<Noeud>(10));
+
     scene->addItem(centerNode);
     scene->addItem(node2);
     scene->addItem(node3);
+
+    nodes << centerNode << node2 << node3;
 
     scene->addItem(new widgetEdge(centerNode, node2));
     scene->addItem(new widgetEdge(centerNode, node3));
@@ -135,12 +138,12 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
 
-    QList<widgetNode *> nodes;
+    /*QList<widgetNode *> nodes;
     const QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : items) {
         if (widgetNode *node = qgraphicsitem_cast<widgetNode *>(item))
             nodes << node;
-    }
+    }*/
 
     for (widgetNode *node : qAsConst(nodes))
         node->calculateForces();

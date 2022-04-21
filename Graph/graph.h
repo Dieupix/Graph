@@ -5,10 +5,12 @@
 #include "exceptions.h"
 
 #include <memory>
+#include <sstream>
 
 using namespace exceptions;
 
 using std::make_unique;
+using std::stringstream;
 using std::unique_ptr;
 
 /**
@@ -59,7 +61,7 @@ private:
     bool a_des_poids;
 
     // Private functions
-    void initialiserSommets(unsigned size);
+    void initialiserSommets(unsigned size = 1);
     void verifIntegritee();
     bool verifIntegriteeSommets();
     bool verifIntegriteeSommets_FS_APS();
@@ -68,15 +70,14 @@ private:
 public:
 
     // Constructors
-
     Graph(bool est_oriente = true); // couts vide
     Graph(const vector<int>& FS, const vector<int>& APS); // est_oriente = false, couts vide
     Graph(const vector<vector<int>>& matAdj, bool est_oriente = true); // couts vide
     Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& couts); // est_oriente = false
-    Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool est_oriente = true);
+    Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& couts, bool est_oriente = true);
+    Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts);
     Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente);
     Graph(const Graph& g);
-
 
     /**
      * @brief Graph
@@ -147,18 +148,6 @@ public:
      * @return
      */
     bool isUsingFsAndAps() const;
-
-    void setFSandAPS(const vector<int>& fs, const vector<int>& aps);
-    void setOriente(bool oriente);
-    void setMatrice(const vector<vector<int>>& mat);
-
-
-
-
-
-
-
-
     /**
      * @brief getSommets
      *
@@ -171,7 +160,29 @@ public:
      * @return
      */
     vector<vector<int>> getCouts() const;
+
     // Setters
+    /**
+     * @brief setFSandAPS
+     *
+     * @param fs
+     * @param aps
+     */
+    void setFSandAPS(const vector<int>& fs, const vector<int>& aps);
+    /**
+     * @brief setOriente
+     *
+     * @param oriente
+     */
+    void setOriente(bool oriente);
+    /**
+     * @brief setMatrice
+     *
+     * @param mat
+     */
+    void setMatrice(const vector<vector<int>>& mat);
+
+    void setCout(const vector<vector<int>>& mat);
 
     // Functions
     /**
@@ -187,13 +198,20 @@ public:
      */
     void FS_APS_to_MatAdj(vector<vector<int>>& matAdj) const;
     /**
+     * @brief loadGraphFrom
+     *
+     * @param ist
+     * @return
+     */
+    static Graph loadGraphFrom(std::istream& ist);
+    /**
      * @brief loadFrom
      *
      * @param ist
      *
      * @return
      */
-    bool loadFrom(std::istream& ist); ///@todo - Alex : to be implemented
+    void loadFrom(std::istream& ist); ///@todo - Alex : to be implemented
     /**
      * @brief matAdj_to_FS_APS
      *
@@ -214,7 +232,7 @@ public:
      *
      * @return
      */
-    void saveIn(std::ostream& ost) const; ///@todo - Alex : to be implemented
+    void saveIn(std::ostream& ost) const;
     /**
      * @brief toString
      *

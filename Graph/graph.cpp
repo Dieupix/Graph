@@ -5,7 +5,8 @@ void Graph::initialiserSommets(unsigned size)
 {
     /* L'indice du tableau représente le numéro du sommet */
     sommets.resize(size + 1);
-    for(unsigned i = 0; i < sommets.size(); ++i)
+    sommets[0] = nullptr;
+    for(unsigned i = 1; i < sommets.size(); ++i)
     {
         sommets[i] = make_unique<Noeud>(i);
     }
@@ -26,6 +27,8 @@ bool Graph::verifIntegriteeSommets()
 
 bool Graph::verifIntegriteeSommets_FS_APS()
 {
+    if(APS[0] == 1) return true;
+
     bool verif = true;
     int nbSommets = APS[0];
     vector<bool> integritee(nbSommets + 1, false);
@@ -55,6 +58,8 @@ bool Graph::verifIntegriteeSommets_FS_APS()
 
 bool Graph::verifIntegriteeSommets_MatAdj()
 {
+    if(matAdj[0][0] == 1) return true;
+
     int nbSommets = matAdj[0][0];
     vector<bool> integritee(nbSommets + 1, false);
 
@@ -92,7 +97,9 @@ bool Graph::verifIntegriteeSommets_MatAdj()
 
 // ---------- Constructors ----------
 Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_oriente{est_oriente}
-{}
+{
+    initialiserSommets();
+}
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{false}
 {
@@ -113,17 +120,26 @@ Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& c
     verifIntegritee();
 }
 
-Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool est_oriente) : matAdj{matAdj},
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts) : FS{FS}, APS{APS},
+    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+{
+    initialiserSommets(APS[0]);
+    verifIntegritee();
+}
+
+Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& couts, bool est_oriente) : matAdj{matAdj},
     usingFsAndAps{false}, couts{couts}, est_oriente{est_oriente}
 {
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
 }
+
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente) : FS{FS}, APS{APS},  usingFsAndAps{true} ,est_oriente{est_oriente}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
+
 Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est_oriente}, a_des_poids{g.a_des_poids}
 {
     if(usingFsAndAps)
@@ -244,6 +260,13 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
     usingFsAndAps = false;
     verifIntegritee();
 }
+
+void Graph::setCout(const vector<vector<int>>& mat)
+{
+    couts = mat;
+    usingFsAndAps = false;
+    verifIntegritee();
+}
 // ---------- End of setters ----------
 
 
@@ -339,10 +362,43 @@ void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
     }
 }
 
-bool Graph::loadFrom(std::istream& ist)
+Graph Graph::loadGraphFrom(std::istream& ist)
+{
+    Graph g;
+    g.loadFrom(ist);
+    return g;
+}
+
+void Graph::loadFrom(std::istream& ist)
 {
     ///@todo - Alex : to be implemented
-    return false;
+
+    stringstream buffer;
+    buffer << ist.rdbuf();
+    string buf = buffer.str();
+    char c = '0';
+    unsigned i = 0, sequence = 0;
+    string tmp = "";
+    vector<string> str;
+
+    for(i = 0; i < buf.size(); ++i)
+    {
+        c = buf[i];
+        if(c == '\n' or c == '\r')
+        {
+            if(tmp != "") str.push_back(tmp);
+            tmp = "";
+
+        } else {
+            tmp += c;
+        }
+    }
+    if(tmp != "") str.push_back(tmp);
+
+    for(i = 0; i < str.size(); ++i)
+    {
+
+    }
 }
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
@@ -379,8 +435,9 @@ void Graph::print(std::ostream& ost) const
 
 void Graph::saveIn(std::ostream& ost) const
 {
-    ///@todo - Alex : to be implemented
-    string toPrint = "";
+    string toPrint = "estOriente: ";
+    toPrint += (est_oriente ? "true" : "false");
+    toPrint += "\n";
 
     if(usingFsAndAps)
     {
@@ -414,58 +471,102 @@ void Graph::saveIn(std::ostream& ost) const
         toPrint += "}\n";
     }
 
+    if(a_des_poids)
+    {
+        toPrint += "Couts: {\n";
+        unsigned i = 0, j = 0;
+        for(i = 0; i < couts.size(); ++i)
+        {
+            toPrint += "{";
+            for(j = 0; j < couts[i].size() - 1; ++j)
+            {
+                toPrint += std::to_string(couts[i][j]) + ", ";
+            }
+            toPrint += std::to_string(couts[i][j]) + "}\n";
+        }
+        toPrint += "}\n";
+    }
 
+    for(unsigned i = 0; i < sommets.size(); ++i)
+    {
+        toPrint += sommets[i]->toString();
+        toPrint += "\n";
+    }
 
     ost << toPrint;
 }
 
 string Graph::toString() const
 {
-    string str = "";
-    if(matAdj.size() != 0)
-    {
-        unsigned i = 0, j = 0;
-        str.append("MatAdj:[{");
-        for(i = 1; i < matAdj.size() - 1; ++i)
-        {
-            for(j = 1; j < matAdj[i].size() - 1; ++j)
-            {
-                str += matAdj[i][j];
-                str.append(", ");
-            }
-            str += matAdj[i][j];
-            str.append("}, {");
-        }
-        for(j = 1; j < matAdj[i].size() - 1; ++j)
-        {
-            str += matAdj[i][j];
-            str.append(", ");
-        }
-        str += matAdj[i][j];
-        str.append("}]");
+    string toPrint = "Graph:\n";
 
-    }else
+    toPrint += "est_oriente: ";
+    toPrint += (est_oriente ? "true" : "false");
+    toPrint += "\n";
+
+    toPrint += "usingFsAndAps: ";
+    toPrint += (usingFsAndAps ? "true" : "false");
+    toPrint += "\n";
+
+    toPrint += "a_des_poids: ";
+    toPrint += (a_des_poids ? "true" : "false");
+    toPrint += "\n";
+
+    if(usingFsAndAps)
     {
-        str.append("FS:{");
+        toPrint += "FS: [";
         unsigned i = 0;
         for(i = 0; i < FS.size() - 1; ++i)
         {
-            str += FS[i];
-            str.append(", ");
+            toPrint += std::to_string(FS[i]) + ", ";
         }
-        str += FS[i];
-        str.append("}, APS;{");
+        toPrint += std::to_string(FS[i]) + "]\n";
 
+        toPrint += "APS: [";
         for(i = 0; i < APS.size() - 1; ++i)
         {
-            str += APS[i];
-            str.append(", ");
+            toPrint += std::to_string(APS[i]) + ", ";
         }
-        str += APS[i];
-        str.append("}");
+        toPrint += std::to_string(APS[i]) + "]\n";
+
+    } else {
+        toPrint += "MATADJ: {\n";
+        unsigned i = 0, j = 0;
+        for(i = 0; i < matAdj.size(); ++i)
+        {
+            toPrint += "{";
+            for(j = 0; j < matAdj[i].size() - 1; ++j)
+            {
+                toPrint += std::to_string(matAdj[i][j]) + ", ";
+            }
+            toPrint += std::to_string(matAdj[i][j]) + "}\n";
+        }
+        toPrint += "}\n";
     }
 
-    return str;
+    if(a_des_poids)
+    {
+        toPrint += "Couts: {\n";
+        unsigned i = 0, j = 0;
+        for(i = 0; i < couts.size(); ++i)
+        {
+            toPrint += "{";
+            for(j = 0; j < couts[i].size() - 1; ++j)
+            {
+                toPrint += std::to_string(couts[i][j]) + ", ";
+            }
+            toPrint += std::to_string(couts[i][j]) + "}\n";
+        }
+        toPrint += "}\n";
+    }
+
+    for(unsigned i = 0; i < sommets.size(); ++i)
+    {
+        toPrint += sommets[i]->toString();
+        toPrint += "\n";
+    }
+
+    return toPrint;
 }
 // ---------- End of public funtions ----------
 

@@ -279,14 +279,18 @@ void Tarjan(const vector<int>& FS, const vector<int>& APS)
     vector<int> cfc, pilch, pred, prem;
     fortconnexe(FS, APS, cfc, pilch, pred, prem);
 
-    cout << "cfc:   "; printVector(cfc);
+    /*cout << "cfc:   "; printVector(cfc);
     cout << "pilch: "; printVector(pilch);
     cout << "pred:  "; printVector(pred);
     cout << "prem:  "; printVector(prem);
 
     cout << "FS:    "; printVector(FS);
+<<<<<<< HEAD
     cout << "APS:   "; printVector(APS);
 
+=======
+    cout << "APS:   "; printVector(APS);*/
+>>>>>>> f811137d84cb66ccf843ccf52fae5286ab6686e5
 }
 
 void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro)
@@ -497,7 +501,7 @@ bool Dantzig(vector<vector<int>>& c)
     return true;
 }
 
-void Kruskal(Graph g)
+void Kruskal(Graph g, Graph &t)
 {
         //TRANSFORMATION DU GRAPH AVEC LA STRUCTURE VOULU
         typedef struct {
@@ -594,9 +598,83 @@ void Kruskal(Graph g)
         }
         GraphFinal.n = graphReturn.n;
         GraphFinal.m = graphReturn.n - 1;
+
+        vector<vector<int>> matriceCout(APS[0]);
+        vector<vector<int>> matrice(APS[0]);
+        for(unsigned i = 0; i < matrice.size(); i++)
+        {
+            matrice[i].resize(APS[0]);
+            for(unsigned j = 0; j < matrice[i].size(); j++)
+            {
+                vector<vector<int>> matriceCout(APS[0]);
+                matrice[i][j] = 0;
+            }
+        }
+
+        for(unsigned i = 0; i < GraphFinal.a.size(); i++)
+        {
+            matriceCout[GraphFinal.a[i].s][GraphFinal.a[i].t] = GraphFinal.a[i].p;
+            matrice[GraphFinal.a[i].s][GraphFinal.a[i].t] = 1;
+        }
+
+        t.setMatrice(matrice);
+        t.setCout(matriceCout);
 }
 
+void Dijkstra(const vector<int>& fs, const vector<int>& aps, const vector<vector<int>>& p, int s, vector<int> &d, vector<int> &pr)
+{
+        int ind;
+        int i, j, k, v;
+        int n = aps[0];
+        int m = fs[0];
+        pr.resize(n+1, 0);
+        d.resize(n+1, 0);
+        vector<int> inS(n+1);
 
+        for(i = 1; i <= n; i++)
+        {
+            d[i] = p[s][i];
+            inS[i] = 1;
+            pr[i] = s;
+        }
+
+        d[s] = 0;
+        inS[s] = 0;
+        ind = n-1;
+        while(ind > 0)
+        {
+            m = 100;
+            for(i = 1; i <= n; i++)
+            {
+                if(inS[i] == 1)
+                {
+                    if(d[i] > 0 and d[i] < m)
+                    {
+                        m = d[i];
+                        j = i;
+                    }
+                }
+            }
+            if(m == 100)
+                    return;
+            inS[j] = 0;
+            --ind;
+            k = aps[j];
+            while(fs[k] != 0)
+            {
+                if(inS[fs[k]] == 1)
+                {
+                    v = d[j] + p[j][fs[k]];
+                    if(d[fs[k]] == -1 or v < d[fs[k]])
+                    {
+                        d[fs[k]] = v;
+                        pr[fs[k]] = j;
+                    }
+                }
+                k++;
+            }
+        }
+}
 
 
 

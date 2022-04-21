@@ -2,6 +2,7 @@
 #include <QApplication>
 
 #include "test.h"
+#include "algorithms.h"
 #include "graphwidget.h"
 
 int main(int argc, char *argv[])

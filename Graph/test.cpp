@@ -3,6 +3,7 @@
 
 void test()
 {
+<<<<<<< HEAD
     //testAjoutNoeud();
     //testTarjan();
 /*
@@ -41,6 +42,9 @@ void test()
     for(unsigned i = 1 ; i < mat.size() ;++i)
         printVector(mat[i]);
         */
+=======
+    testDijkstra();
+>>>>>>> f811137d84cb66ccf843ccf52fae5286ab6686e5
 }
 
 /* -------------------------------------------------- */
@@ -80,6 +84,29 @@ void testDantzig()
     {
         printVector(couts[i]);
     }
+}
+
+void testDijkstra()
+{
+    vector<int> APS_D{6, 1, 5, 7, 10, 13, 16};
+    vector<int> FS_D{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
+    vector<vector<int>> cout_D
+    {
+        {6,12},
+        {0,-1,10,3,-1,6,-1},
+        {0,0,-1,-1,-1,-1,-1},
+        {0,-1,4,-1,-1,2,-1},
+        {0,-1,-1,1,-1,3,-1},
+        {0,-1,0,-1,-1,-1,1},
+        {0,2,1,-1,-1,-1,-1},
+    };
+
+    vector<int> d;
+    vector<int> pr;
+    Dijkstra(FS_D, APS_D, cout_D, 1, d, pr);
+
+    cout << "d: "; printVector(d);
+    cout << "pr:"; printVector(pr);
 }
 
 void testDistance()
