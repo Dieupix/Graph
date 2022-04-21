@@ -7,8 +7,8 @@
 #include<QPainter>
 #include<QStyleOptionGraphicsItem>
 
-widgetNode::widgetNode(GraphWidget *graphWidget, std::unique_ptr<Noeud> noeud)
-    : graph(graphWidget), noeud{std::make_unique<Noeud>(*noeud.get())}
+widgetNode::widgetNode(GraphWidget *graphWidget, const Noeud& noeud)
+    : graph(graphWidget), noeud{std::make_unique<Noeud>(noeud)}
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -36,6 +36,8 @@ void widgetNode::calculateForces()
     // Sum up all forces pushing this item away
     qreal xvel = 0;
     qreal yvel = 0;
+
+    /*
     const QList<QGraphicsItem *> items = scene()->items();
     for (QGraphicsItem *item : items) {
         widgetNode *node = qgraphicsitem_cast<widgetNode *>(item);
@@ -64,6 +66,8 @@ void widgetNode::calculateForces()
     }
     if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
             xvel = yvel = 0;
+    */
+
     QRectF sceneRect = scene()->sceneRect();
     newPos = pos() + QPointF(xvel, yvel);
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));

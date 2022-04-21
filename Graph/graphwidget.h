@@ -32,12 +32,19 @@ protected:
 #endif
 
 private:
+    vector<int> d_fs;
+    vector<int> d_aps;
+
+    QGraphicsScene      *scene;
     QList<widgetNode *> nodes;
     widgetNode          *centerNode;
     unsigned            sceneSizeW, sceneSizeH;
     int                 timerId = 0;
 
     void setup();
+
+    void loadGraph(const Graph& g);
+    Graph toGraph();
 };
 
 #endif // GRAPHWIDGET_H

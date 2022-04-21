@@ -3,21 +3,27 @@
 
 void test()
 {
-    testDijkstra();
+    testAjoutNoeud();
 }
 
 /* -------------------------------------------------- */
 
 void testAjoutNoeud()
 {
-    Graph g = Graph(FS_7, APS_7);
+    /*Graph g = Graph(FS_7, APS_7);
 
-    auto n = make_unique<Noeud>(g.getAPS()[0]+1);
+    auto n = Noeud(g.getAPS()[0]+1);
 
     auto pred = {3, 1, 0, 1};
     auto succ = {3, 1, 0, 1};
+    g.ajouterNoeud(n, pred, succ);*/
 
-    g.ajouterNoeud(n, pred, succ);
+    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
+    const vector<int> aps {3, 1, 4, 6};
+    Graph g;
+    g.ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
+    g.ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
+
 
     cout << "FS:    "; printVector(g.getFS());
     cout << "APS:   "; printVector(g.getAPS());

@@ -13,7 +13,7 @@ class widgetNode : public QGraphicsItem
 public:
     static inline qreal size = 20;
 
-    widgetNode(GraphWidget *graphWidget, std::unique_ptr<Noeud> noeud);
+    widgetNode(GraphWidget *graphWidget, const Noeud& noeud);
 
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;

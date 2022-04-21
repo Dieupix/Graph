@@ -29,7 +29,7 @@ void GraphWidget::setup()
     scale(qreal(0.8), qreal(0.8));
     setWindowTitle(tr("Elastic Nodes"));
 
-    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-(int)sceneSizeW / 2, -(int)sceneSizeH / 2, sceneSizeW, sceneSizeH);
     setScene(scene);
@@ -80,9 +80,9 @@ void GraphWidget::setup()
     node9->setPos(50, 50);
     node10->setPos(75, 0);*/
 
-    centerNode = new widgetNode(this, std::make_unique<Noeud>(1));
-    auto node2 = new widgetNode(this, std::make_unique<Noeud>(2));
-    auto node3 = new widgetNode(this, std::make_unique<Noeud>(10));
+    /*centerNode = new widgetNode(this, Noeud(1));
+    auto node2 = new widgetNode(this, Noeud(2));
+    auto node3 = new widgetNode(this, Noeud(10));
 
     scene->addItem(centerNode);
     scene->addItem(node2);
@@ -95,7 +95,14 @@ void GraphWidget::setup()
 
     centerNode->setPos(0, 0);
     node2->setPos(50, 0);
-    node3->setPos(0, 50);
+    node3->setPos(0, 50);*/
+
+    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
+    const vector<int> aps {3, 1, 4, 6};
+    Graph g;
+    g.ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
+    g.ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
+    loadGraph(g);
 }
 
 void GraphWidget::itemMoved()
@@ -224,6 +231,53 @@ void GraphWidget::zoomOut()
 void GraphWidget::shuffle()
 {}
 
+void GraphWidget::loadGraph(const Graph& g)
+{
+    d_aps = g.getAPS();
+    d_fs = g.getFS();
+
+    nodes.resize(0);
+    unsigned modulo = sqrt(g.getSommets().size());
+    int xOff = -(int)modulo;
+    for(unsigned i = 1; i < g.getSommets().size(); ++i)
+    {
+        if(xOff % modulo == 0) xOff = -(int)modulo;
+
+        auto node = new widgetNode(this, *g.getSommets()[i]);
+        nodes << node;
+        scene->addItem(node);
+        node->setPos(g.getSommets()[i]->getId() * 30, xOff * 30);
+
+        ++xOff;
+    }
+
+    for(unsigned i = 1; i < d_aps.size(); ++i)
+    {
+        unsigned j = d_fs[d_aps[i]], k = i;
+        while(j != 0)
+        {
+            int iBis = i-1, jBis = j-1;
+            auto edge = new widgetEdge(nodes[iBis], nodes[jBis]);
+            nodes[iBis]->addEdge(edge);
+            scene->addItem(edge);
+            ++k;
+            j = d_fs[k];
+        }
+    }
+}
+
+Graph GraphWidget::toGraph()
+{
+    /*vector<unique_ptr<Noeud>> sommets;
+    sommets.reserve(d_sommets.size());
+    for(unsigned i = 1 ; i < d_sommets.size() ; ++i)
+    {
+        sommets.push_back(std::make_unique<Noeud>(i));
+    }
+    //Est oriente par défaut et n'a pas de poids predefini
+    return Graph(d_fs,d_aps,sommets,true,false);*/
+    return Graph();
+}
 
 
 

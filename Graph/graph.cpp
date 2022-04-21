@@ -265,11 +265,11 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
 
 
 // ---------- Public functions ----------
-void Graph::ajouterNoeud(unique_ptr<Noeud>& noeud, const vector<int>& pred, const vector<int>& succ)
+void Graph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
     ///@todo - Alex : to be implemented
 
-    int id = noeud->getId();
+    int id = noeud.getId();
     if(usingFsAndAps)
     {
         unsigned i = 1;
@@ -327,7 +327,7 @@ void Graph::ajouterNoeud(unique_ptr<Noeud>& noeud, const vector<int>& pred, cons
 
     }
 
-    sommets.push_back(move(noeud));
+    sommets.push_back(make_unique<Noeud>(noeud));
 }
 
 void Graph::FS_APS_to_MatAdj(vector<vector<int>> &matAdj) const
