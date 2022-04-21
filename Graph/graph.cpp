@@ -379,6 +379,12 @@ void Graph::loadFrom(std::istream& ist)
             tmp += c;
         }
     }
+    if(tmp != "") str.push_back(tmp);
+
+    for(i = 0; i < str.size(); ++i)
+    {
+
+    }
 }
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
