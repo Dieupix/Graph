@@ -3,7 +3,44 @@
 
 void test()
 {
-    testAjoutNoeud();
+    //testAjoutNoeud();
+    //testTarjan();
+/*
+    vector<int> cfc {10, 3, 2, 2, 2, 2, 2, 1, 4, 4, 4};
+    vector<int> prem {4, 7, 2, 1, 8};
+    vector<int> pilch {0, 0, 3, 4, 6, 0, 5, 0, 9, 10 ,0};
+    vector<int>fs {26, 2, 7, 0, 3, 5, 0, 4, 0, 6, 0, 4, 0, 2, 5, 7, 0, 0, 1, 9, 0, 10, 0, 3, 8, 9, 0},
+               aps {10, 1, 4, 7, 9, 11, 13, 17, 18, 21, 23};
+    vector<vector<int>> mat;
+
+    mat.resize(prem[0]+1);
+    mat[0].resize(2);
+    for(int i = 1 ; i <= prem[0] ;++i)
+        mat[i].resize(prem[0]+1,0);
+
+    mat[0][0] = aps[0];
+    mat[0][1] = fs[0] - aps[0];
+
+    for(int i = 1 ; i < aps[0] ; ++i)
+    {
+        int k = aps[i];
+        int j = aps[i];
+        while(fs[j] != 0)
+        {
+            if(cfc[fs[j]] != cfc[k] && mat[cfc[k]][cfc[fs[j]]] != 1)
+            {
+                mat[cfc[k]][cfc[fs[j]]] = 1;
+            }
+            ++j;
+        }
+    }
+
+    printVector(cfc);
+    printVector(aps);
+    printVector(fs);
+    for(unsigned i = 1 ; i < mat.size() ;++i)
+        printVector(mat[i]);
+        */
 }
 
 /* -------------------------------------------------- */

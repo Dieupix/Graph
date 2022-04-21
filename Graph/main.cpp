@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     int exe = a.exec();
 
-    //test(); // Pour lancer les tests
+    test(); // Pour lancer les tests
 
     return exe;
 }

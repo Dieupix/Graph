@@ -286,6 +286,7 @@ void Tarjan(const vector<int>& FS, const vector<int>& APS)
 
     cout << "FS:    "; printVector(FS);
     cout << "APS:   "; printVector(APS);
+
 }
 
 void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro)
