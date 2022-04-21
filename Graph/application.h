@@ -10,7 +10,7 @@ public:
     void load();
     void FSandAPS();
     void matrice();
-    void arete();
+    void fichier();
 private:
     Graph d_graphe;
 };

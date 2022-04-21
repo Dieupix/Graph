@@ -40,8 +40,10 @@ void widgetGraph::setup()
     setScene(scene);
 
     // Exemple
-    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
-    const vector<int> aps {3, 1, 4, 6};
+    //const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
+    //const vector<int> aps {3, 1, 4, 6};
+    vector<int> APS{6, 1, 5, 7, 10, 13, 16};
+    vector<int> FS{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
     Graph g;
     g.ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
     g.ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
@@ -233,7 +235,8 @@ widgetGraph widgetGraph::englobe_Ordonnancement()
 
 void widgetGraph::englobe_Dijkstra(int sommet_depart)
 {
-    vector<int> d, pr;
+    vector<int> d;
+    vector<int> pr;
     Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
     //Resultat d et pr ??
 }
