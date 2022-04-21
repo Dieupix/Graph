@@ -113,6 +113,13 @@ Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& c
     verifIntegritee();
 }
 
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts) : FS{FS}, APS{APS},
+    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+{
+    initialiserSommets(APS[0]);
+    verifIntegritee();
+}
+
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool est_oriente) : matAdj{matAdj},
     usingFsAndAps{false}, couts{couts}, est_oriente{est_oriente}
 {
