@@ -1,7 +1,6 @@
 #ifndef WIDGETEDGE_H
 #define WIDGETEDGE_H
 
-#include<QGraphicsItem>
 #include "widgetnode.h"
 
 class widgetEdge : public QGraphicsItem

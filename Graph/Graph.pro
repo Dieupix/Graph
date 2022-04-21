@@ -13,7 +13,6 @@ SOURCES += \
     application.cpp \
     exceptions.cpp \
     graph.cpp \
-    graphwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     noeud.cpp \
@@ -21,6 +20,7 @@ SOURCES += \
     vue.cpp \
     widgetedge.cpp \
     widgetgraph.cpp \
+    widgetgraphbis.cpp \
     widgetnode.cpp
 
 HEADERS += \
@@ -28,13 +28,13 @@ HEADERS += \
     application.h \
     exceptions.h \
     graph.h \
-    graphwidget.h \
     mainwindow.h \
     noeud.h \
     test.h \
     vue.h \
     widgetedge.h \
     widgetgraph.h \
+    widgetgraphbis.h \
     widgetnode.h
 
 # Default rules for deployment.

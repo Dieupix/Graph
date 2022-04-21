@@ -1,5 +1,4 @@
 #include "widgetedge.h"
-#include<QPainter>
 
 widgetEdge::widgetEdge(widgetNode *sourceNode, widgetNode *destNode)
     : source(sourceNode), dest(destNode)

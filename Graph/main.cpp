@@ -3,7 +3,7 @@
 
 #include "test.h"
 #include "algorithms.h"
-#include "graphwidget.h"
+#include "widgetgraph.h"
 
 int main(int argc, char *argv[])
 {

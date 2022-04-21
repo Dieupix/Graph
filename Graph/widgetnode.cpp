@@ -1,14 +1,9 @@
 #include "widgetnode.h"
 #include "widgetedge.h"
-#include "graphwidget.h"
+#include "widgetgraph.h"
 
-#include<QStyle>
-#include<QGraphicsScene>
-#include<QPainter>
-#include<QStyleOptionGraphicsItem>
-
-widgetNode::widgetNode(GraphWidget *graphWidget, const Noeud& noeud)
-    : graph(graphWidget), noeud{std::make_unique<Noeud>(noeud)}
+widgetNode::widgetNode(widgetGraph *widgetGraph, const Noeud& noeud)
+    : graph(widgetGraph), noeud{std::make_unique<Noeud>(noeud)}
 {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);

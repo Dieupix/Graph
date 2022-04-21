@@ -1,31 +1,74 @@
 #ifndef WIDGETGRAPH_H
 #define WIDGETGRAPH_H
 
-#include<QWidget>
+#include "algorithms.h"
 #include "graph.h"
-using std::vector;
+#include "widgetnode.h"
+#include "widgetedge.h"
 
-class widgetGraph : public QWidget
+#include <QGraphicsView>
+#include <QKeyEvent>
+
+class widgetGraph : public QGraphicsView
 {
     Q_OBJECT
-public:
-    widgetGraph(QWidget* parent = 0);
-    widgetGraph(const widgetGraph& g, QWidget* parent = 0);
-    widgetGraph(const Graph& g, QWidget* parent = 0);
 
-    void paintEvent(QPaintEvent*);
+public:
+    widgetGraph(QWidget *parent = nullptr);
+    widgetGraph(unsigned sceneSize, QWidget *parent = nullptr);
+    widgetGraph(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *parent = nullptr);
+
+    widgetGraph(const widgetGraph& wg);
+
+    vector<int> getFs();
+    vector<int> getAps();
+
+    vector<vector<int>> englobe_Distance();
+    vector<int> englobe_Rang();
+    widgetGraph englobe_Tarjan();
+    widgetGraph englobe_Ordonnancement();
+    void englobe_Dijkstra(int sommet_depart);
+    void englobe_Dantzig();
+    void englobe_Kruskal();
+    vector<int> englobe_Prufer_encode();
+    widgetGraph englobe_Prufer_decode(const vector<int>& p);
+
+    void ajouterNoeud();
+    void itemMoved();
+    void loadFrom(std::istream& ist);
+    void saveIn(std::ostream& ost);
+
+public slots:
+    void shuffle();
+    void zoomIn();
+    void zoomOut();
+
+protected:
+    void drawBackground (QPainter *painter, const QRectF &rect) override;
+    void keyPressEvent  (QKeyEvent *event) override;
+    void scaleView      (qreal scaleFactor);
+    void timerEvent     (QTimerEvent *event) override;
+#if QT_CONFIG(wheelevent)
+    void wheelEvent     (QWheelEvent *event) override;
+#endif
+
 private:
     vector<int> d_fs;
     vector<int> d_aps;
-    vector<QPoint> d_sommets;
+    vector<vector<int>> d_matrice;
+    vector<vector<int>> d_couts;
 
-    void MouseReleaseEvent(QMouseEvent* e);
-    void ajouteSommet(const QPoint& s);
-    void enleveSommet(const QPoint& s);
-    void dessineGraphe(QPainter& paint);
-    void dessineSommet(QPainter& paint, const QPoint& s);
+    QGraphicsScene      *scene;
+    unsigned            sceneSizeW, sceneSizeH;
+    int                 timerId = 0;
+
+    QList<widgetNode *> nodes;
+    widgetNode          *centerNode;
+
+    void setup();
+
+    void loadGraph(const Graph& g);
     Graph toGraph();
-    void fromGraph(const Graph& g);
 };
 
 #endif // WIDGETGRAPH_H

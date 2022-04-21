@@ -3,17 +3,21 @@
 
 #include "noeud.h"
 
-#include<QGraphicsItem>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOptionGraphicsItem>
 
 class widgetEdge;
-class GraphWidget;
+class widgetGraph;
 
 class widgetNode : public QGraphicsItem
 {
 public:
     static inline qreal size = 20;
 
-    widgetNode(GraphWidget *graphWidget, const Noeud& noeud);
+    widgetNode(widgetGraph *widgetGraph, const Noeud& noeud);
 
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;
@@ -37,7 +41,7 @@ protected:
 private:
     QList<widgetEdge *> edgeList;
     QPointF newPos;
-    GraphWidget *graph;
+    widgetGraph *graph;
 
     std::unique_ptr<Noeud> noeud;
 };
