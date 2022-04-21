@@ -15,6 +15,7 @@ public:
     void creeInterface();
     void metAJourGraphe(const widgetGraph& g);
     void metAJourNoeud(const Noeud& n);
+    void setMenu();
 
 private://FENETRE DONT ON GERE L'INTERFACE
     QMainWindow* d_fenetre;
