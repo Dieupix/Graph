@@ -75,6 +75,7 @@ public:
     Graph(const vector<vector<int>>& matAdj, bool est_oriente = true); // couts vide
     Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& couts); // est_oriente = false
     Graph(const vector<vector<int>>& matAdj, const vector<int>& couts, bool est_oriente = true);
+    Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts);
     Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente);
     Graph(const Graph& g);
 

@@ -595,7 +595,57 @@ void Kruskal(Graph g)
         GraphFinal.m = graphReturn.n - 1;
 }
 
+void Dikjstra(vector<int> fs, vector<int> aps, vector<vector<int>> p, int s, vector<int> &d, vector<int> &pr)
+{
+        int ind;
+        int i, j, k, v;
+        int n = aps[0];
+        int m = fs[0];
+        pr.resize(n+1);
+        d.resize(n+1);
+        vector<int> inS(n+1);
 
+        for(int i = 1; i <= n; i++)
+        {
+            d[i] = p[s][i];
+            inS[i] = 1;
+            pr[i] = -1;
+        }
+
+        d[s] = 0;
+        pr[s] = 0;
+        inS[s] = 0;
+        ind = n-1;
+        while(ind > 0)
+        {
+            m = 100;
+            for(int i = 1; i <= n; i++)
+                if(inS[i] == 1)
+                    if(d[i] < m)
+                    {
+                        m = d[i];
+                        j = i;
+                    }
+            if(m == 100)
+                    return;
+            inS[j] = 0;
+            ind--;
+            k = aps [j];
+            while(fs[k] != 0)
+            {
+                if(inS[fs[k]] == 1)
+                {
+                    v = d[j] + p[j][fs[k]];
+                    if(v < d[fs[k]])
+                    {
+                        d[fs[k]] = v;
+                        pr[fs[k]] = j;
+                    }
+                }
+                k++;
+            }
+        }
+}
 
 
 
