@@ -20,11 +20,8 @@ void vue::creeInterface()
     d_fenetre->setCentralWidget(central);
 
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
-    //MATHIS
+
     setMenu();
-    //MENU GRAPH
-
-
 /*
     const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
     const vector<int> aps {3, 1, 4, 6};

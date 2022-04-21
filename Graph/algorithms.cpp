@@ -496,7 +496,7 @@ bool Dantzig(vector<vector<int>>& c)
     return true;
 }
 
-void Kruskal(Graph g)
+void Kruskal(Graph g, Graph &t)
 {
         //TRANSFORMATION DU GRAPH AVEC LA STRUCTURE VOULU
         typedef struct {
@@ -593,6 +593,27 @@ void Kruskal(Graph g)
         }
         GraphFinal.n = graphReturn.n;
         GraphFinal.m = graphReturn.n - 1;
+
+        vector<vector<int>> matriceCout(APS[0]);
+        vector<vector<int>> matrice(APS[0]);
+        for(unsigned i = 0; i < matrice.size(); i++)
+        {
+            matrice[i].resize(APS[0]);
+            for(unsigned j = 0; j < matrice[i].size(); j++)
+            {
+                vector<vector<int>> matriceCout(APS[0]);
+                matrice[i][j] = 0;
+            }
+        }
+
+        for(unsigned i = 0; i < GraphFinal.a.size(); i++)
+        {
+            matriceCout[GraphFinal.a[i].s][GraphFinal.a[i].t] = GraphFinal.a[i].p;
+            matrice[GraphFinal.a[i].s][GraphFinal.a[i].t] = 1;
+        }
+
+        t.setMatrice(matrice);
+        t.setCout(matriceCout);
 }
 
 void Dijkstra(const vector<int>& fs, const vector<int>& aps, const vector<vector<int>>& p, int s, vector<int> &d, vector<int> &pr)
