@@ -25,7 +25,7 @@ void englobe_ordonnancement (const vector<int>& fs, const vector<int>& aps, cons
 void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app);
 void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, vector<int>& fs, vector<int>& aps);
 bool Dantzig                (vector<vector<int>>& c);
-void Kruskal                (Graph g);
+void Kruskal                (Graph g, Graph &t);
 void Dijkstra               (const vector<int>& fs, const vector<int>& aps, const vector<vector<int>>& p, int s, vector<int> &d, vector<int> &pr);
 
 #endif // ALGORITHMS_H

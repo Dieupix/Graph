@@ -23,7 +23,6 @@ void vue::creeInterface()
     //MATHIS
     setupMenu();
 
-
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
 
 /*
