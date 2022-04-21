@@ -15,11 +15,14 @@ public:
     void creeInterface();
     void metAJourGraphe(const widgetGraph& g);
     void metAJourNoeud(const Noeud& n);
-    void setMenu();
 
 private://FENETRE DONT ON GERE L'INTERFACE
     QMainWindow* d_fenetre;
+
     //ICI, on insère les objets QCheckBox, QLabel, ...
+    void setupMenu();
+    void setupMenuFichier();
+    void setupMenuAlgo();
 
 signals: //SIGNAUX EMIS
     void OrienteeChange(bool estoriente);

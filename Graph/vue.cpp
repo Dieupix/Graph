@@ -12,6 +12,7 @@ vue::vue(QMainWindow* fenetre) : d_fenetre{fenetre}
 
 void vue::creeInterface()
 {
+    //setWindowState(Qt::WindowMaximized);
     d_fenetre->setWindowTitle("Graphe");
 
     auto central = new QWidget;
@@ -19,18 +20,19 @@ void vue::creeInterface()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 
-    mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
     //MATHIS
-    setMenu();
-    //MENU GRAPH
+    setupMenu();
 
+
+    mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
 
 /*
     const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
     const vector<int> aps {3, 1, 4, 6};
     Graph g(fs,aps);
     auto widGraph = new widgetGraph(g);
-    mainLayout->addWidget(widGraph);*/
+    mainLayout->addWidget(widGraph);
+*/
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
     auto gwLayout = new QVBoxLayout();
@@ -39,11 +41,18 @@ void vue::creeInterface()
     GraphWidget* gw = new GraphWidget();
     gwLayout->addWidget(gw);
     gw->show();
+    //gw->close(); //pour fermer le graph
 
-    //gw->close();
+
 }
 
-void vue::setMenu()
+void vue::setupMenu()
+{
+    setupMenuFichier();
+    setupMenuAlgo();
+}
+
+void vue::setupMenuFichier()
 {
     auto menuGraph = d_fenetre->menuBar()->addMenu("&Fichier");
 
@@ -70,8 +79,10 @@ void vue::setMenu()
     auto actionQuitter = new QAction{"Quitter"};
     actionQuitter->setToolTip("Quitter application");
     menuGraph->addAction(actionQuitter);
+}
 
-    //MENU ALGO
+void vue::setupMenuAlgo()
+{
     auto menuAlgo = d_fenetre->menuBar()->addMenu("&Algorithm");
 
     auto actionDistance = new QAction{"Distance"};
