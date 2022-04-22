@@ -37,6 +37,7 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::InfoKruskal, this, &MainWindow::onClickKruskal_INFO);
     connect(&d_vue, &vue::InfoPrufer_encode, this, &MainWindow::onClickPrufer_encode_INFO);
     connect(&d_vue, &vue::InfoPrufer_decode, this, &MainWindow::onClickPrufer_decode_INFO);
+
 }
 
 bool MainWindow::verifieDistance()
@@ -302,8 +303,8 @@ void MainWindow::onClick_Prufer_encode()
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    menuPruferDecode* menuP = new menuPruferDecode();
-    menuP->show();
+    menuPruferDecode* menuPruferD = new menuPruferDecode();
+    menuPruferD->show();
     /*vector<int> p = menuP->getP();
     if(verifiePruferDecode(p))
     {

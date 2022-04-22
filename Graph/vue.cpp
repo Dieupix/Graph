@@ -256,6 +256,7 @@ void vue::fenetrePruferDecode()
 
     auto boutonValider = new QPushButton{"Valider", nullptr};
     layoutBas->addWidget(boutonValider);
+    //connect(boutonValider, &QPushButton::clicked, this, &vue::onValide);
 
     auto boutonQuitter = new QPushButton{"Quitter", nullptr};
     layoutBas->addWidget(boutonQuitter);

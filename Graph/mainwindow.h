@@ -26,7 +26,7 @@ private:
     bool verifiePruferDecode(const vector<int>& p);
 
     menuSaisie *menuS;
-
+    //menuPruferDecode& menuPruferD;
 private slots :
     void onCheck_OrienteeChange(bool estoriente);
     void onCheck_A_des_PoidsChange(bool a_des_poids);

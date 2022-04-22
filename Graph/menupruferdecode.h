@@ -12,7 +12,10 @@ public:
     explicit menuPruferDecode(QMainWindow *parent = nullptr);
 
     vector<int> getP();
-
+signals :
+    void valide();
+private slots :
+    void onValide();
 private:
     vue d_vue;
     vector<int> d_p;
