@@ -34,7 +34,18 @@ void vue::creeInterface()
     gwLayout->addWidget(gw);
     gw->show();
     //gw->close(); //pour fermer le graph
+}
 
+void vue::creeInterfaceSaisie()
+{
+    d_fenetre->setWindowTitle("Ajouter Noeud");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    menuSaisie();
 }
 
 void vue::setupMenu()
@@ -127,6 +138,48 @@ void vue::setupMenuAlgo()
     actionPruferDecode->setToolTip("Prufer decode");
     SousMenuPrufer->addAction(actionPruferDecode);
     connect(actionPruferDecode, &QAction::triggered, this, &vue::onPruferDecode);
+}
+
+void vue::menuSaisie()
+{
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton{"Valider", nullptr};
+    layoutBas->addWidget(boutonValider);
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    layoutBas->addWidget(boutonQuitter);
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutSucc = new QHBoxLayout{};
+    auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
+    layoutSucc->addWidget(pannelSucc);
+    auto textSucc = new QLineEdit{};
+    layoutSucc->addWidget(textSucc);
+
+    auto layoutPrec = new QHBoxLayout{};
+    auto pannelPrec = new QLabel{"Predecesseur du noeud", nullptr};
+    layoutPrec->addWidget(pannelPrec);
+    auto textPrec = new QLineEdit{};
+    layoutPrec->addWidget(textPrec);
+
+    auto layoutPoids = new QHBoxLayout{};
+    auto labelPoids = new QLabel{"Poids du noeud", nullptr};
+    layoutPoids->addWidget(labelPoids);
+    auto textPoids = new QLineEdit{};
+    layoutPoids->addWidget(textPoids);
+
+    layoutInfo->addLayout(layoutSucc);
+    layoutInfo->addLayout(layoutPrec);
+    layoutInfo->addLayout(layoutPoids);
+
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
 }
 
 void vue::metAJourGraphe()

@@ -219,6 +219,11 @@ void MainWindow::saisie()
     //Saisie d'un widgetGraph
     //Ajouter un ostream
     //d_g.save();
+
+    menuS = new menuSaisie();
+
+    menuS->show();
+
 }
 void MainWindow::ajoute()
 {

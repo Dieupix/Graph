@@ -3,7 +3,7 @@
 
 #include "widgetgraph.h"
 #include "vue.h"
-
+#include "menusaisie.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -24,6 +24,8 @@ private:
     bool verifieKruskal();
     bool verifiePruferEncode();
     bool verifiePruferDecode(const vector<int>& p);
+
+    menuSaisie *menuS;
 
 private slots :
     void onCheck_OrienteeChange(bool estoriente);

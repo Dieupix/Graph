@@ -15,6 +15,7 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
+    menusaisie.cpp \
     noeud.cpp \
     test.cpp \
     vue.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     exceptions.h \
     graph.h \
     mainwindow.h \
+    menusaisie.h \
     noeud.h \
     test.h \
     vue.h \
