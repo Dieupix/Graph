@@ -205,14 +205,14 @@ void MainWindow::saisie()
     //Ajouter un ostream
     //d_g.save();
 
-    menuS = new menuSaisie();
 
-    menuS->show();
 
 }
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
+    menuS = new menuSaisie();
+    menuS->show();
 }
 void MainWindow::supprime()
 {
@@ -233,8 +233,6 @@ void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
     //COMPLETER + MAJ la vue
     d_vue.metAJourGraphe();
 }
-
-
 
 void MainWindow::onClick_Distance()
 {
@@ -308,7 +306,7 @@ void MainWindow::onClick_Prufer_decode()
 {
     menuPruferDecode* menuP = new menuPruferDecode();
     menuP->show();
-    vector<int> p; //A faire saisir
+    vector<int> p = menuP->getP();
     if(verifiePruferDecode(p))
     {
         widgetGraph wg = d_g.englobe_Prufer_decode(p);

@@ -10,6 +10,8 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QLineEdit>
+#include <QTextEdit>
+#include "noeud.h"
 
 class vue : public QMainWindow
 {
@@ -23,6 +25,9 @@ public:
     void metAJourGraphe();
     void metAJourNoeuds();
 
+    int getPoids();
+    int getSuc();
+    int getPred();
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
@@ -31,6 +36,12 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLabel* d_aps;
     QLabel* d_matrice;
     QLabel* d_cout;
+
+    QLineEdit* d_suc;
+    QLineEdit* d_prec;
+    QLineEdit* d_poids;
+
+    QTextEdit* d_p;
 
     void setupMenu();
     void setupMenuFichier();
@@ -57,6 +68,7 @@ signals: //SIGNAUX EMIS
     void AlgorithmeSelectionnePruferEncode();
     void AlgorithmeSelectionnePruferDecode();
 
+
     void InfoDistance();
     void InfoRang();
     void InfoTarjan();
@@ -66,6 +78,8 @@ signals: //SIGNAUX EMIS
     void InfoKruskal();
     void InfoPrufer_encode();
     void InfoPrufer_decode();
+
+    void Ajouter();
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();
@@ -82,6 +96,7 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onPruferEncode();
     void onPruferDecode();
 
+
     void oninfoDistance();
     void oninfoRang();
     void oninfoTarjan();
@@ -91,6 +106,8 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void oninfoKruskal();
     void oninfoPrufer_encode();
     void oninfoPrufer_decode();
+
+    void onAjouter();
 };
 
 #endif // VUE_H

@@ -206,28 +206,37 @@ void vue::menuSaisie()
 
     auto boutonValider = new QPushButton{"Valider", nullptr};
     layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::Ajouter);
+
     auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
     layoutBas->addWidget(boutonQuitter);
 
     auto layoutInfo = new QVBoxLayout{};
 
     auto layoutSucc = new QHBoxLayout{};
     auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
-    layoutSucc->addWidget(pannelSucc);
-    auto textSucc = new QLineEdit{};
-    layoutSucc->addWidget(textSucc);
+    layoutSucc->addWidget(pannelSucc,1);
+    //auto textSucc = new QLineEdit{};
+
+    d_suc = new QLineEdit{};
+    layoutSucc->addWidget(d_suc);
 
     auto layoutPrec = new QHBoxLayout{};
     auto pannelPrec = new QLabel{"Predecesseur du noeud", nullptr};
-    layoutPrec->addWidget(pannelPrec);
-    auto textPrec = new QLineEdit{};
-    layoutPrec->addWidget(textPrec);
+    layoutPrec->addWidget(pannelPrec,1);
+    //auto textPrec = new QLineEdit{};
+
+    d_prec = new QLineEdit{};
+    layoutPrec->addWidget(d_prec);
 
     auto layoutPoids = new QHBoxLayout{};
     auto labelPoids = new QLabel{"Poids du noeud", nullptr};
-    layoutPoids->addWidget(labelPoids);
-    auto textPoids = new QLineEdit{};
-    layoutPoids->addWidget(textPoids);
+    layoutPoids->addWidget(labelPoids,1);
+    //auto textPoids = new QLineEdit{};
+
+    d_poids = new QLineEdit{};
+    layoutPoids->addWidget(d_poids);
 
     layoutInfo->addLayout(layoutSucc);
     layoutInfo->addLayout(layoutPrec);
@@ -247,18 +256,22 @@ void vue::fenetrePruferDecode()
 
     auto boutonValider = new QPushButton{"Valider", nullptr};
     layoutBas->addWidget(boutonValider);
+
     auto boutonQuitter = new QPushButton{"Quitter", nullptr};
     layoutBas->addWidget(boutonQuitter);
 
     auto layoutInfo = new QVBoxLayout{};
 
-    auto layoutSucc = new QHBoxLayout{};
-    auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
-    layoutSucc->addWidget(pannelSucc);
-    auto textSucc = new QLineEdit{};
-    layoutSucc->addWidget(textSucc);
+    auto layoutP = new QHBoxLayout{};
+    auto pannelP = new QLabel{"Saisie d'un tableau de Prufer", nullptr};
+    layoutP->addWidget(pannelP);
+    auto textP = new QTextEdit{};
+    layoutP->addWidget(textP);
 
-    layoutInfo->addLayout(layoutSucc);
+    QString s = textP->toPlainText();
+    d_p->setText(s);
+
+    layoutInfo->addLayout(layoutP);
 
     auto mainLayout = new QVBoxLayout;
     mainLayout->addLayout(layoutInfo);
@@ -375,3 +388,22 @@ void vue::oninfoPrufer_decode()
     emit InfoPrufer_decode();
 }
 
+void vue::onAjouter()
+{
+    emit Ajouter();
+}
+
+int vue::getPoids()
+{
+    return this->d_poids->text().toInt();
+}
+
+int vue::getSuc()
+{
+    return this->d_suc->text().toInt();
+}
+
+int vue::getPred()
+{
+    return this->d_prec->text().toInt();
+}

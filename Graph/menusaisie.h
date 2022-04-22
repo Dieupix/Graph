@@ -4,18 +4,27 @@
 #include "vue.h"
 #include <QLabel>
 #include <QMainWindow>
+#include <vector>
 
 class menuSaisie : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit menuSaisie(QWidget *parent = nullptr);
+    explicit menuSaisie(QMainWindow *parent = nullptr);
+    int getId() const;
+    vector<int> getSuc() const;
+    vector<int> getPred() const;
 
 signals:
+private slots:
+    void onClick_valider();
+    void onClick_quitter();
 
 private:
-    QLabel *lbl1;
     vue d_vue;
+    int d_id;
+    vector<int> d_suc;
+    vector<int> d_pred;
 
 };
 

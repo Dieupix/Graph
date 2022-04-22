@@ -11,7 +11,7 @@ class menuPruferDecode : public QMainWindow
 public:
     explicit menuPruferDecode(QWidget *parent = nullptr);
 
-signals:
+    vector<int> getP();
 
 private:
     QLabel *lbl1;
