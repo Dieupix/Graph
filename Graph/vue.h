@@ -10,6 +10,7 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QLineEdit>
+#include "noeud.h"
 
 class vue : public QMainWindow
 {
@@ -22,6 +23,9 @@ public:
     void metAJourGraphe();
     void metAJourNoeuds();
 
+    int getPoids();
+    int getSuc();
+    int getPred();
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
@@ -30,6 +34,10 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLabel* d_aps;
     QLabel* d_matrice;
     QLabel* d_cout;
+
+    QLineEdit* d_suc;
+    QLineEdit* d_prec;
+    QLineEdit* d_poids;
 
     void setupMenu();
     void setupMenuFichier();
@@ -55,6 +63,8 @@ signals: //SIGNAUX EMIS
     void AlgorithmeSelectionnePruferEncode();
     void AlgorithmeSelectionnePruferDecode();
 
+    void Ajouter();
+
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();
@@ -70,6 +80,8 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onKruskal();
     void onPruferEncode();
     void onPruferDecode();
+
+    void onAjouter();
 };
 
 #endif // VUE_H
