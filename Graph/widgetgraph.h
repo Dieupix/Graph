@@ -3,8 +3,8 @@
 
 #include "algorithms.h"
 #include "graph.h"
-#include "widgetnode.h"
 #include "widgetedge.h"
+#include "widgetnode.h"
 
 #include <QGraphicsView>
 #include <QKeyEvent>

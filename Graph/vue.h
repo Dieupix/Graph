@@ -1,17 +1,17 @@
 #ifndef VUE_H
 #define VUE_H
 
-#include "widgetgraph.h"
 #include "graph.h"
+#include "noeud.h"
+#include "widgetgraph.h"
 
-#include <QPushButton>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMainWindow>
 #include <QMenuBar>
-#include <QLineEdit>
+#include <QPushButton>
 #include <QTextEdit>
-#include "noeud.h"
 
 class vue : public QMainWindow
 {
@@ -30,6 +30,7 @@ public:
     int getPred();
 
     vector<int> getP();
+
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
@@ -51,6 +52,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenuInfo();
     void menuSaisie();
     void fenetrePruferDecode();
+
 signals: //SIGNAUX EMIS
     void Quitter();
     void Charger();
@@ -82,6 +84,7 @@ signals: //SIGNAUX EMIS
     void InfoPrufer_decode();
 
     void Ajouter();
+
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();

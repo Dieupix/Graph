@@ -1,9 +1,9 @@
 #ifndef widgetGraphBisBIS_H
 #define widgetGraphBisBIS_H
 
-#include<QWidget>
 #include "graph.h"
-using std::vector;
+
+#include <QWidget>
 
 class widgetGraphBis : public QWidget
 {
