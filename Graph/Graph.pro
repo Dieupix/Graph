@@ -15,6 +15,7 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
+    menupruferdecode.cpp \
     menusaisie.cpp \
     noeud.cpp \
     test.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     exceptions.h \
     graph.h \
     mainwindow.h \
+    menupruferdecode.h \
     menusaisie.h \
     noeud.h \
     test.h \

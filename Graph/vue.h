@@ -19,6 +19,7 @@ public:
 
     void creeInterface();
     void creeInterfaceSaisie();
+    void creeInterfacePruferDecode();
     void metAJourGraphe();
     void metAJourNoeuds();
 
@@ -34,8 +35,9 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenu();
     void setupMenuFichier();
     void setupMenuAlgo();
-
+    void setupMenuInfo();
     void menuSaisie();
+    void fenetrePruferDecode();
 signals: //SIGNAUX EMIS
     void Quitter();
     void Charger();
@@ -55,6 +57,15 @@ signals: //SIGNAUX EMIS
     void AlgorithmeSelectionnePruferEncode();
     void AlgorithmeSelectionnePruferDecode();
 
+    void InfoDistance();
+    void InfoRang();
+    void InfoTarjan();
+    void InfoOrdonnancement();
+    void InfoDijkstra();
+    void InfoDantzig();
+    void InfoKruskal();
+    void InfoPrufer_encode();
+    void InfoPrufer_decode();
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();
@@ -70,6 +81,16 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onKruskal();
     void onPruferEncode();
     void onPruferDecode();
+
+    void oninfoDistance();
+    void oninfoRang();
+    void oninfoTarjan();
+    void oninfoOrdonnancement();
+    void oninfoDijkstra();
+    void oninfoDantzig();
+    void oninfoKruskal();
+    void oninfoPrufer_encode();
+    void oninfoPrufer_decode();
 };
 
 #endif // VUE_H

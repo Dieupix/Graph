@@ -26,6 +26,8 @@ public:
     vector<vector<int>> getMatrice();
     bool getUsingFSandAPS();
 
+    bool verifieFS_APS_NonVide();
+    bool verifieMatrice_NonVide();
     vector<vector<int>> englobe_Distance();
     vector<int> englobe_Rang();
     widgetGraph englobe_Tarjan();

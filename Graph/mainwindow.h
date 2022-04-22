@@ -4,6 +4,8 @@
 #include "widgetgraph.h"
 #include "vue.h"
 #include "menusaisie.h"
+#include "menupruferdecode.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -13,8 +15,6 @@ private:
     widgetGraph d_g;
     vue d_vue;
 
-    bool verifieFS_APS_NonVide();
-    bool verifieMatrice_NonVide();
     bool verifieDistance();
     bool verifieRang();
     bool verifieTarjan();
@@ -45,6 +45,16 @@ private slots :
     void onClick_Kruskal();
     void onClick_Prufer_encode();
     void onClick_Prufer_decode();
+
+    void onClickDistance_INFO();
+    void onClickRang_INFO();
+    void onClickTarjan_INFO();
+    void onClickOrdonnancement_INFO();
+    void onClickDijkstra_INFO();
+    void onClickDantzig_INFO();
+    void onClickKruskal_INFO();
+    void onClickPrufer_encode_INFO();
+    void onClickPrufer_decode_INFO();
 };
 
 #endif // MAINWINDOW_H

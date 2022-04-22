@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include<iostream>
+#include<QMessageBox>
+
 
 MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}
 {
@@ -25,50 +27,33 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::AlgorithmeSelectionneKruskal, this, &MainWindow::onClick_Kruskal);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
+
+    connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
+    connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
+    connect(&d_vue, &vue::InfoTarjan, this, &MainWindow::onClickTarjan_INFO);
+    connect(&d_vue, &vue::InfoOrdonnancement, this, &MainWindow::onClickOrdonnancement_INFO);
+    connect(&d_vue, &vue::InfoDijkstra, this, &MainWindow::onClickDijkstra_INFO);
+    connect(&d_vue, &vue::InfoDantzig, this, &MainWindow::onClickDantzig_INFO);
+    connect(&d_vue, &vue::InfoKruskal, this, &MainWindow::onClickKruskal_INFO);
+    connect(&d_vue, &vue::InfoPrufer_encode, this, &MainWindow::onClickPrufer_encode_INFO);
+    connect(&d_vue, &vue::InfoPrufer_decode, this, &MainWindow::onClickPrufer_decode_INFO);
 }
-bool MainWindow::verifieFS_APS_NonVide()
-{
-    if(d_g.getFs().size() == 0 || d_g.getAps().size() == 0)
-    {
-        return false;
-    }
-    return true;
-}
-bool MainWindow::verifieMatrice_NonVide()
-{
-    vector<vector<int>> mat = d_g.getMatrice();
-    if(mat.size() == 0)
-        return false;
-    else if(mat[0].size() != 2)
-    {
-        return false;
-    }
-    else
-    {
-        unsigned size = mat[1].size();
-        for(unsigned i = 2 ; i < mat.size() ; ++i)
-        {
-            if(mat[i].size() != size)
-                return false;
-        }
-        return true;
-    }
-}
+
 bool MainWindow::verifieDistance()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
+    return d_g.verifieFS_APS_NonVide() || d_g.verifieMatrice_NonVide();
 }
 
 bool MainWindow::verifieRang()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
+    return d_g.verifieFS_APS_NonVide() || d_g.verifieMatrice_NonVide();
 }
 bool MainWindow::verifieTarjan()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
+    return d_g.verifieFS_APS_NonVide() || d_g.verifieMatrice_NonVide();
 }
 bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
 {
@@ -76,7 +61,7 @@ bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
     //Il faut que duree_taches soit correctement initisalisé et saisie
     if(d_g.getUsingFSandAPS())
     {
-        if(verifieFS_APS_NonVide())
+        if(d_g.verifieFS_APS_NonVide())
         {
             int n = d_g.getAps()[0];
             return (duree_taches[0] != n);
@@ -85,7 +70,7 @@ bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
     }
     else
     {
-        if(verifieMatrice_NonVide())
+        if(d_g.verifieMatrice_NonVide())
         {
             int n = d_g.getMatrice()[0][0];
             return(duree_taches[0] != n);
@@ -99,7 +84,7 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
     //Il faut que le cout soit correct, qu'il ne contienne pas de cout < 0
     if(d_g.getUsingFSandAPS())
     {
-        if(verifieFS_APS_NonVide())
+        if(d_g.verifieFS_APS_NonVide())
         {
             bool sommet_correct = true;
             bool couts_correct = true;
@@ -124,7 +109,7 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
     }
     else
     {
-        if(verifieMatrice_NonVide())
+        if(d_g.verifieMatrice_NonVide())
         {
             bool sommet_correct = true;
             bool couts_correct = true;
@@ -157,7 +142,7 @@ bool MainWindow::verifieDantzig()
     //Il faut que le cout soit bien initialisé ou la matrice.
     if(d_g.getUsingFSandAPS())
     {
-        if(verifieFS_APS_NonVide())
+        if(d_g.verifieFS_APS_NonVide())
         {
             bool cout_correct = true;
             vector<vector<int>> couts = d_g.getCouts();
@@ -169,7 +154,7 @@ bool MainWindow::verifieDantzig()
     }
     else
     {
-       if(verifieMatrice_NonVide())
+       if(d_g.verifieMatrice_NonVide())
        {
            bool cout_correct = true;
            int n = d_g.getMatrice()[0][0];
@@ -185,12 +170,12 @@ bool MainWindow::verifieDantzig()
 bool MainWindow::verifieKruskal()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
+    return d_g.verifieFS_APS_NonVide() || d_g.verifieMatrice_NonVide();
 }
 bool MainWindow::verifiePruferEncode()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
+    return d_g.verifieFS_APS_NonVide() || d_g.verifieMatrice_NonVide();
 }
 bool MainWindow::verifiePruferDecode(const vector<int>& p)
 {
@@ -202,7 +187,7 @@ bool MainWindow::verifiePruferDecode(const vector<int>& p)
     {
         for(unsigned i = 1 ; i < m ; ++i)
             if(p[i] <= 0 || p[i] > (int)m+2)
-                return p_correct = false;
+                p_correct = false;
     }
     return p_correct;
 }
@@ -314,12 +299,15 @@ void MainWindow::onClick_Prufer_encode()
 {
     if(verifiePruferEncode())
     {
+
         vector<int> p = d_g.englobe_Prufer_encode();
     }
     //retourner p
 }
 void MainWindow::onClick_Prufer_decode()
 {
+    menuPruferDecode* menuP = new menuPruferDecode();
+    menuP->show();
     vector<int> p; //A faire saisir
     if(verifiePruferDecode(p))
     {
@@ -327,3 +315,128 @@ void MainWindow::onClick_Prufer_decode()
         d_vue.metAJourGraphe();
     }
 }
+
+void MainWindow::onClickDistance_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner l'ensemble des distances separant chaque sommet du graphe de l'ensemble des autres."
+                    "Son resultat est donne sous la forme d'une matrice appellee matrice des distances."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme des distances");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickRang_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner le rang de chaque sommet du graphe."
+                    "Le rang d'un sommet est la longueur d'une plus long chemin arrivant à lui."
+                    "On suppose que si le graphe admet un circuit alors les sommets concernes auront un rang egal a -1."
+                    "Son resultat est donne sous la forme d'un tableau contenant le rang de chaque sommet."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme du rang");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickTarjan_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner le graphe reduit du graphe courant."
+                    "Le graphe reduit est sans circuit et ses sommets correspondent aux composantes fortement connexes du graphe."
+                    "Son resultat est donne sous la forme d'un nouveau graphe (le graphe reduit)."
+                    "De plus, les bases des deux graphes seront aussi indiquees."
+                    "Pour rappel, la base d'un graphe est l'ensemble des sommets necessaires pour qu'a partir de ce dernier, on puisse atteindre n'importe quel sommet"
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Tarjan");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickOrdonnancement_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner l'ensemble des dates au plus tot et date au plus tard afin d'en deduire un (des) chemin(s) critique(s)."
+                    "Un chemin critique est un chemin du graphe composes de sommets dont les durees de realisation ne peuvent etre retardees."
+                    "Son resultat est donne sous la forme d'un nouveau graphe compose des sommets critiques et du(des) chemin(s) critique(s)."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : L'ordonnancement");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickDijkstra_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner le(s) chemin(s) le(s) plus court(s) d'un graphe a partir d'un sommet de depart donne."
+                    "Son resultat est donne sous la forme de deux tableaux representant respectivement le poids minimal du chemin (d) et le chemin (pr)."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Dijkstra");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickDantzig_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner la matrice de cout la plus optimale possible en tenant compte des raccourcis proposes par le graphe compte tenu de ses poids."
+                    "Son resultat est donne sous la forme d'une matrice appellee matrice des couts."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Dantzig");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickKruskal_INFO()
+{
+    QString texte = "Cet algorithme a pour but de determiner un arbre recouvrant minimal d'un graphe non oriente."
+                    "Son resultat est donne sous la forme d'un nouveau graphe."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Kruskal");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickPrufer_encode_INFO()
+{
+    QString texte = "Cet algorithme a pour but de coder un graphe donne sous la forme d'un tableau de Prufer."
+                    "Son resultat est donne sous la forme d'un tableau."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Prufer [encodage]");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+void MainWindow::onClickPrufer_decode_INFO()
+{
+    QString texte = "Cet algorithme a pour but de decoder un tableau de Prufer en graphe."
+                    "Son resultat est donne sous la forme d'un graphe."
+                    "La complexite de cet algorithme est en O( .. )";
+    auto info = new QMessageBox{};
+    info->setWindowTitle("Information : Algorithme de Prufer [decodage]");
+    info->setText(texte);
+    info->setIcon(QMessageBox::Information);
+    info->setStandardButtons(QMessageBox::Close);
+    info->exec();
+}
+
+
+
+
+
+
+
+
+
+

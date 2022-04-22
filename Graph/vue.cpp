@@ -13,7 +13,6 @@ void vue::creeInterface()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 
-    //MATHIS
     setupMenu();
 
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
@@ -47,11 +46,22 @@ void vue::creeInterfaceSaisie()
 
     menuSaisie();
 }
+void vue::creeInterfacePruferDecode()
+{
+    d_fenetre->setWindowTitle("Saisie pour Prufer (encode)");
 
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetrePruferDecode();
+}
 void vue::setupMenu()
 {
     setupMenuFichier();
     setupMenuAlgo();
+    setupMenuInfo();
 }
 
 void vue::setupMenuFichier()
@@ -139,7 +149,57 @@ void vue::setupMenuAlgo()
     SousMenuPrufer->addAction(actionPruferDecode);
     connect(actionPruferDecode, &QAction::triggered, this, &vue::onPruferDecode);
 }
+void vue::setupMenuInfo()
+{
+    auto menuInfo = d_fenetre->menuBar()->addMenu("&Info");
 
+    auto infoDistance = new QAction{"Distance"};
+    infoDistance->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoDistance);
+    connect(infoDistance, &QAction::triggered, this, &vue::oninfoDistance);
+
+    auto infoRang = new QAction{"Rang"};
+    infoRang->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoRang);
+    connect(infoRang, &QAction::triggered, this, &vue::oninfoRang);
+
+    auto infoTarjan = new QAction{"Tarjan"};
+    infoTarjan->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoTarjan);
+    connect(infoTarjan, &QAction::triggered, this, &vue::oninfoTarjan);
+
+    auto infoOrdonnancement = new QAction{"Ordonnancement"};
+    infoOrdonnancement->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoOrdonnancement);
+    connect(infoOrdonnancement, &QAction::triggered, this, &vue::oninfoOrdonnancement);
+
+    auto infoDijkstra = new QAction{"Dijkstra"};
+    infoDijkstra->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoDijkstra);
+    connect(infoDijkstra, &QAction::triggered, this, &vue::oninfoDijkstra);
+
+    auto infoDantzig = new QAction{"Dantzig"};
+    infoDantzig->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoDantzig);
+    connect(infoDantzig, &QAction::triggered, this, &vue::oninfoDantzig);
+
+    auto infoKruskal = new QAction{"Kruskal"};
+    infoKruskal->setToolTip("Distance algorithme");
+    menuInfo->addAction(infoKruskal);
+    connect(infoKruskal, &QAction::triggered, this, &vue::oninfoKruskal);
+
+    auto SousMenuPrufer = menuInfo->addMenu("Prufer");
+
+    auto infoPruferEncode = new QAction{"Prufer Encode"};
+    infoPruferEncode->setToolTip("Distance algorithme");
+    SousMenuPrufer->addAction(infoPruferEncode);
+    connect(infoPruferEncode, &QAction::triggered, this, &vue::oninfoPrufer_encode);
+
+    auto infoPruferDecode = new QAction{"Prufer Decode"};
+    infoDistance->setToolTip("Distance algorithme");
+    SousMenuPrufer->addAction(infoPruferDecode);
+    connect(infoPruferDecode, &QAction::triggered, this, &vue::oninfoPrufer_decode);
+}
 void vue::menuSaisie()
 {
     auto layoutBas = new QHBoxLayout{};
@@ -181,7 +241,33 @@ void vue::menuSaisie()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 }
+void vue::fenetrePruferDecode()
+{
+    auto layoutBas = new QHBoxLayout{};
 
+    auto boutonValider = new QPushButton{"Valider", nullptr};
+    layoutBas->addWidget(boutonValider);
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    layoutBas->addWidget(boutonQuitter);
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutSucc = new QHBoxLayout{};
+    auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
+    layoutSucc->addWidget(pannelSucc);
+    auto textSucc = new QLineEdit{};
+    layoutSucc->addWidget(textSucc);
+
+    layoutInfo->addLayout(layoutSucc);
+
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
 void vue::metAJourGraphe()
 {
     //MAj fs/aps..
@@ -251,5 +337,41 @@ void vue::onPruferEncode()
 void vue::onPruferDecode()
 {
     emit AlgorithmeSelectionnePruferDecode();
+}
+void vue::oninfoDistance()
+{
+    emit InfoDistance();
+}
+void vue::oninfoRang()
+{
+    emit InfoRang();
+}
+void vue::oninfoTarjan()
+{
+    emit InfoTarjan();
+}
+void vue::oninfoOrdonnancement()
+{
+    emit InfoOrdonnancement();
+}
+void vue::oninfoDijkstra()
+{
+    emit InfoDijkstra();
+}
+void vue::oninfoDantzig()
+{
+    emit InfoDantzig();
+}
+void vue::oninfoKruskal()
+{
+    emit InfoKruskal();
+}
+void vue::oninfoPrufer_encode()
+{
+    emit InfoPrufer_encode();
+}
+void vue::oninfoPrufer_decode()
+{
+    emit InfoPrufer_decode();
 }
 

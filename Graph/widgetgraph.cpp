@@ -198,6 +198,34 @@ bool widgetGraph::getUsingFSandAPS()
     return d_isUsingFsAndAps;
 }
 
+bool widgetGraph::verifieFS_APS_NonVide()
+{
+    if(d_fs.empty() || d_aps.empty())
+    {
+        return false;
+    }
+    return true;
+}
+bool widgetGraph::verifieMatrice_NonVide()
+{
+    if(d_matrice.empty())
+        return false;
+    else if(d_matrice[0].size() != 2)
+    {
+        return false;
+    }
+    else
+    {
+        unsigned size = d_matrice[1].size();
+        for(unsigned i = 2 ; i < d_matrice.size() ; ++i)
+        {
+            if(d_matrice[i].size() != size)
+                return false;
+        }
+        return true;
+    }
+}
+
 vector<vector<int>> widgetGraph::englobe_Distance()
 {
     vector<vector<int>> matriceDistance;
