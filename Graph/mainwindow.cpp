@@ -26,43 +26,185 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
 }
-
+bool MainWindow::verifieFS_APS_NonVide()
+{
+    if(d_g.getFs().size() == 0 || d_g.getAps().size() == 0)
+    {
+        return false;
+    }
+    return true;
+}
+bool MainWindow::verifieMatrice_NonVide()
+{
+    vector<vector<int>> mat = d_g.getMatrice();
+    if(mat.size() == 0)
+        return false;
+    else if(mat[0].size() != 2)
+    {
+        return false;
+    }
+    else
+    {
+        unsigned size = mat[1].size();
+        for(unsigned i = 2 ; i < mat.size() ; ++i)
+        {
+            if(mat[i].size() != size)
+                return false;
+        }
+        return true;
+    }
+}
 bool MainWindow::verifieDistance()
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
 }
 
 bool MainWindow::verifieRang()
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
 }
 bool MainWindow::verifieTarjan()
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
 }
-bool MainWindow::verifieOrdonnancement()
+bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
 {
-    return false;
+    //Il faut que fs et aps soit initialisé.
+    //Il faut que duree_taches soit correctement initisalisé et saisie
+    if(d_g.getUsingFSandAPS())
+    {
+        if(verifieFS_APS_NonVide())
+        {
+            int n = d_g.getAps()[0];
+            return (duree_taches[0] != n);
+        }
+        return false;
+    }
+    else
+    {
+        if(verifieMatrice_NonVide())
+        {
+            int n = d_g.getMatrice()[0][0];
+            return(duree_taches[0] != n);
+        }
+        return false;
+    }
 }
-bool MainWindow::verifieDijkstra()
+bool MainWindow::verifieDijkstra(int sommet_depart)
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    //Il faut que le cout soit correct, qu'il ne contienne pas de cout < 0
+    if(d_g.getUsingFSandAPS())
+    {
+        if(verifieFS_APS_NonVide())
+        {
+            bool sommet_correct = true;
+            bool couts_correct = true;
+            if(sommet_depart <= 0 || sommet_depart > d_g.getAps()[0])
+                sommet_correct = false;
+            else
+            {
+                vector<vector<int>> couts = d_g.getCouts();
+                if(couts[0][0] != d_g.getAps()[0] || couts[0][1] != (d_g.getFs()[0] - d_g.getAps()[0]))
+                    couts_correct = false;
+                else
+                {
+                    for(unsigned i = 1 ; i < couts.size() ; ++i)
+                        for(unsigned j = 1 ; j < couts[i].size() ; ++j)
+                            if(couts[i][j] < 0)
+                                couts_correct = false;
+                }
+            }
+            return sommet_correct && couts_correct;
+        }
+        return false;
+    }
+    else
+    {
+        if(verifieMatrice_NonVide())
+        {
+            bool sommet_correct = true;
+            bool couts_correct = true;
+            int n = d_g.getMatrice()[0][0];
+            int m = d_g.getMatrice()[0][1];
+            if(sommet_depart <= 0 || sommet_depart > n)
+                sommet_correct = false;
+            else
+            {
+                vector<vector<int>> couts = d_g.getCouts();
+                if(couts[0][0] != n || couts[0][1] != m)
+                    couts_correct = false;
+                else
+                {
+                    for(unsigned i = 1 ; i < couts.size() ; ++i)
+                        for(unsigned j = 1 ; j < couts[i].size() ; ++j)
+                            if(couts[i][j] < 0)
+                                couts_correct = false;
+                }
+            }
+            return sommet_correct && couts_correct;
+        }
+        return false;
+    }
+
+
 }
 bool MainWindow::verifieDantzig()
 {
-    return false;
+    //Il faut que le cout soit bien initialisé ou la matrice.
+    if(d_g.getUsingFSandAPS())
+    {
+        if(verifieFS_APS_NonVide())
+        {
+            bool cout_correct = true;
+            vector<vector<int>> couts = d_g.getCouts();
+            if(couts[0][0] != d_g.getAps()[0] || couts[0][1] != (d_g.getFs()[0] - d_g.getAps()[0]))
+                cout_correct = false;
+            return cout_correct;
+        }
+        return false;
+    }
+    else
+    {
+       if(verifieMatrice_NonVide())
+       {
+           bool cout_correct = true;
+           int n = d_g.getMatrice()[0][0];
+           int m = d_g.getMatrice()[0][1];
+           vector<vector<int>> couts = d_g.getCouts();
+           if(couts[0][0] != n || couts[0][1] != m)
+               cout_correct = false;
+           return cout_correct;
+       }
+       return false;
+    }
 }
 bool MainWindow::verifieKruskal()
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
 }
 bool MainWindow::verifiePruferEncode()
 {
-    return false;
+    //Il faut que fs et aps soit initialisé ou la matrice.
+    return verifieFS_APS_NonVide() || verifieMatrice_NonVide();
 }
-bool MainWindow::verifiePruferDecode()
+bool MainWindow::verifiePruferDecode(const vector<int>& p)
 {
-    return false;
+    bool p_correct = true;
+    unsigned m = p[0];
+    if(m != p.size())
+        p_correct = false;
+    else
+    {
+        for(unsigned i = 1 ; i < m ; ++i)
+            if(p[i] <= 0 || p[i] > (int)m+2)
+                return p_correct = false;
+    }
+    return p_correct;
 }
 
 void MainWindow::charge()
@@ -107,7 +249,9 @@ void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
 void MainWindow::onClick_Distance()
 {
     if(verifieDistance())
+    {
         vector<vector<int>> mat_dist = d_g.englobe_Distance();
+    }//retourner la matrice
 }
 
 void MainWindow::onClick_Rang()
@@ -115,36 +259,41 @@ void MainWindow::onClick_Rang()
     if(verifieRang())
     {
         vector<int> rang = d_g.englobe_Rang();
-        d_vue.metAJourGraphe();
-    }
+    }//retourner le rang
 }
 
 void MainWindow::onClick_Tarjan()
 {
     if(verifieTarjan())
     {
+        widgetGraph wg = d_g.englobe_Tarjan();
         d_vue.metAJourGraphe();
     }
 
 }
 void MainWindow::onClick_Ordonnancement()
 {
-    if(verifieOrdonnancement())
+    vector<int> duree_taches;
+    if(verifieOrdonnancement(duree_taches))
     {
+        widgetGraph wg = d_g.englobe_Ordonnancement(duree_taches);
         d_vue.metAJourGraphe();
     }
 }
 void MainWindow::onClick_Dijkstra()
 {
-    if(verifieDijkstra())
+    int sommet_depart = 1;//A faire saisir
+    vector<int> d, pr;
+    if(verifieDijkstra(sommet_depart))
     {
-        d_vue.metAJourGraphe();
-    }
+        d_g.englobe_Dijkstra(sommet_depart,d,pr);
+    }//Retourner d et pr
 }
 void MainWindow::onClick_Dantzig()
 {
     if(verifieDantzig())
     {
+        d_g.englobe_Dantzig();
         d_vue.metAJourGraphe();
     }
 }
@@ -152,6 +301,7 @@ void MainWindow::onClick_Kruskal()
 {
     if(verifieKruskal())
     {
+        d_g.englobe_Kruskal();
         d_vue.metAJourGraphe();
     }
 }
@@ -159,13 +309,16 @@ void MainWindow::onClick_Prufer_encode()
 {
     if(verifiePruferEncode())
     {
-        d_vue.metAJourGraphe();
+        vector<int> p = d_g.englobe_Prufer_encode();
     }
+    //retourner p
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    if(verifiePruferDecode())
+    vector<int> p; //A faire saisir
+    if(verifiePruferDecode(p))
     {
+        widgetGraph wg = d_g.englobe_Prufer_decode(p);
         d_vue.metAJourGraphe();
     }
 }

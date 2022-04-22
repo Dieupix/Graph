@@ -13,15 +13,17 @@ private:
     widgetGraph d_g;
     vue d_vue;
 
+    bool verifieFS_APS_NonVide();
+    bool verifieMatrice_NonVide();
     bool verifieDistance();
     bool verifieRang();
     bool verifieTarjan();
-    bool verifieOrdonnancement();
-    bool verifieDijkstra();
+    bool verifieOrdonnancement(const vector<int>& duree_taches);
+    bool verifieDijkstra(int sommet_depart);
     bool verifieDantzig();
     bool verifieKruskal();
     bool verifiePruferEncode();
-    bool verifiePruferDecode();
+    bool verifiePruferDecode(const vector<int>& p);
 
 private slots :
     void onCheck_OrienteeChange(bool estoriente);

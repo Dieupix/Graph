@@ -22,14 +22,17 @@ public:
 
     vector<int> getFs();
     vector<int> getAps();
+    vector<vector<int>> getCouts();
+    vector<vector<int>> getMatrice();
+    bool getUsingFSandAPS();
 
     vector<vector<int>> englobe_Distance();
     vector<int> englobe_Rang();
     widgetGraph englobe_Tarjan();
-    widgetGraph englobe_Ordonnancement();
-    void englobe_Dijkstra(int sommet_depart);
+    widgetGraph englobe_Ordonnancement(const vector<int>& duree_taches);
+    void englobe_Dijkstra(int sommet_depart,vector<int>& d, vector<int>& pr);
     void englobe_Dantzig();
-    void englobe_Kruskal();
+    widgetGraph englobe_Kruskal();
     vector<int> englobe_Prufer_encode();
     widgetGraph englobe_Prufer_decode(const vector<int>& p);
 
@@ -57,6 +60,7 @@ private:
     vector<int> d_aps;
     vector<vector<int>> d_matrice;
     vector<vector<int>> d_couts;
+    bool d_isUsingFsAndAps;
 
     QGraphicsScene      *scene;
     unsigned            sceneSizeW, sceneSizeH;
@@ -66,7 +70,8 @@ private:
     widgetNode          *centerNode;
 
     void setup();
-
+    void transformeVersMatrice();
+    void transformeVersFS_APS();
     void loadGraph(const Graph& g);
     Graph toGraph();
 };

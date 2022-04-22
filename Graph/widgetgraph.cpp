@@ -185,10 +185,26 @@ vector<int> widgetGraph::getAps()
 {
     return d_aps;
 }
+vector<vector<int>> widgetGraph::getCouts()
+{
+    return d_couts;
+}
+vector<vector<int>> widgetGraph::getMatrice()
+{
+    return d_matrice;
+}
+bool widgetGraph::getUsingFSandAPS()
+{
+    return d_isUsingFsAndAps;
+}
 
 vector<vector<int>> widgetGraph::englobe_Distance()
 {
     vector<vector<int>> matriceDistance;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
     mat_distance(d_fs,d_aps,matriceDistance);
     return matriceDistance;
 }
@@ -196,6 +212,10 @@ vector<vector<int>> widgetGraph::englobe_Distance()
 vector<int> widgetGraph::englobe_Rang()
 {
     vector<int> rg;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
     rang(rg,d_fs,d_aps);
     return rg;
 }
@@ -203,8 +223,12 @@ vector<int> widgetGraph::englobe_Rang()
 widgetGraph widgetGraph::englobe_Tarjan()
 {
     vector<int> cfc, pilch, pred, prem;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
     fortconnexe(d_fs,d_aps,cfc,pilch,pred,prem);
-    //Transformer en un nouveau widgetGraph
+    //Ecrire une fonction qui transforme en un nouveau widgetGraph
     vector<vector<int>> mat;
     Graph g{mat};
     widgetGraph new_wg(this);
@@ -212,14 +236,18 @@ widgetGraph widgetGraph::englobe_Tarjan()
     return new_wg;
 }
 
-widgetGraph widgetGraph::englobe_Ordonnancement()
+widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
 {
-    vector<int> duree_taches, new_fs, new_aps;
+    vector<int> new_fs, new_aps;
     vector<int> file_pred;
     vector<int> adr_prem_pred;
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
     vector<int> longueur_critique;
+    if(!d_isUsingFsAndAps)
+    {
+       transformeVersFS_APS();
+    }
     transforme_FS_APS_TO_FP_APP(d_fs, d_aps, file_pred, adr_prem_pred);
     Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
@@ -233,12 +261,13 @@ widgetGraph widgetGraph::englobe_Ordonnancement()
     return new_wg;
 }
 
-void widgetGraph::englobe_Dijkstra(int sommet_depart)
+void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int>& pr)
 {
-    vector<int> d;
-    vector<int> pr;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
     Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
-    //Resultat d et pr ??
 }
 
 void widgetGraph::englobe_Dantzig()
@@ -257,20 +286,36 @@ void widgetGraph::englobe_Dantzig()
     }
 }
 
-void widgetGraph::englobe_Kruskal()
+widgetGraph widgetGraph::englobe_Kruskal()
 {
-    //Push la version finale
+    widgetGraph wg;
+    Graph t;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
+    Kruskal(this->toGraph(),t);
+    wg.loadGraph(t);
+    return wg;
 }
 
 vector<int> widgetGraph::englobe_Prufer_encode()
 {
     vector<int> p;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersMatrice();
+    }
     Prufer_encode(d_matrice,p);
     return p;
 }
 
 widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 {
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersMatrice();
+    }
     Prufer_decode(p,d_matrice);
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{d_matrice});
@@ -287,6 +332,18 @@ void widgetGraph::loadFrom(std::istream& ist)
     d_couts = g.getCouts();
 }
 
+void widgetGraph::transformeVersMatrice()
+{
+    Graph g = toGraph();
+    g.FS_APS_to_MatAdj(d_matrice);
+    loadGraph(g);
+}
+void widgetGraph::transformeVersFS_APS()
+{
+    Graph g = toGraph();
+    g.matAdj_to_FS_APS(d_fs,d_aps);
+    loadGraph(g);
+}
 void widgetGraph::loadGraph(const Graph& g)
 {
     d_aps = g.getAPS();

@@ -497,7 +497,7 @@ bool Dantzig(vector<vector<int>>& c)
     return true;
 }
 
-void Kruskal(Graph g, Graph &t)
+void Kruskal(const Graph& g, Graph &t)
 {
         //TRANSFORMATION DU GRAPH AVEC LA STRUCTURE VOULU
         typedef struct {
