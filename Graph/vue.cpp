@@ -280,6 +280,8 @@ void vue::fenetrePruferDecode()
     auto central = new QWidget;
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
+
+
 }
 void vue::metAJourGraphe()
 {
@@ -406,4 +408,8 @@ int vue::getSuc()
 int vue::getPred()
 {
     return this->d_prec->text().toInt();
+}
+vector<int> vue::getP()
+{
+    //ou
 }

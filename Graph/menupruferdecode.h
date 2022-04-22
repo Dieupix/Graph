@@ -9,12 +9,11 @@ class menuPruferDecode : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit menuPruferDecode(QWidget *parent = nullptr);
+    explicit menuPruferDecode(QMainWindow *parent = nullptr);
 
     vector<int> getP();
 
 private:
-    QLabel *lbl1;
     vue d_vue;
     vector<int> d_p;
 };

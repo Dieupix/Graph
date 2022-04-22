@@ -28,6 +28,8 @@ public:
     int getPoids();
     int getSuc();
     int getPred();
+
+    vector<int> getP();
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;

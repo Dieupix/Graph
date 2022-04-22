@@ -297,21 +297,19 @@ void MainWindow::onClick_Prufer_encode()
 {
     if(verifiePruferEncode())
     {
-
         vector<int> p = d_g.englobe_Prufer_encode();
     }
-    //retourner p
 }
 void MainWindow::onClick_Prufer_decode()
 {
     menuPruferDecode* menuP = new menuPruferDecode();
     menuP->show();
-    vector<int> p = menuP->getP();
+    /*vector<int> p = menuP->getP();
     if(verifiePruferDecode(p))
     {
         widgetGraph wg = d_g.englobe_Prufer_decode(p);
         d_vue.metAJourGraphe();
-    }
+    }//retourner p*/
 }
 
 void MainWindow::onClickDistance_INFO()
