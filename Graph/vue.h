@@ -43,7 +43,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_prec;
     QLineEdit* d_poids;
 
-    QTextEdit* d_p;
+    QLineEdit* d_p;
 
     void setupMenu();
     void setupMenuFichier();

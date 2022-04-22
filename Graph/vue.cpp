@@ -265,11 +265,8 @@ void vue::fenetrePruferDecode()
     auto layoutP = new QHBoxLayout{};
     auto pannelP = new QLabel{"Saisie d'un tableau de Prufer", nullptr};
     layoutP->addWidget(pannelP);
-    auto textP = new QTextEdit{};
-    layoutP->addWidget(textP);
-
-    QString s = textP->toPlainText();
-    d_p->setText(s);
+    d_p = new QLineEdit{};
+    layoutP->addWidget(d_p);
 
     layoutInfo->addLayout(layoutP);
 
@@ -411,5 +408,10 @@ int vue::getPred()
 }
 vector<int> vue::getP()
 {
-    //ou
+    QString s = this->d_p->text();
+    vector<int> p;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        p.push_back(list[i].toInt());
+    return p;
 }
