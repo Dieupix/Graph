@@ -4,10 +4,12 @@
 #include "widgetgraph.h"
 #include "graph.h"
 
+#include <QPushButton>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMenuBar>
+#include <QLineEdit>
 
 class vue : public QMainWindow
 {
@@ -16,7 +18,7 @@ public:
     vue(QMainWindow* fenetre);
 
     void creeInterface();
-
+    void creeInterfaceSaisie();
     void metAJourGraphe();
     void metAJourNoeuds();
 
@@ -33,6 +35,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenuFichier();
     void setupMenuAlgo();
 
+    void menuSaisie();
 signals: //SIGNAUX EMIS
     void Quitter();
     void Charger();
