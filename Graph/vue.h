@@ -28,6 +28,7 @@ public:
     int getPoids();
     int getSuc();
     int getPred();
+    int getId();
 
     vector<int> getP();
 
@@ -43,6 +44,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_suc;
     QLineEdit* d_prec;
     QLineEdit* d_poids;
+    QLineEdit* d_id;
 
     QLineEdit* d_p;
 

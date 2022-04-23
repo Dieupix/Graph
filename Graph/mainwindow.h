@@ -55,6 +55,8 @@ private slots :
     void onClickKruskal_INFO();
     void onClickPrufer_encode_INFO();
     void onClickPrufer_decode_INFO();
+
+    void onValiderAjout();
 };
 
 #endif // MAINWINDOW_H

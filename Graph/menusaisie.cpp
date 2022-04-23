@@ -11,16 +11,21 @@ menuSaisie::menuSaisie(QMainWindow *parent) : QMainWindow{parent}, d_vue{this}
 
 void menuSaisie::onClick_valider()
 {
-    d_id = d_vue.getPoids();
+    d_id = d_vue.getId();
+    d_poids = d_vue.getPoids();
     d_pred.push_back(d_vue.getPred());
     d_suc.push_back(d_vue.getSuc());
+
+    emit envoieAjout();
+
     close();
 }
 
-void menuSaisie::onClick_quitter()
+int  menuSaisie::getPoids() const
 {
-
+    return d_poids;
 }
+
 
 int  menuSaisie::getId() const
 {

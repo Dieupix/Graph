@@ -10,18 +10,20 @@ public:
     explicit menuSaisie(QMainWindow *parent = nullptr);
 
     int getId() const;
+    int getPoids() const;
     vector<int> getSuc() const;
     vector<int> getPred() const;
 
 signals:
+    void envoieAjout();
 
 private slots:
     void onClick_valider();
-    void onClick_quitter();
 
 private:
     vue d_vue;
     int d_id;
+    int d_poids;
     vector<int> d_suc;
     vector<int> d_pred;
 };

@@ -32,23 +32,24 @@ void widgetGraph::setup()
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
-    setWindowTitle(tr("Elastic Nodes"));
 
     scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-(int)sceneSizeW / 2, -(int)sceneSizeH / 2, sceneSizeW, sceneSizeH);
+    //scene->setSceneRect(-(int)sceneSizeW / 2, -(int)sceneSizeH / 2, sceneSizeW, sceneSizeH);
+    scene->setSceneRect(-(int)sceneSizeW, -(int)sceneSizeH / 2, sceneSizeW * 2, sceneSizeH);
     setScene(scene);
+
+    Graph g;
+    loadGraph(g);
 
     // Exemple
     //const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
     //const vector<int> aps {3, 1, 4, 6};
     vector<int> APS{6, 1, 5, 7, 10, 13, 16};
     vector<int> FS{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
-    Graph g;
-    g.ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
-    g.ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
-    g.ajouterNoeud(Noeud(4), {0, 0, 1, 1, 0}, {0, 0, 1, 0, 0});
-    loadGraph(g);
+    ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
+    ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
+    ajouterNoeud(Noeud(4), {0, 0, 1, 1, 0}, {0, 0, 1, 0, 0});
 }
 
 void widgetGraph::itemMoved()
@@ -354,6 +355,44 @@ bool widgetGraph::verifieMatrice_NonVide()
     }
 }
 
+void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
+{
+    /*if(d_isUsingFsAndAps)
+    {
+        Graph g(d_fs, d_aps);
+        g.ajouterNoeud(noeud, pred, succ);
+        loadGraph(g);
+
+    } else
+    {
+        Graph g(d_matrice);
+        g.ajouterNoeud(noeud, pred, succ);
+        loadGraph(g);
+    }*/
+
+    auto node = new widgetNode(this, noeud);
+    scene->addItem(node);
+    if(nodes.size() != 0) node->setPos(nodes[nodes.size()-1]->getNoeud()->getId() * 30, nodes.size() * 30);
+    else node->setPos(0, 0);
+
+    for(unsigned i = 0; i < nodes.size(); ++i)
+    {
+        if(pred[i+1])
+        {
+            auto edge = new widgetEdge(node, nodes[i]);
+            nodes[i]->addEdge(edge);
+            scene->addItem(edge);
+        }
+        if(succ[i+1])
+        {
+            auto edge = new widgetEdge(node, nodes[i]);
+            nodes[i]->addEdge(edge);
+            scene->addItem(edge);
+        }
+    }
+    nodes << node;
+}
+
 void widgetGraph::loadFrom(std::istream& ist)
 {
     Graph g;
@@ -382,6 +421,9 @@ void widgetGraph::loadGraph(const Graph& g)
 {
     d_aps = g.getAPS();
     d_fs = g.getFS();
+    d_matrice = g.getMatAdj();
+    d_couts = g.getCouts();
+    d_isUsingFsAndAps = g.getA_Des_Poids();
 
     nodes.resize(0);
     unsigned modulo = sqrt(g.getSommets().size());

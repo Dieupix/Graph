@@ -22,6 +22,11 @@ QList<widgetEdge *> widgetNode::edges() const
     return edgeList;
 }
 
+const std::unique_ptr<Noeud>& widgetNode::getNoeud() const
+{
+    return noeud;
+}
+
 void widgetNode::calculateForces()
 {
     if (!scene() || scene()->mouseGrabberItem() == this) {

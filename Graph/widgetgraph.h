@@ -38,7 +38,7 @@ public:
     bool                verifieFS_APS_NonVide   ();
     bool                verifieMatrice_NonVide  ();
 
-    void ajouterNoeud   ();
+    void ajouterNoeud   (const Noeud& noeud, const vector<int>& pred, const vector<int>& succ);
     void itemMoved      ();
     void loadFrom       (std::istream& ist);
     void saveIn         (std::ostream& ost);

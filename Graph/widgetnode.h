@@ -21,6 +21,7 @@ public:
 
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;
+    const std::unique_ptr<Noeud>& getNoeud() const;
 
     enum { Type = UserType + 1 };
     int type() const override { return Type; }

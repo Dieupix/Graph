@@ -3,7 +3,7 @@
 #include<QMessageBox>
 
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuS{new menuSaisie}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe();
@@ -27,6 +27,8 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::AlgorithmeSelectionneKruskal, this, &MainWindow::onClick_Kruskal);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
+
+    connect(menuS, &menuSaisie::envoieAjout, this, &MainWindow::onValiderAjout);
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -212,9 +214,11 @@ void MainWindow::saisie()
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
-    menuS = new menuSaisie();
+    //menuS = new menuSaisie();
     menuS->show();
+
 }
+
 void MainWindow::supprime()
 {
     //Supprime un noeud
@@ -428,7 +432,14 @@ void MainWindow::onClickPrufer_decode_INFO()
     info->exec();
 }
 
-
+void MainWindow::onValiderAjout()
+{
+    cout<<"ID : "<<menuS->getId()<<endl;
+    cout<<"Poids : "<<menuS->getPoids()<<endl;
+    /*cout<<"Suc : ";
+    printVector()
+    cout<<"Pred : "<<menuS->getPred();*/
+}
 
 
 
