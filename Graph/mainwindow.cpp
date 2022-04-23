@@ -215,8 +215,7 @@ void MainWindow::saisie()
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
-    //menuS->show();
-    d_wg.ajouterNoeud(Noeud(5), {0, 1, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0});
+    menuS->show();
 }
 
 void MainWindow::supprime()
@@ -445,36 +444,39 @@ void MainWindow::onValiderAjout()
     vector<int> Pred;
     vector<int> Suc;
 
-    vector<int> menuPred = menuS->getSuc();
+    vector<int> menuPred = menuS->getPred();
     vector<int> menuSuc = menuS->getSuc();
 
     int k1 = 1;
     int k2 = 1;
 
-    int nbNoeud = 4;
+
+    int nbNoeud = 6;//d_wg.getAps()[0] + 2;
 
     for(int i = 0; i < nbNoeud; i++)
     {
         if(menuPred[k1] == i)
         {
-            Pred.push_back(i);
+            Pred.push_back(1);
             k1++;
         }
         else
             Pred.push_back(0);
         if(menuSuc[k2] == i)
         {
-             Suc.push_back(i);
+             Suc.push_back(1);
              k2++;
         }
         else
             Suc.push_back(0);
     }
 
-    printVector(Pred);
     printVector(menuPred);
-    //cout<<"APS[0] : "<<d_wg.getAps()[0];
+    printVector(Suc);
+    printVector(Pred);
+
     Noeud n{menuS->getId()};
+    d_wg.ajouterNoeud(n, Pred, Suc);
 }
 
 

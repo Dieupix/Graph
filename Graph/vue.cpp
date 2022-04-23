@@ -485,7 +485,7 @@ vector<int> vue::getPred()
     vector<int> prec;
     prec.push_back(0);
     QStringList list = s.split(',');
-    for(unsigned i = 1 ; i < list.size() ; ++i)
+    for(unsigned i = 0 ; i < list.size() ; ++i)
         prec.push_back(list[i].toInt());
     return prec;
 }
