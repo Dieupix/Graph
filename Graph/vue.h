@@ -22,18 +22,29 @@ public:
     void creeInterface(widgetGraph& wg);
     void creeInterfaceSaisie();
     void creeInterfacePruferDecode();
+    void creeInterfaceDijkstra();
+    void creeInterfaceOrdonnancement();
     void creeInterfaceSupprimer();
     void creeInterfaceSaisieFSAPS();
 
     void metAJourGraphe();
     void metAJourNoeuds();
 
+    int getNSaisie();
+    int getMSaisie();
+    vector<int> getFSSaisie();
+    vector<int> getAPSSaisie();
+
     int getPoids();
     vector<int> getSuc();
     vector<int> getPred();
     int getId();
-
+    //Pour Prufer decode
     vector<int> getP();
+    //Pour Dijkstra
+    int getSommet_depart();
+    //Pour Ordonnancement
+    vector<int> getDureeTaches();
 
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
@@ -50,6 +61,14 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_id;
 
     QLineEdit* d_p;
+    QLineEdit* d_sommet_depart;
+
+    QLineEdit* d_FSSaisie;
+    QLineEdit* d_APSSaisie;
+    QLineEdit* d_nSaisie;
+    QLineEdit* d_mSaisie;
+
+    QTextEdit* d_taches;
 
     QLineEdit* d_idSuppr;
 
@@ -61,7 +80,8 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void fenetrePruferDecode();
     void fenetreSaisieFSAPS();
 
-
+    void fenetreDijkstra();
+    void fenetreOrdonnancement();
     void fenetreMenuSupprimer();
 
 signals: //SIGNAUX EMIS
@@ -96,6 +116,12 @@ signals: //SIGNAUX EMIS
 
     void Ajouter();
     void saisieFSAPSValider();
+    void Valider_PruferDecode();
+    void Quitte_PruferDecode();
+    void Valider_Dijkstra();
+    void Quitter_Dijkstra();
+    void Valider_Ordonnancement();
+    void Quitter_Ordonnancement();
 
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
@@ -127,6 +153,12 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
 
     void onAjouter();
     void onSaisieFSAPSValider();
+    void onValide_PruferDecode();
+    void onQuitte_PruferDecode();
+    void onValide_Dijkstra();
+    void onQuitte_Dijkstra();
+    void onValide_Ordonnancement();
+    void onQuitte_Ordonnancement();
 };
 
 #endif // VUE_H

@@ -5,8 +5,13 @@
 #include "vue.h"
 #include "menuajout.h"
 #include "menupruferdecode.h"
+
+#include "menudijkstra.h"
+#include "menuordonnancement.h"
+
 #include "menusupprimer.h"
 #include "saisiefsaps.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +32,9 @@ private:
     bool verifiePruferEncode();
     bool verifiePruferDecode(const vector<int>& p);
 
+    menuPruferDecode *menuPruferD;
+    menudijkstra *menuDijkstra;
+    menuOrdonnancement *menuOrd;
     menuAjout *menuS;
     menuSupprimer *menuSuppr;
     saisieFSAPS *menuFSAPS;
@@ -62,6 +70,10 @@ private slots :
     void onClickPrufer_decode_INFO();
 
     void onValiderAjout();
+    void onValiderPruferDecode();
+    void onValiderDijkstra();
+    void onValiderOrdonnancement();
+    void onValideSaisieFSAPS();
 };
 
 #endif // MAINWINDOW_H

@@ -2,8 +2,7 @@
 #include<iostream>
 #include<QMessageBox>
 
-
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}
 
 {
     d_vue.creeInterface(d_wg);
@@ -30,7 +29,11 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
 
+    connect(menuPruferD, &menuPruferDecode::valide, this, &MainWindow::onValiderPruferDecode);
+    connect(menuDijkstra, &menudijkstra::valide, this, &MainWindow::onValiderDijkstra);
+    connect(menuOrd, &menuOrdonnancement::valide, this, &MainWindow::onValiderOrdonnancement);
     connect(menuS, &menuAjout::envoieAjout, this, &MainWindow::onValiderAjout);
+    connect(menuFSAPS, &saisieFSAPS::envoieSaisieFSAPS, this, &MainWindow::onValideSaisieFSAPS);
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -273,21 +276,11 @@ void MainWindow::onClick_Tarjan()
 }
 void MainWindow::onClick_Ordonnancement()
 {
-    vector<int> duree_taches;
-    if(verifieOrdonnancement(duree_taches))
-    {
-        widgetGraph wg = d_wg.englobe_Ordonnancement(duree_taches);
-        d_vue.metAJourGraphe();
-    }
+    menuOrd->show();
 }
 void MainWindow::onClick_Dijkstra()
 {
-    int sommet_depart = 1;//A faire saisir
-    vector<int> d, pr;
-    if(verifieDijkstra(sommet_depart))
-    {
-        d_wg.englobe_Dijkstra(sommet_depart,d,pr);
-    }//Retourner d et pr
+    menuDijkstra->show();
 }
 void MainWindow::onClick_Dantzig()
 {
@@ -314,14 +307,7 @@ void MainWindow::onClick_Prufer_encode()
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    menuPruferDecode* menuPruferD = new menuPruferDecode();
     menuPruferD->show();
-    /*vector<int> p = menuP->getP();
-    if(verifiePruferDecode(p))
-    {
-        widgetGraph wg = d_wg.englobe_Prufer_decode(p);
-        d_vue.metAJourGraphe();
-    }//retourner p*/
 }
 
 void MainWindow::onClickDistance_INFO()
@@ -484,11 +470,40 @@ void MainWindow::onValiderAjout()
     Noeud n{menuS->getId()};
     d_wg.ajouterNoeud(n, Pred, Suc);
 }
+void MainWindow::onValiderPruferDecode()
+{
+    if(verifiePruferDecode(menuPruferD->getP()))
+    {
+        widgetGraph wg = d_wg.englobe_Prufer_decode(menuPruferD->getP());
+        d_vue.metAJourGraphe();
+    }
+}
+void MainWindow::onValiderDijkstra()
+{
+    vector<int> d, pr;
+    if(verifieDijkstra(menuDijkstra->getSommet()))
+    {
+        d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+    }
+    cout<<"Affichage de d : "<<endl;
+    printVector(d);
+    cout<<endl;
+    cout<<"Affichage de pr : "<<endl;
+    printVector(pr);
+    cout<<endl;
+}
+void MainWindow::onValiderOrdonnancement()
+{
+    if(verifieOrdonnancement(menuOrd->getDuree()))
+    {
+        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree());
+        d_vue.metAJourGraphe();
+    }
+}
 
-
-
-
-
-
+void MainWindow::onValideSaisieFSAPS()
+{
+    //A faire quand on pourra charger des graphes
+}
 
 
