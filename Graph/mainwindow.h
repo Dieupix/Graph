@@ -5,6 +5,8 @@
 #include "vue.h"
 #include "menusaisie.h"
 #include "menupruferdecode.h"
+#include "menudijkstra.h"
+#include "menuordonnancement.h"
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +29,8 @@ private:
 
     menuSaisie *menuS;
     menuPruferDecode *menuPruferD;
+    menudijkstra *menuDijkstra;
+    menuOrdonnancement *menuOrd;
 private slots :
     void onCheck_OrienteeChange(bool estoriente);
     void onCheck_A_des_PoidsChange(bool a_des_poids);
@@ -55,6 +59,11 @@ private slots :
     void onClickKruskal_INFO();
     void onClickPrufer_encode_INFO();
     void onClickPrufer_decode_INFO();
+
+    void onValiderAjout();
+    void onValiderPruferDecode();
+    void onValiderDijkstra();
+    void onValiderOrdonnancement();
 };
 
 #endif // MAINWINDOW_H

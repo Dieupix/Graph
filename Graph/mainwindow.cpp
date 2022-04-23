@@ -2,8 +2,8 @@
 #include<iostream>
 #include<QMessageBox>
 
-
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuS{new menuSaisie},
+    menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe();
@@ -27,6 +27,11 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::AlgorithmeSelectionneKruskal, this, &MainWindow::onClick_Kruskal);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
+
+    connect(menuS, &menuSaisie::envoieAjout, this, &MainWindow::onValiderAjout);
+    connect(menuPruferD, &menuPruferDecode::valide, this, &MainWindow::onValiderPruferDecode);
+    connect(menuDijkstra, &menudijkstra::valide, this, &MainWindow::onValiderDijkstra);
+    connect(menuOrd, &menuOrdonnancement::valide, this, &MainWindow::onValiderOrdonnancement);
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -212,9 +217,11 @@ void MainWindow::saisie()
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
-    menuS = new menuSaisie();
+    //menuS = new menuSaisie();
     menuS->show();
+
 }
+
 void MainWindow::supprime()
 {
     //Supprime un noeud
@@ -262,21 +269,11 @@ void MainWindow::onClick_Tarjan()
 }
 void MainWindow::onClick_Ordonnancement()
 {
-    vector<int> duree_taches;
-    if(verifieOrdonnancement(duree_taches))
-    {
-        widgetGraph wg = d_g.englobe_Ordonnancement(duree_taches);
-        d_vue.metAJourGraphe();
-    }
+    menuOrd->show();
 }
 void MainWindow::onClick_Dijkstra()
 {
-    int sommet_depart = 1;//A faire saisir
-    vector<int> d, pr;
-    if(verifieDijkstra(sommet_depart))
-    {
-        d_g.englobe_Dijkstra(sommet_depart,d,pr);
-    }//Retourner d et pr
+    menuDijkstra->show();
 }
 void MainWindow::onClick_Dantzig()
 {
@@ -304,12 +301,6 @@ void MainWindow::onClick_Prufer_encode()
 void MainWindow::onClick_Prufer_decode()
 {
     menuPruferD->show();
-
-    if(verifiePruferDecode(p))
-    {
-        widgetGraph wg = d_g.englobe_Prufer_decode(p);
-        d_vue.metAJourGraphe();
-    }
 }
 
 void MainWindow::onClickDistance_INFO()
@@ -427,11 +418,44 @@ void MainWindow::onClickPrufer_decode_INFO()
     info->exec();
 }
 
-
-
-
-
-
+void MainWindow::onValiderAjout()
+{
+    cout<<"ID : "<<menuS->getId()<<endl;
+    cout<<"Poids : "<<menuS->getPoids()<<endl;
+    /*cout<<"Suc : ";
+    printVector()
+    cout<<"Pred : "<<menuS->getPred();*/
+}
+void MainWindow::onValiderPruferDecode()
+{
+    if(verifiePruferDecode(menuPruferD->getP()))
+    {
+        widgetGraph wg = d_g.englobe_Prufer_decode(menuPruferD->getP());
+        d_vue.metAJourGraphe();
+    }
+}
+void MainWindow::onValiderDijkstra()
+{
+    vector<int> d, pr;
+    if(verifieDijkstra(menuDijkstra->getSommet()))
+    {
+        d_g.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+    }
+    cout<<"Affichage de d : "<<endl;
+    printVector(d);
+    cout<<endl;
+    cout<<"Affichage de pr : "<<endl;
+    printVector(pr);
+    cout<<endl;
+}
+void MainWindow::onValiderOrdonnancement()
+{
+    if(verifieOrdonnancement(menuOrd->getDuree()))
+    {
+        widgetGraph wg = d_g.englobe_Ordonnancement(menuOrd->getDuree());
+        d_vue.metAJourGraphe();
+    }
+}
 
 
 

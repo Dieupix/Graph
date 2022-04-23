@@ -5,6 +5,7 @@ menuPruferDecode::menuPruferDecode(QMainWindow *parent) : QMainWindow{parent}, d
     d_vue.creeInterfacePruferDecode();
 
     connect(&d_vue, &vue::Valider_PruferDecode, this, &menuPruferDecode::onClick_valider);
+    connect(&d_vue, &vue::Quitter, this, &menuPruferDecode::close);
 }
 vector<int> menuPruferDecode::getP()
 {

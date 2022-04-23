@@ -15,6 +15,8 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
+    menudijkstra.cpp \
+    menuordonnancement.cpp \
     menupruferdecode.cpp \
     menusaisie.cpp \
     noeud.cpp \
@@ -31,6 +33,8 @@ HEADERS += \
     exceptions.h \
     graph.h \
     mainwindow.h \
+    menudijkstra.h \
+    menuordonnancement.h \
     menupruferdecode.h \
     menusaisie.h \
     noeud.h \
