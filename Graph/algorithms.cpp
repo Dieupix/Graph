@@ -152,6 +152,12 @@ void Dijkstra(const vector<int>& fs, const vector<int>& aps, const vector<vector
         }
 }
 
+void empiler (int x, vector<int>& pilch)
+{
+    pilch[x] = pilch[0];
+    pilch[0] = x;
+}
+
 void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps, const vector<int>& duree_taches, vector<int>& new_fs, vector<int>& new_aps)
 {
     ///Initialisation :
@@ -178,12 +184,6 @@ void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps, const
     printVector(new_fs);
     cout<<endl;
     printVector(new_aps);
-}
-
-void empiler (int x, vector<int>& pilch)
-{
-    pilch[x] = pilch[0];
-    pilch[0] = x;
 }
 
 void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem)
@@ -418,36 +418,6 @@ void printVector(const vector<int>& v)
     cout << v[i] << "]\n";
 }
 
-void Prufer_encode(vector<vector<int>> mat, vector<int>& p)
-{
-    unsigned n = mat[0][0];
-    p.clear();
-    p.resize(n-1);
-    p[0] = n-2;
-
-    for(unsigned i = 1; i <= n; ++i)
-    {
-        mat[i][0] = 0;
-        for(unsigned j = 1; j <= n; ++j)
-        {
-            mat[i][0] += mat[i][j];
-        }
-    }
-
-    for(unsigned k = 1; k <= n-2; ++k)
-    {
-        int i = 1, j = 1;
-        while(mat[i][0] != 1) ++i;
-        while(mat[i][j] != 1) ++j;
-
-        p[k] = j;
-        mat[i][j] = 0;
-        mat[j][i] = 0;
-        mat[i][0] = 0;
-        --mat[j][0];
-    }
-}
-
 void Prufer_decode(const vector<int>& p, vector<vector<int>>& mat)
 {
     unsigned m = p[0], n = m + 2;
@@ -487,6 +457,36 @@ void Prufer_decode(const vector<int>& p, vector<vector<int>>& mat)
                 mat[k][i] = 1;
             }
         }
+    }
+}
+
+void Prufer_encode(vector<vector<int>> mat, vector<int>& p)
+{
+    unsigned n = mat[0][0];
+    p.clear();
+    p.resize(n-1);
+    p[0] = n-2;
+
+    for(unsigned i = 1; i <= n; ++i)
+    {
+        mat[i][0] = 0;
+        for(unsigned j = 1; j <= n; ++j)
+        {
+            mat[i][0] += mat[i][j];
+        }
+    }
+
+    for(unsigned k = 1; k <= n-2; ++k)
+    {
+        int i = 1, j = 1;
+        while(mat[i][0] != 1) ++i;
+        while(mat[i][j] != 1) ++j;
+
+        p[k] = j;
+        mat[i][j] = 0;
+        mat[j][i] = 0;
+        mat[i][0] = 0;
+        --mat[j][0];
     }
 }
 

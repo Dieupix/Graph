@@ -47,6 +47,7 @@ void widgetGraph::setup()
     Graph g;
     g.ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
     g.ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
+    g.ajouterNoeud(Noeud(4), {0, 0, 1, 1, 0}, {0, 0, 1, 0, 0});
     loadGraph(g);
 }
 
@@ -121,7 +122,7 @@ void widgetGraph::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-    // Shadow
+    // Ombres
     QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
@@ -130,7 +131,7 @@ void widgetGraph::drawBackground(QPainter *painter, const QRectF &rect)
     if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
         painter->fillRect(bottomShadow, Qt::darkGray);
 
-    // Fill
+    // Remplissage
     QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
     gradient.setColorAt(0, Qt::white);
     gradient.setColorAt(1, Qt::lightGray);
@@ -138,11 +139,10 @@ void widgetGraph::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sceneRect);
 
-    // Text
+    // Texte
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
                     sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Click and drag the nodes around, and zoom with the mouse "
-                       "wheel or the '+' and '-' keys"));
+    QString message(tr("Cliquez et bouger les noeuds, zoomez avec la molette de la souris ou les boutons '+' et '-'"));
 
     QFont font = painter->font();
     font.setBold(true);
@@ -185,45 +185,45 @@ vector<int> widgetGraph::getAps()
 {
     return d_aps;
 }
+
 vector<vector<int>> widgetGraph::getCouts()
 {
     return d_couts;
 }
+
 vector<vector<int>> widgetGraph::getMatrice()
 {
     return d_matrice;
 }
+
 bool widgetGraph::getUsingFSandAPS()
 {
     return d_isUsingFsAndAps;
 }
 
-bool widgetGraph::verifieFS_APS_NonVide()
+void widgetGraph::englobe_Dantzig()
 {
-    if(d_fs.empty() || d_aps.empty())
+    vector<vector<int>> c;
+    if(Dantzig(c))
     {
-        return false;
+        d_couts.resize(c.size());
+        d_couts[0].resize(2);
+        for(unsigned i = 1 ; i < c.size() ;++i)
+            d_couts[i].resize(c[i].size());
+
+        for(unsigned i = 0 ; i < c.size() ; ++i)
+            for(unsigned j = 0 ; j < d_couts.size(); ++j)
+                d_couts[i][j] = c[i][j];
     }
-    return true;
 }
-bool widgetGraph::verifieMatrice_NonVide()
+
+void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int>& pr)
 {
-    if(d_matrice.empty())
-        return false;
-    else if(d_matrice[0].size() != 2)
+    if(!d_isUsingFsAndAps)
     {
-        return false;
+        transformeVersFS_APS();
     }
-    else
-    {
-        unsigned size = d_matrice[1].size();
-        for(unsigned i = 2 ; i < d_matrice.size() ; ++i)
-        {
-            if(d_matrice[i].size() != size)
-                return false;
-        }
-        return true;
-    }
+    Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
 }
 
 vector<vector<int>> widgetGraph::englobe_Distance()
@@ -235,6 +235,67 @@ vector<vector<int>> widgetGraph::englobe_Distance()
     }
     mat_distance(d_fs,d_aps,matriceDistance);
     return matriceDistance;
+}
+
+widgetGraph widgetGraph::englobe_Kruskal()
+{
+    widgetGraph wg;
+    Graph t;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersFS_APS();
+    }
+    Kruskal(this->toGraph(),t);
+    wg.loadGraph(t);
+    return wg;
+}
+
+widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
+{
+    vector<int> new_fs, new_aps;
+    vector<int> file_pred;
+    vector<int> adr_prem_pred;
+    vector<int> file_pred_critique;
+    vector<int> adr_prem_pred_critique;
+    vector<int> longueur_critique;
+    if(!d_isUsingFsAndAps)
+    {
+       transformeVersFS_APS();
+    }
+    transforme_FS_APS_TO_FP_APP(d_fs, d_aps, file_pred, adr_prem_pred);
+    Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+    transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
+
+    //Affichage de la longueur critique
+    //...
+    //printVector(longueur_critique);
+
+    widgetGraph new_wg(this);
+    new_wg.loadGraph(Graph{new_fs,new_aps});
+    return new_wg;
+}
+
+widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
+{
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersMatrice();
+    }
+    Prufer_decode(p,d_matrice);
+    widgetGraph new_wg(this);
+    new_wg.loadGraph(Graph{d_matrice});
+    return new_wg;
+}
+
+vector<int> widgetGraph::englobe_Prufer_encode()
+{
+    vector<int> p;
+    if(!d_isUsingFsAndAps)
+    {
+        transformeVersMatrice();
+    }
+    Prufer_encode(d_matrice,p);
+    return p;
 }
 
 vector<int> widgetGraph::englobe_Rang()
@@ -264,90 +325,33 @@ widgetGraph widgetGraph::englobe_Tarjan()
     return new_wg;
 }
 
-widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
+bool widgetGraph::verifieFS_APS_NonVide()
 {
-    vector<int> new_fs, new_aps;
-    vector<int> file_pred;
-    vector<int> adr_prem_pred;
-    vector<int> file_pred_critique;
-    vector<int> adr_prem_pred_critique;
-    vector<int> longueur_critique;
-    if(!d_isUsingFsAndAps)
+    if(d_fs.empty() || d_aps.empty())
     {
-       transformeVersFS_APS();
+        return false;
     }
-    transforme_FS_APS_TO_FP_APP(d_fs, d_aps, file_pred, adr_prem_pred);
-    Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
-    transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
-
-    //Affichage de la longueur critique
-    //...
-    //printVector(longueur_critique);
-
-    widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{new_fs,new_aps});
-    return new_wg;
+    return true;
 }
 
-void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int>& pr)
+bool widgetGraph::verifieMatrice_NonVide()
 {
-    if(!d_isUsingFsAndAps)
+    if(d_matrice.empty())
+        return false;
+    else if(d_matrice[0].size() != 2)
     {
-        transformeVersFS_APS();
+        return false;
     }
-    Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
-}
-
-void widgetGraph::englobe_Dantzig()
-{
-    vector<vector<int>> c;
-    if(Dantzig(c))
+    else
     {
-        d_couts.resize(c.size());
-        d_couts[0].resize(2);
-        for(unsigned i = 1 ; i < c.size() ;++i)
-            d_couts[i].resize(c[i].size());
-
-        for(unsigned i = 0 ; i < c.size() ; ++i)
-            for(unsigned j = 0 ; j < d_couts.size(); ++j)
-                d_couts[i][j] = c[i][j];
+        unsigned size = d_matrice[1].size();
+        for(unsigned i = 2 ; i < d_matrice.size() ; ++i)
+        {
+            if(d_matrice[i].size() != size)
+                return false;
+        }
+        return true;
     }
-}
-
-widgetGraph widgetGraph::englobe_Kruskal()
-{
-    widgetGraph wg;
-    Graph t;
-    if(!d_isUsingFsAndAps)
-    {
-        transformeVersFS_APS();
-    }
-    Kruskal(this->toGraph(),t);
-    wg.loadGraph(t);
-    return wg;
-}
-
-vector<int> widgetGraph::englobe_Prufer_encode()
-{
-    vector<int> p;
-    if(!d_isUsingFsAndAps)
-    {
-        transformeVersMatrice();
-    }
-    Prufer_encode(d_matrice,p);
-    return p;
-}
-
-widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
-{
-    if(!d_isUsingFsAndAps)
-    {
-        transformeVersMatrice();
-    }
-    Prufer_decode(p,d_matrice);
-    widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{d_matrice});
-    return new_wg;
 }
 
 void widgetGraph::loadFrom(std::istream& ist)
@@ -366,12 +370,14 @@ void widgetGraph::transformeVersMatrice()
     g.FS_APS_to_MatAdj(d_matrice);
     loadGraph(g);
 }
+
 void widgetGraph::transformeVersFS_APS()
 {
     Graph g = toGraph();
     g.matAdj_to_FS_APS(d_fs,d_aps);
     loadGraph(g);
 }
+
 void widgetGraph::loadGraph(const Graph& g)
 {
     d_aps = g.getAPS();

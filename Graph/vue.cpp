@@ -29,7 +29,7 @@ void vue::creeInterface()
     auto gwLayout = new QVBoxLayout();
     mainLayout->addLayout(gwLayout);
 
-    widgetGraph* gw = new widgetGraph();
+    auto gw = new widgetGraph(600);
     gwLayout->addWidget(gw);
     gw->show();
     //gw->close(); //pour fermer le graph

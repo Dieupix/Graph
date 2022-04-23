@@ -59,14 +59,15 @@ void widgetNode::calculateForces()
         xvel -= vec.x() / weight;
         yvel -= vec.y() / weight;
     }
-    if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1)
+    if (qAbs(xvel) < 0.5 && qAbs(yvel) < 0.5)
             xvel = yvel = 0;
     */
 
     QRectF sceneRect = scene()->sceneRect();
+    qreal adjust = 10.5;
     newPos = pos() + QPointF(xvel, yvel);
-    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
-    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
+    newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + adjust), sceneRect.right() - adjust));
+    newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + adjust), sceneRect.bottom() - adjust));
 }
 
 bool widgetNode::advancePosition()
@@ -156,6 +157,7 @@ void widgetNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+    graph->itemMoved();
 }
 
 
