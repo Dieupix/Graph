@@ -26,8 +26,8 @@ public:
     void metAJourNoeuds();
 
     int getPoids();
-    int getSuc();
-    int getPred();
+    vector<int> getSuc();
+    vector<int> getPred();
     int getId();
 
     vector<int> getP();

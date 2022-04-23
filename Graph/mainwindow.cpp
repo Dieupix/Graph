@@ -436,9 +436,10 @@ void MainWindow::onValiderAjout()
 {
     cout<<"ID : "<<menuS->getId()<<endl;
     cout<<"Poids : "<<menuS->getPoids()<<endl;
-    /*cout<<"Suc : ";
-    printVector()
-    cout<<"Pred : "<<menuS->getPred();*/
+    cout<<"Suc : ";
+    printVector(menuS->getSuc());
+    cout<<"Pred : ";
+    printVector(menuS->getPred());
 }
 
 

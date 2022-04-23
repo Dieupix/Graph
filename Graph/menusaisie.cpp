@@ -13,8 +13,8 @@ void menuSaisie::onClick_valider()
 {
     d_id = d_vue.getId();
     d_poids = d_vue.getPoids();
-    d_pred.push_back(d_vue.getPred());
-    d_suc.push_back(d_vue.getSuc());
+    d_pred = d_vue.getPred();
+    d_suc = d_vue.getSuc();
 
     emit envoieAjout();
 

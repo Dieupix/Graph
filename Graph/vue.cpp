@@ -426,14 +426,24 @@ int vue::getPoids()
     return this->d_poids->text().toInt();
 }
 
-int vue::getSuc()
+vector<int> vue::getSuc()
 {
-    return this->d_suc->text().toInt();
+    QString s = this->d_suc->text();
+    vector<int> suc;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        suc.push_back(list[i].toInt());
+    return suc;
 }
 
-int vue::getPred()
+vector<int> vue::getPred()
 {
-    return this->d_prec->text().toInt();
+    QString s = this->d_prec->text();
+    vector<int> prec;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        prec.push_back(list[i].toInt());
+    return prec;
 }
 
 int vue::getId()
