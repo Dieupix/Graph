@@ -3,9 +3,10 @@
 #include<QMessageBox>
 
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
+
 {
-    d_vue.creeInterface();
+    d_vue.creeInterface(d_wg);
     d_vue.metAJourGraphe();
 
     connect(&d_vue, &vue::OrienteeChange, this, &MainWindow::onCheck_OrienteeChange);

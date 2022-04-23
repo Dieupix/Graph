@@ -2,10 +2,10 @@
 
 menuAjout::menuAjout(QMainWindow *parent) : QMainWindow{parent}, d_vue{this}
 {
-     d_vue.creeInterfaceSaisie();
+    d_vue.creeInterfaceSaisie();
 
-     connect(&d_vue, &vue::Ajouter, this, &menuAjout::onClick_valider);
-     connect(&d_vue, &vue::Quitter, this, &menuAjout::close);
+    connect(&d_vue, &vue::Ajouter, this, &menuAjout::onClick_valider);
+    connect(&d_vue, &vue::Quitter, this, &menuAjout::close);
 
 }
 
