@@ -19,6 +19,7 @@ SOURCES += \
     menupruferdecode.cpp \
     menusupprimer.cpp \
     noeud.cpp \
+    saisiefsaps.cpp \
     test.cpp \
     vue.cpp \
     widgetedge.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     menupruferdecode.h \
     menusupprimer.h \
     noeud.h \
+    saisiefsaps.h \
     test.h \
     vue.h \
     widgetedge.h \

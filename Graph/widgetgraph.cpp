@@ -390,6 +390,7 @@ void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, cons
         }
     }
     nodes << node;
+    d_g.ajouterNoeud(noeud, pred, succ);
 }
 
 void widgetGraph::loadFrom(std::istream& ist)

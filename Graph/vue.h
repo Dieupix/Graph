@@ -23,6 +23,7 @@ public:
     void creeInterfaceSaisie();
     void creeInterfacePruferDecode();
     void creeInterfaceSupprimer();
+    void creeInterfaceSaisieFSAPS();
 
     void metAJourGraphe();
     void metAJourNoeuds();
@@ -50,19 +51,24 @@ private://FENETRE DONT ON GERE L'INTERFACE
 
     QLineEdit* d_p;
 
+    QLineEdit* d_idSuppr;
+
     void setupMenu();
     void setupMenuFichier();
     void setupMenuAlgo();
     void setupMenuInfo();
     void menuAjout();
     void fenetrePruferDecode();
+    void fenetreSaisieFSAPS();
+
 
     void fenetreMenuSupprimer();
 
 signals: //SIGNAUX EMIS
     void Quitter();
     void Charger();
-    void Saisie();
+    void SaisieMatrice();
+    void SaisieFSAPS();
     void Ajout();
     void Suppression();
     void OrienteeChange(bool estoriente);
@@ -78,7 +84,6 @@ signals: //SIGNAUX EMIS
     void AlgorithmeSelectionnePruferEncode();
     void AlgorithmeSelectionnePruferDecode();
 
-
     void InfoDistance();
     void InfoRang();
     void InfoTarjan();
@@ -90,11 +95,13 @@ signals: //SIGNAUX EMIS
     void InfoPrufer_decode();
 
     void Ajouter();
+    void saisieFSAPSValider();
 
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();
-    void onSaisie();
+    void onSaisieFSAPS();
+    void onSaisieMatrice();
     void onAjout();
     void onSuppression();
     void onDistance();
@@ -119,6 +126,7 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void oninfoPrufer_decode();
 
     void onAjouter();
+    void onSaisieFSAPSValider();
 };
 
 #endif // VUE_H

@@ -47,6 +47,18 @@ void vue::creeInterfaceSaisie()
     menuAjout();
 }
 
+void vue::creeInterfaceSaisieFSAPS()
+{
+    d_fenetre->setWindowTitle("Saisir graph FS/APS");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreSaisieFSAPS();
+}
+
 void vue::creeInterfaceSupprimer()
 {
     d_fenetre->setWindowTitle("Supprimer Noeud");
@@ -87,10 +99,17 @@ void vue::setupMenuFichier()
     menuGraph->addAction(actionCharger);
     connect(actionCharger, &QAction::triggered, this, &vue::onCharger);
 
-    auto actionSaisie = new QAction{"Saisie"};
-    actionSaisie->setToolTip("Saisir graph");
-    menuGraph->addAction(actionSaisie);
-    connect(actionSaisie, &QAction::triggered, this, &vue::onSaisie);
+    auto sousMenuSaisie = menuGraph->addMenu("Saisie");
+
+    auto actionSaisieFSAPS = new QAction{"Via FS/APS"};
+    actionSaisieFSAPS->setToolTip("FS/APS");
+    sousMenuSaisie->addAction(actionSaisieFSAPS);
+    connect(actionSaisieFSAPS, &QAction::triggered, this, &vue::onSaisieFSAPS);
+
+    auto actionSaisieMatrice = new QAction{"Via Matrice"};
+    actionSaisieMatrice->setToolTip("Matrice");
+    sousMenuSaisie->addAction(actionSaisieMatrice);
+    connect(actionSaisieMatrice, &QAction::triggered, this, &vue::onSaisieMatrice);
 
     menuGraph->addSeparator();
 
@@ -272,6 +291,28 @@ void vue::menuAjout()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 }
+
+void vue::fenetreSaisieFSAPS()
+{
+    auto mainLayout = new QVBoxLayout;
+
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton("Valider");
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onSaisieFSAPSValider);
+
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
+    layoutBas->addWidget(boutonQuitter);
+
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+
 void vue::fenetrePruferDecode()
 {
     auto layoutBas = new QHBoxLayout{};
@@ -324,6 +365,9 @@ void vue::fenetreMenuSupprimer()
     auto labelId = new QLabel("Identifiant du noeud");
     layoutId->addWidget(labelId,1);
 
+    d_idSuppr = new QLineEdit{};
+    layoutId->addWidget(d_idSuppr);
+
     mainLayout->addLayout(layoutId);
     mainLayout->addLayout(layoutBas);
     //mainLayout->addLayout(layoutInfo);
@@ -353,9 +397,14 @@ void vue::onCharger()
     emit Charger();
 }
 
-void vue::onSaisie()
+void vue::onSaisieFSAPS()
 {
-    emit Saisie();
+    emit SaisieFSAPS();
+}
+
+void vue::onSaisieMatrice()
+{
+    emit SaisieMatrice();
 }
 
 void vue::onAjout()
@@ -431,6 +480,11 @@ void vue::oninfoTarjan()
 void vue::oninfoOrdonnancement()
 {
     emit InfoOrdonnancement();
+}
+
+void vue::onSaisieFSAPSValider()
+{
+    emit saisieFSAPSValider();
 }
 
 void vue::oninfoDijkstra()

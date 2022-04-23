@@ -3,7 +3,7 @@
 #include<QMessageBox>
 
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}
 
 {
     d_vue.creeInterface(d_wg);
@@ -15,7 +15,8 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 
     connect(&d_vue, &vue::Quitter, this, &MainWindow::close);
     connect(&d_vue, &vue::Charger, this, &MainWindow::charge);
-    connect(&d_vue, &vue::Saisie, this, &MainWindow::saisie);
+    connect(&d_vue, &vue::SaisieFSAPS, this, &MainWindow::saisieFSAPS);
+    connect(&d_vue, &vue::SaisieMatrice, this, &MainWindow::saisieMatrice);
     connect(&d_vue, &vue::Ajout, this, &MainWindow::ajoute);
     connect(&d_vue, &vue::Suppression, this, &MainWindow::supprime);
 
@@ -203,15 +204,21 @@ void MainWindow::charge()
     //d_wg.loadFrom();
 }
 
-void MainWindow::saisie()
+void MainWindow::saisieMatrice()
 {
     //Saisie d'un widgetGraph
     //Ajouter un ostream
     //d_wg.save();
-
-
-
 }
+
+void MainWindow::saisieFSAPS()
+{
+    //Saisie d'un widgetGraph
+    //Ajouter un ostream
+    //d_wg.save();
+    menuFSAPS->show();
+}
+
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
@@ -451,7 +458,7 @@ void MainWindow::onValiderAjout()
     int k2 = 1;
 
 
-    int nbNoeud = 6;//d_wg.getAps()[0] + 2;
+    int nbNoeud = d_wg.getAps()[0] + 2;
 
     for(int i = 0; i < nbNoeud; i++)
     {
@@ -470,7 +477,6 @@ void MainWindow::onValiderAjout()
         else
             Suc.push_back(0);
     }
-
     printVector(menuPred);
     printVector(Suc);
     printVector(Pred);
