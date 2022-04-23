@@ -1,5 +1,40 @@
 #include "algorithms.h"
 
+bool Dantzig(vector<vector<int>>& c)
+{
+    //Initialisation
+    int n = c[0][0];
+    int k, i, j;
+    double x;
+
+    for(k = 1 ; k < n ; ++k)
+    {
+        for( i = 1 ; i <= k ; ++i)
+        {
+            for(j = 1 ; j <= k ; ++j)
+            {
+                if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
+                    c[i][k+1] = x;
+
+                if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
+                    c[k+1][i] = x;
+            }
+            if(c[i][k+1] + c[k+1][i] < 0)
+            {
+                cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
+                return false;
+            }
+        }
+        for(i = 1 ; i <= k ; ++i)
+            for( j = 1 ; j <= k ; ++j)
+            {
+                if( (x = c[i][k+1] + c[k+1][j]) < c[i][j])
+                    c[i][j] = x;
+            }
+    }
+    return true;
+}
+
 void demi_degre_interieur(const vector<int>& FS, const vector<int>& APS, vector<int> &DDI)
 {
     DDI.resize(APS[0] + 1);
@@ -62,6 +97,89 @@ void descente_largeur(int r,const vector<int>& fs, const vector<int>& aps, vecto
     }
 }
 
+void Dijkstra(const vector<int>& fs, const vector<int>& aps, const vector<vector<int>>& p, int s, vector<int> &d, vector<int> &pr)
+{
+        int ind;
+        int i, j, k, v;
+        int n = aps[0];
+        int m = fs[0];
+        pr.resize(n+1, 0);
+        d.resize(n+1, 0);
+        vector<int> inS(n+1);
+
+        for(i = 1; i <= n; i++)
+        {
+            d[i] = p[s][i];
+            inS[i] = 1;
+            pr[i] = s;
+        }
+
+        d[s] = 0;
+        inS[s] = 0;
+        ind = n-1;
+        while(ind > 0)
+        {
+            m = 100;
+            for(i = 1; i <= n; i++)
+            {
+                if(inS[i] == 1)
+                {
+                    if(d[i] > 0 and d[i] < m)
+                    {
+                        m = d[i];
+                        j = i;
+                    }
+                }
+            }
+            if(m == 100)
+                    return;
+            inS[j] = 0;
+            --ind;
+            k = aps[j];
+            while(fs[k] != 0)
+            {
+                if(inS[fs[k]] == 1)
+                {
+                    v = d[j] + p[j][fs[k]];
+                    if(d[fs[k]] == -1 or v < d[fs[k]])
+                    {
+                        d[fs[k]] = v;
+                        pr[fs[k]] = j;
+                    }
+                }
+                k++;
+            }
+        }
+}
+
+void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps, const vector<int>& duree_taches, vector<int>& new_fs, vector<int>& new_aps)
+{
+    ///Initialisation :
+    vector<int> file_pred;
+    vector<int> adr_prem_pred;
+    vector<int> file_pred_critique;
+    vector<int> adr_prem_pred_critique;
+    vector<int> longueur_critique;
+
+    ///Tranformation de fs/pas --> fp/app :
+    transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
+
+    Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+
+    cout<<"Longueur critique : "<<endl;
+    printVector(longueur_critique);
+    cout<<endl;
+    cout<<endl;
+
+    ///Transformation de fp/app --> fs/aps :
+    transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
+
+    cout<<"Nouveau FS & APS : "<<endl;
+    printVector(new_fs);
+    cout<<endl;
+    printVector(new_aps);
+}
+
 void empiler (int x, vector<int>& pilch)
 {
     pilch[x] = pilch[0];
@@ -110,6 +228,126 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     cout << "ro:    "; printVector(ro);
 }
 
+void Kruskal(const Graph& g, Graph &t)
+{
+        //TRANSFORMATION DU GRAPH AVEC LA STRUCTURE VOULU
+        typedef struct {
+            int s;
+            int t;
+            double p;
+        } arete;
+        typedef struct {
+            int n;
+            int m;
+            vector<arete> a;
+        } graphe;
+
+        arete ar;
+        graphe graphReturn;
+        vector<int> FS  = g.getFS();
+        vector<int> APS = g.getAPS();
+        graphReturn.n = APS.size();
+        vector<vector<int>> cout = g.getCouts();
+        int j = 1;
+
+        for(unsigned i = 1; i < APS.size(); i++)
+        {
+            while(FS[j] != 0)
+            {
+                ar.s = FS[j];
+                ar.t = i+1;
+                ar.p = cout[i][FS[j]-1];
+
+                graphReturn.a.push_back(ar);
+                j++;
+            }
+            j++;
+        }
+        graphReturn.m = graphReturn.a.size();
+
+        //TRIE DU GRAPHE EN FONCTION DES COUTS ET DES ARRETES
+        double p;
+            for (int i = 0; i < graphReturn.m - 1; i++)
+                for (int j = i + 1; j < graphReturn.m; j++)
+                    if ((graphReturn.a[j].p < graphReturn.a[i].p) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].s < graphReturn.a[i].t) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].t < graphReturn.a[i].t))
+                    {
+                        p = graphReturn.a[j].p;
+                        graphReturn.a[j].p = graphReturn.a[i].p;
+                        graphReturn.a[i].p = p;
+                    }
+
+        //INITIALISATION DES DONNEES
+        int n = graphReturn.n;
+        int *prem = new int[n + 1];
+        int *pilch = new int[n + 1];
+        int *cfc = new int[n + 1];
+        int *NbElem = new int[n + 1];
+        for(int i = 1; i <= n; i++)
+        {
+            prem[i] = i;
+            pilch[i] = 0;
+            cfc[i] = i;
+            NbElem[i] = 1;
+        }
+
+        //KRUSKAL
+        graphe GraphFinal;
+        GraphFinal.a.resize(n-1);
+        int x;
+        int y;
+        int i = 0; int cpt = 0;
+        while(cpt < n-1)
+        {
+            arete ar = graphReturn.a[i];
+            x = cfc[ar.s];
+            y = cfc[ar.t];
+            if(x != y)
+            {
+                GraphFinal.a[cpt++] = graphReturn.a[i];
+                if(NbElem[i] < NbElem[cpt])
+                {
+                    int aux = i;
+                    i = cpt;
+                    cpt = aux;
+                }
+                int s = prem[cpt];
+                cfc[s] = i;
+                while(pilch[s] != 0)
+                {
+                    s = pilch[s];
+                    cfc[s] = i;
+                }
+                pilch[s] = prem[i];
+                prem[i] = prem[cpt];
+                NbElem[i] += NbElem[cpt];
+            }
+            i++;
+        }
+        GraphFinal.n = graphReturn.n;
+        GraphFinal.m = graphReturn.n - 1;
+
+        vector<vector<int>> matriceCout(APS[0]);
+        vector<vector<int>> matrice(APS[0]);
+        for(unsigned i = 0; i < matrice.size(); i++)
+        {
+            matrice[i].resize(APS[0]);
+            for(unsigned j = 0; j < matrice[i].size(); j++)
+            {
+                vector<vector<int>> matriceCout(APS[0]);
+                matrice[i][j] = 0;
+            }
+        }
+
+        for(unsigned i = 0; i < GraphFinal.a.size(); i++)
+        {
+            matriceCout[GraphFinal.a[i].s][GraphFinal.a[i].t] = GraphFinal.a[i].p;
+            matrice[GraphFinal.a[i].s][GraphFinal.a[i].t] = 1;
+        }
+
+        t.setMatrice(matrice);
+        t.setCout(matriceCout);
+}
+
 void mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<int>>& matriceDistance)
 {
     int n = APS[0];
@@ -119,6 +357,54 @@ void mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<i
         descente_largeur(r,FS,APS,matriceDistance[r]);
     }
     matriceDistance[0][0] = n;
+}
+
+void Ordonnancement(const vector<int> file_pred, const vector<int> adr_prem_pred, const vector<int> duree_taches, vector<int>& file_pred_critique, vector<int>& adr_prem_pred_critique, vector<int>& longueur_critique)
+{
+    int n = adr_prem_pred[0];
+    int m = file_pred[0];
+
+    file_pred_critique.resize(m+1);
+    adr_prem_pred_critique.resize(n+1);
+
+    adr_prem_pred_critique[0] = n;
+
+    longueur_critique.resize(n+1);
+    longueur_critique[0] = n;
+
+    int kc = 1; //Indice de la dernière place remplie dans fpc
+    int t, lg; //la longueur lg de la tâche t
+    longueur_critique[1] = 0;
+    file_pred_critique[1] = 0; //Fin de la liste
+    adr_prem_pred_critique[1] = 1;
+
+    for(int s = 2 ; s <= n ; ++s)
+    {
+        //Calcul de lc[s] en fonction des prédecesseurs critiques de s
+        longueur_critique[s] = 0;
+        adr_prem_pred_critique[s] = kc+1; //Début de la liste des prédecesseurs critiques de s
+        for(int k = adr_prem_pred[s] ; (t = file_pred[k]) != 0 ; ++k)
+        {
+            lg = longueur_critique[t] + duree_taches[t];
+            if(lg >= longueur_critique[s])
+            {
+                if(lg > longueur_critique[s])
+                {
+                    longueur_critique[s] = lg; //Nouvelle lg candidate à être critique
+                    kc = adr_prem_pred_critique[s] ;
+                    file_pred_critique[kc] = t;
+                }
+                else //lg == lc[s]
+                {
+                    ++kc;
+                    file_pred_critique[kc] = t;
+                }
+            }
+        }
+        ++kc;
+        file_pred_critique[kc] = 0; //Fin de la liste des prédecesseurs critiques de s
+    }
+    file_pred_critique[0] = kc;
 }
 
 void printVector(const vector<int>& v)
@@ -335,107 +621,6 @@ void traversee(int s, int& p, int& k, const vector<int>& FS, const vector<int>& 
     }
 }
 
-void Ordonnancement(const vector<int> file_pred, const vector<int> adr_prem_pred, const vector<int> duree_taches, vector<int>& file_pred_critique, vector<int>& adr_prem_pred_critique, vector<int>& longueur_critique)
-{
-    int n = adr_prem_pred[0];
-    int m = file_pred[0];
-
-    file_pred_critique.resize(m+1);
-    adr_prem_pred_critique.resize(n+1);
-
-    adr_prem_pred_critique[0] = n;
-
-    longueur_critique.resize(n+1);
-    longueur_critique[0] = n;
-
-    int kc = 1; //Indice de la dernière place remplie dans fpc
-    int t, lg; //la longueur lg de la tâche t
-    longueur_critique[1] = 0;
-    file_pred_critique[1] = 0; //Fin de la liste
-    adr_prem_pred_critique[1] = 1;
-
-    for(int s = 2 ; s <= n ; ++s)
-    {
-        //Calcul de lc[s] en fonction des prédecesseurs critiques de s
-        longueur_critique[s] = 0;
-        adr_prem_pred_critique[s] = kc+1; //Début de la liste des prédecesseurs critiques de s
-        for(int k = adr_prem_pred[s] ; (t = file_pred[k]) != 0 ; ++k)
-        {
-            lg = longueur_critique[t] + duree_taches[t];
-            if(lg >= longueur_critique[s])
-            {
-                if(lg > longueur_critique[s])
-                {
-                    longueur_critique[s] = lg; //Nouvelle lg candidate à être critique
-                    kc = adr_prem_pred_critique[s] ;
-                    file_pred_critique[kc] = t;
-                }
-                else //lg == lc[s]
-                {
-                    ++kc;
-                    file_pred_critique[kc] = t;
-                }
-            }
-        }
-        ++kc;
-        file_pred_critique[kc] = 0; //Fin de la liste des prédecesseurs critiques de s
-    }
-    file_pred_critique[0] = kc;
-}
-
-
-void englobe_ordonnancement(const vector<int>& fs, const vector<int>& aps, const vector<int>& duree_taches, vector<int>& new_fs, vector<int>& new_aps)
-{
-    ///Initialisation :
-    vector<int> file_pred;
-    vector<int> adr_prem_pred;
-    vector<int> file_pred_critique;
-    vector<int> adr_prem_pred_critique;
-    vector<int> longueur_critique;
-
-    ///Tranformation de fs/pas --> fp/app :
-    transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
-
-    Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
-
-    cout<<"Longueur critique : "<<endl;
-    printVector(longueur_critique);
-    cout<<endl;
-    cout<<endl;
-
-    ///Transformation de fp/app --> fs/aps :
-    transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
-
-    cout<<"Nouveau FS & APS : "<<endl;
-    printVector(new_fs);
-    cout<<endl;
-    printVector(new_aps);
-}
-
-void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app)
-{
-    int n = aps[0] ;
-    app.push_back(n);
-    fp.push_back(fs[0]);
-    for(int i = 1 ; i <= n ; ++i)
-    {
-        app.push_back(fp.size());
-        for(int j = 1 ; j <= fs[0] ; ++j)
-        {
-            if(fs[j] == i)
-            {
-                int k = 1;
-                while(aps[k] <= j)
-                {
-                    k++;
-                }
-                fp.push_back(k-1);
-            }
-        }
-        fp.push_back(0);
-    }
-}
-
 void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, vector<int>& fs, vector<int>& aps)
 {
     int n = app[0];
@@ -462,214 +647,28 @@ void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, 
     }
 }
 
-bool Dantzig(vector<vector<int>>& c)
+void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app)
 {
-    //Initialisation
-    int n = c[0][0];
-    int k, i, j;
-    double x;
-
-    for(k = 1 ; k < n ; ++k)
+    int n = aps[0] ;
+    app.push_back(n);
+    fp.push_back(fs[0]);
+    for(int i = 1 ; i <= n ; ++i)
     {
-        for( i = 1 ; i <= k ; ++i)
+        app.push_back(fp.size());
+        for(int j = 1 ; j <= fs[0] ; ++j)
         {
-            for(j = 1 ; j <= k ; ++j)
+            if(fs[j] == i)
             {
-                if((x = c[i][j] + c[j][k+1]) < c[i][k+1])
-                    c[i][k+1] = x;
-
-                if((x = c[k+1][j] + c[j][i]) < c[k+1][i])
-                    c[k+1][i] = x;
-            }
-            if(c[i][k+1] + c[k+1][i] < 0)
-            {
-                cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
-                return false;
+                int k = 1;
+                while(aps[k] <= j)
+                {
+                    k++;
+                }
+                fp.push_back(k-1);
             }
         }
-        for(i = 1 ; i <= k ; ++i)
-            for( j = 1 ; j <= k ; ++j)
-            {
-                if( (x = c[i][k+1] + c[k+1][j]) < c[i][j])
-                    c[i][j] = x;
-            }
+        fp.push_back(0);
     }
-    return true;
-}
-
-void Kruskal(const Graph& g, Graph &t)
-{
-        //TRANSFORMATION DU GRAPH AVEC LA STRUCTURE VOULU
-        typedef struct {
-            int s;
-            int t;
-            double p;
-        } arete;
-        typedef struct {
-            int n;
-            int m;
-            vector<arete> a;
-        } graphe;
-
-        arete ar;
-        graphe graphReturn;
-        vector<int> FS  = g.getFS();
-        vector<int> APS = g.getAPS();
-        graphReturn.n = APS.size();
-        vector<vector<int>> cout = g.getCouts();
-        int j = 1;
-
-        for(unsigned i = 1; i < APS.size(); i++)
-        {
-            while(FS[j] != 0)
-            {
-                ar.s = FS[j];
-                ar.t = i+1;
-                ar.p = cout[i][FS[j]-1];
-
-                graphReturn.a.push_back(ar);
-                j++;
-            }
-            j++;
-        }
-        graphReturn.m = graphReturn.a.size();
-
-        //TRIE DU GRAPHE EN FONCTION DES COUTS ET DES ARRETES
-        double p;
-            for (int i = 0; i < graphReturn.m - 1; i++)
-                for (int j = i + 1; j < graphReturn.m; j++)
-                    if ((graphReturn.a[j].p < graphReturn.a[i].p) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].s < graphReturn.a[i].t) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].t < graphReturn.a[i].t))
-                    {
-                        p = graphReturn.a[j].p;
-                        graphReturn.a[j].p = graphReturn.a[i].p;
-                        graphReturn.a[i].p = p;
-                    }
-
-        //INITIALISATION DES DONNEES
-        int n = graphReturn.n;
-        int *prem = new int[n + 1];
-        int *pilch = new int[n + 1];
-        int *cfc = new int[n + 1];
-        int *NbElem = new int[n + 1];
-        for(int i = 1; i <= n; i++)
-        {
-            prem[i] = i;
-            pilch[i] = 0;
-            cfc[i] = i;
-            NbElem[i] = 1;
-        }
-
-        //KRUSKAL
-        graphe GraphFinal;
-        GraphFinal.a.resize(n-1);
-        int x;
-        int y;
-        int i = 0; int cpt = 0;
-        while(cpt < n-1)
-        {
-            arete ar = graphReturn.a[i];
-            x = cfc[ar.s];
-            y = cfc[ar.t];
-            if(x != y)
-            {
-                GraphFinal.a[cpt++] = graphReturn.a[i];
-                if(NbElem[i] < NbElem[cpt])
-                {
-                    int aux = i;
-                    i = cpt;
-                    cpt = aux;
-                }
-                int s = prem[cpt];
-                cfc[s] = i;
-                while(pilch[s] != 0)
-                {
-                    s = pilch[s];
-                    cfc[s] = i;
-                }
-                pilch[s] = prem[i];
-                prem[i] = prem[cpt];
-                NbElem[i] += NbElem[cpt];
-            }
-            i++;
-        }
-        GraphFinal.n = graphReturn.n;
-        GraphFinal.m = graphReturn.n - 1;
-
-        vector<vector<int>> matriceCout(APS[0]);
-        vector<vector<int>> matrice(APS[0]);
-        for(unsigned i = 0; i < matrice.size(); i++)
-        {
-            matrice[i].resize(APS[0]);
-            for(unsigned j = 0; j < matrice[i].size(); j++)
-            {
-                vector<vector<int>> matriceCout(APS[0]);
-                matrice[i][j] = 0;
-            }
-        }
-
-        for(unsigned i = 0; i < GraphFinal.a.size(); i++)
-        {
-            matriceCout[GraphFinal.a[i].s][GraphFinal.a[i].t] = GraphFinal.a[i].p;
-            matrice[GraphFinal.a[i].s][GraphFinal.a[i].t] = 1;
-        }
-
-        t.setMatrice(matrice);
-        t.setCout(matriceCout);
-}
-
-void Dijkstra(const vector<int>& fs, const vector<int>& aps, const vector<vector<int>>& p, int s, vector<int> &d, vector<int> &pr)
-{
-        int ind;
-        int i, j, k, v;
-        int n = aps[0];
-        int m = fs[0];
-        pr.resize(n+1, 0);
-        d.resize(n+1, 0);
-        vector<int> inS(n+1);
-
-        for(i = 1; i <= n; i++)
-        {
-            d[i] = p[s][i];
-            inS[i] = 1;
-            pr[i] = s;
-        }
-
-        d[s] = 0;
-        inS[s] = 0;
-        ind = n-1;
-        while(ind > 0)
-        {
-            m = 100;
-            for(i = 1; i <= n; i++)
-            {
-                if(inS[i] == 1)
-                {
-                    if(d[i] > 0 and d[i] < m)
-                    {
-                        m = d[i];
-                        j = i;
-                    }
-                }
-            }
-            if(m == 100)
-                    return;
-            inS[j] = 0;
-            --ind;
-            k = aps[j];
-            while(fs[k] != 0)
-            {
-                if(inS[fs[k]] == 1)
-                {
-                    v = d[j] + p[j][fs[k]];
-                    if(d[fs[k]] == -1 or v < d[fs[k]])
-                    {
-                        d[fs[k]] = v;
-                        pr[fs[k]] = j;
-                    }
-                }
-                k++;
-            }
-        }
 }
 
 
