@@ -20,11 +20,12 @@ public:
 
     widgetGraph(const widgetGraph& wg);
 
-    vector<int>         getFs();
-    vector<int>         getAps();
-    vector<vector<int>> getCouts();
-    vector<vector<int>> getMatrice();
-    bool                getUsingFSandAPS();
+    vector<int>         getFs() const;
+    vector<int>         getAps() const;
+    vector<vector<int>> getCouts() const;
+    vector<vector<int>> getMatrice() const;
+    bool                getUsingFSandAPS() const;
+    Graph               getGraph() const;
 
     void                englobe_Dantzig         ();
     void                englobe_Dijkstra        (int sommet_depart,vector<int>& d, vector<int>& pr);
@@ -58,15 +59,11 @@ protected:
 #endif
 
 private:
-    vector<int>         d_fs;
-    vector<int>         d_aps;
-    vector<vector<int>> d_matrice;
-    vector<vector<int>> d_couts;
-    bool                d_isUsingFsAndAps;
+    Graph d_g;
 
-    QGraphicsScene*     scene;
-    unsigned            sceneSizeW, sceneSizeH;
-    int                 timerId = 0;
+    QGraphicsScene* scene;
+    unsigned        sceneSizeW, sceneSizeH;
+    int             timerId = 0;
 
     QList<widgetNode*>  nodes;
     widgetNode*         centerNode;

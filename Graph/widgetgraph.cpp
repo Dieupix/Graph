@@ -39,8 +39,8 @@ void widgetGraph::setup()
     scene->setSceneRect(-(int)sceneSizeW, -(int)sceneSizeH / 2, sceneSizeW * 2, sceneSizeH);
     setScene(scene);
 
-    Graph g;
-    loadGraph(g);
+    d_g = Graph();
+    loadGraph(d_g);
 
     // Exemple
     //const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
@@ -175,31 +175,43 @@ void widgetGraph::zoomOut()
 }
 
 void widgetGraph::shuffle()
-{}
-
-vector<int> widgetGraph::getFs()
 {
-    return d_fs;
+    Noeud noeud(nodes.back()->getNoeud()->getId()+1);
+    vector<int> pred(d_g.getAPS()[0]+1, 0), succ(d_g.getAPS()[0]+1, 0);
+
+    pred[1] = succ[1] = 1;
+
+    ajouterNoeud(noeud, pred, succ);
 }
 
-vector<int> widgetGraph::getAps()
+vector<int> widgetGraph::getFs() const
 {
-    return d_aps;
+    return d_g.getFS();
 }
 
-vector<vector<int>> widgetGraph::getCouts()
+vector<int> widgetGraph::getAps() const
 {
-    return d_couts;
+    return d_g.getAPS();
 }
 
-vector<vector<int>> widgetGraph::getMatrice()
+vector<vector<int>> widgetGraph::getCouts() const
 {
-    return d_matrice;
+    return d_g.getCouts();
 }
 
-bool widgetGraph::getUsingFSandAPS()
+vector<vector<int>> widgetGraph::getMatrice() const
 {
-    return d_isUsingFsAndAps;
+    return d_g.getMatAdj();
+}
+
+bool widgetGraph::getUsingFSandAPS() const
+{
+    return d_g.isUsingFsAndAps();
+}
+
+Graph widgetGraph::getGraph() const
+{
+    return d_g;
 }
 
 void widgetGraph::englobe_Dantzig()
@@ -207,34 +219,27 @@ void widgetGraph::englobe_Dantzig()
     vector<vector<int>> c;
     if(Dantzig(c))
     {
-        d_couts.resize(c.size());
-        d_couts[0].resize(2);
-        for(unsigned i = 1 ; i < c.size() ;++i)
-            d_couts[i].resize(c[i].size());
-
-        for(unsigned i = 0 ; i < c.size() ; ++i)
-            for(unsigned j = 0 ; j < d_couts.size(); ++j)
-                d_couts[i][j] = c[i][j];
+        d_g.setCout(c);
     }
 }
 
 void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int>& pr)
 {
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    Dijkstra(d_fs,d_aps,d_couts,sommet_depart,d,pr);
+    Dijkstra(d_g.getFS(),d_g.getAPS(),d_g.getCouts(),sommet_depart,d,pr);
 }
 
 vector<vector<int>> widgetGraph::englobe_Distance()
 {
     vector<vector<int>> matriceDistance;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    mat_distance(d_fs,d_aps,matriceDistance);
+    mat_distance(d_g.getFS(),d_g.getAPS(),matriceDistance);
     return matriceDistance;
 }
 
@@ -242,11 +247,11 @@ widgetGraph widgetGraph::englobe_Kruskal()
 {
     widgetGraph wg;
     Graph t;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    Kruskal(this->toGraph(),t);
+    Kruskal(d_g,t);
     wg.loadGraph(t);
     return wg;
 }
@@ -259,11 +264,11 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
     vector<int> longueur_critique;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
        transformeVersFS_APS();
     }
-    transforme_FS_APS_TO_FP_APP(d_fs, d_aps, file_pred, adr_prem_pred);
+    transforme_FS_APS_TO_FP_APP(d_g.getFS(), d_g.getAPS(), file_pred, adr_prem_pred);
     Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
 
@@ -278,46 +283,49 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
 
 widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 {
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersMatrice();
     }
-    Prufer_decode(p,d_matrice);
+
+    vector<vector<int>> mat;
+    Prufer_decode(p, mat);
+
     widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{d_matrice});
+    new_wg.loadGraph(Graph{mat});
     return new_wg;
 }
 
 vector<int> widgetGraph::englobe_Prufer_encode()
 {
     vector<int> p;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersMatrice();
     }
-    Prufer_encode(d_matrice,p);
+    Prufer_encode(d_g.getMatAdj(), p);
     return p;
 }
 
 vector<int> widgetGraph::englobe_Rang()
 {
     vector<int> rg;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    rang(rg,d_fs,d_aps);
+    rang(rg,d_g.getFS(),d_g.getAPS());
     return rg;
 }
 
 widgetGraph widgetGraph::englobe_Tarjan()
 {
     vector<int> cfc, pilch, pred, prem;
-    if(!d_isUsingFsAndAps)
+    if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    fortconnexe(d_fs,d_aps,cfc,pilch,pred,prem);
+    fortconnexe(d_g.getFS(),d_g.getAPS(),cfc,pilch,pred,prem);
     //Ecrire une fonction qui transforme en un nouveau widgetGraph
     vector<vector<int>> mat;
     Graph g{mat};
@@ -328,7 +336,7 @@ widgetGraph widgetGraph::englobe_Tarjan()
 
 bool widgetGraph::verifieFS_APS_NonVide()
 {
-    if(d_fs.empty() || d_aps.empty())
+    if(d_g.getFS().empty() || d_g.getAPS().empty())
     {
         return false;
     }
@@ -337,18 +345,18 @@ bool widgetGraph::verifieFS_APS_NonVide()
 
 bool widgetGraph::verifieMatrice_NonVide()
 {
-    if(d_matrice.empty())
+    if(d_g.getMatAdj().empty())
         return false;
-    else if(d_matrice[0].size() != 2)
+    else if(d_g.getMatAdj()[0].size() != 2)
     {
         return false;
     }
     else
     {
-        unsigned size = d_matrice[1].size();
-        for(unsigned i = 2 ; i < d_matrice.size() ; ++i)
+        unsigned size = d_g.getMatAdj()[1].size();
+        for(unsigned i = 2 ; i < d_g.getMatAdj().size() ; ++i)
         {
-            if(d_matrice[i].size() != size)
+            if(d_g.getMatAdj()[i].size() != size)
                 return false;
         }
         return true;
@@ -357,23 +365,14 @@ bool widgetGraph::verifieMatrice_NonVide()
 
 void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
-    /*if(d_isUsingFsAndAps)
-    {
-        Graph g(d_fs, d_aps);
-        g.ajouterNoeud(noeud, pred, succ);
-        loadGraph(g);
-
-    } else
-    {
-        Graph g(d_matrice);
-        g.ajouterNoeud(noeud, pred, succ);
-        loadGraph(g);
-    }*/
-
     auto node = new widgetNode(this, noeud);
     scene->addItem(node);
-    if(nodes.size() != 0) node->setPos(nodes[nodes.size()-1]->getNoeud()->getId() * 30, nodes.size() * 30);
-    else node->setPos(0, 0);
+    if(nodes.size() != 0)
+    {
+        auto p = nodes.back()->pos();
+        node->setPos(p.x() + 50, std::pow(-1, nodes.back()->getNoeud()->getId()) * 50 + p.y());
+    }
+    else node->setPos(0, 50);
 
     for(unsigned i = 0; i < nodes.size(); ++i)
     {
@@ -395,35 +394,28 @@ void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, cons
 
 void widgetGraph::loadFrom(std::istream& ist)
 {
-    Graph g;
-    g.loadFrom(ist);
-    d_fs = g.getFS();
-    d_aps = g.getAPS();
-    d_matrice = g.getMatAdj();
-    d_couts = g.getCouts();
+    d_g.loadFrom(ist);
 }
 
 void widgetGraph::transformeVersMatrice()
 {
-    Graph g = toGraph();
-    g.FS_APS_to_MatAdj(d_matrice);
-    loadGraph(g);
+    vector<vector<int>> matrice;
+    d_g.FS_APS_to_MatAdj(matrice);
+
+    d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
 }
 
 void widgetGraph::transformeVersFS_APS()
 {
-    Graph g = toGraph();
-    g.matAdj_to_FS_APS(d_fs,d_aps);
-    loadGraph(g);
+    vector<int> fs, aps;
+    d_g.matAdj_to_FS_APS(fs,aps);
+
+    d_g = Graph(fs, aps, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
 }
 
 void widgetGraph::loadGraph(const Graph& g)
 {
-    d_aps = g.getAPS();
-    d_fs = g.getFS();
-    d_matrice = g.getMatAdj();
-    d_couts = g.getCouts();
-    d_isUsingFsAndAps = g.getA_Des_Poids();
+    d_g = g;
 
     nodes.resize(0);
     unsigned modulo = sqrt(g.getSommets().size());
@@ -433,6 +425,8 @@ void widgetGraph::loadGraph(const Graph& g)
         if(xOff % modulo == 0) xOff = -(int)modulo;
 
         auto node = new widgetNode(this, *g.getSommets()[i]);
+        if(nodes.contains(node)) continue;
+
         nodes << node;
         scene->addItem(node);
         node->setPos(g.getSommets()[i]->getId() * 30, xOff * 30);
@@ -440,9 +434,9 @@ void widgetGraph::loadGraph(const Graph& g)
         ++xOff;
     }
 
-    for(unsigned i = 1; i < d_aps.size(); ++i)
+    for(unsigned i = 1; i < d_g.getAPS().size(); ++i)
     {
-        unsigned j = d_fs[d_aps[i]], k = i;
+        unsigned j = d_g.getFS()[d_g.getAPS()[i]], k = i;
         while(j != 0)
         {
             int iBis = i-1, jBis = j-1;
@@ -450,29 +444,17 @@ void widgetGraph::loadGraph(const Graph& g)
             nodes[iBis]->addEdge(edge);
             scene->addItem(edge);
             ++k;
-            j = d_fs[k];
+            j = d_g.getFS()[k];
         }
     }
 }
 
 void widgetGraph::saveIn(std::ostream& ost)
 {
-    Graph g = toGraph();
-    g.saveIn(ost);
+    d_g.saveIn(ost);
 }
 
-Graph widgetGraph::toGraph()
-{
-    /*vector<unique_ptr<Noeud>> sommets;
-    sommets.reserve(d_sommets.size());
-    for(unsigned i = 1 ; i < d_sommets.size() ; ++i)
-    {
-        sommets.push_back(std::make_unique<Noeud>(i));
-    }
-    //Est oriente par défaut et n'a pas de poids predefini
-    return Graph(d_fs,d_aps,sommets,true,false);*/
-    return Graph();
-}
+
 
 
 
