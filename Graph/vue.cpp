@@ -206,13 +206,20 @@ void vue::menuSaisie()
 
     auto boutonValider = new QPushButton{"Valider", nullptr};
     layoutBas->addWidget(boutonValider);
-    connect(boutonValider, &QPushButton::clicked, this, &vue::Ajouter);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onAjouter);
 
     auto boutonQuitter = new QPushButton{"Quitter", nullptr};
     connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
     layoutBas->addWidget(boutonQuitter);
 
     auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutId = new QHBoxLayout{};
+    auto labelId = new QLabel{"Identifiant du noeud", nullptr};
+    layoutId->addWidget(labelId,1);
+
+    d_id = new QLineEdit{};
+    layoutId->addWidget(d_id);
 
     auto layoutSucc = new QHBoxLayout{};
     auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
@@ -238,6 +245,7 @@ void vue::menuSaisie()
     d_poids = new QLineEdit{};
     layoutPoids->addWidget(d_poids);
 
+    layoutInfo->addLayout(layoutId);
     layoutInfo->addLayout(layoutSucc);
     layoutInfo->addLayout(layoutPrec);
     layoutInfo->addLayout(layoutPoids);
@@ -407,6 +415,12 @@ int vue::getPred()
 {
     return this->d_prec->text().toInt();
 }
+
+int vue::getId()
+{
+    return this->d_id->text().toInt();
+}
+
 vector<int> vue::getP()
 {
     QString s = this->d_p->text();
