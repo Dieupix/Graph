@@ -3,7 +3,7 @@
 #include<QMessageBox>
 
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuS{new menuSaisie}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuS{new menuAjout}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe();
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGra
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
 
-    connect(menuS, &menuSaisie::envoieAjout, this, &MainWindow::onValiderAjout);
+    connect(menuS, &menuAjout::envoieAjout, this, &MainWindow::onValiderAjout);
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -214,7 +214,7 @@ void MainWindow::saisie()
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
-    //menuS = new menuSaisie();
+    //menuS = new menuAjout();
     menuS->show();
 
 }

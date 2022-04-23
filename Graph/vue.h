@@ -51,7 +51,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenuFichier();
     void setupMenuAlgo();
     void setupMenuInfo();
-    void menuSaisie();
+    void menuAjout();
     void fenetrePruferDecode();
 signals: //SIGNAUX EMIS
     void Quitter();

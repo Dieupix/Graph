@@ -1,16 +1,16 @@
-#ifndef MENUSAISIE_H
-#define MENUSAISIE_H
+#ifndef MENUAJOUT_H
+#define MENUAJOUT_H
 
 #include "vue.h"
 #include <QLabel>
 #include <QMainWindow>
 #include <vector>
 
-class menuSaisie : public QMainWindow
+class menuAjout : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit menuSaisie(QMainWindow *parent = nullptr);
+    explicit menuAjout(QMainWindow *parent = nullptr);
     int getId() const;
     int getPoids() const;
     vector<int> getSuc() const;
@@ -30,4 +30,4 @@ private:
 
 };
 
-#endif // MENUSAISIE_H
+#endif // MENUAJOUT_H

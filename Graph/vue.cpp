@@ -44,7 +44,7 @@ void vue::creeInterfaceSaisie()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 
-    menuSaisie();
+    menuAjout();
 }
 void vue::creeInterfacePruferDecode()
 {
@@ -200,7 +200,7 @@ void vue::setupMenuInfo()
     SousMenuPrufer->addAction(infoPruferDecode);
     connect(infoPruferDecode, &QAction::triggered, this, &vue::oninfoPrufer_decode);
 }
-void vue::menuSaisie()
+void vue::menuAjout()
 {
     auto layoutBas = new QHBoxLayout{};
 

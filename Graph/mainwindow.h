@@ -3,7 +3,7 @@
 
 #include "widgetgraph.h"
 #include "vue.h"
-#include "menusaisie.h"
+#include "menuajout.h"
 #include "menupruferdecode.h"
 
 class MainWindow : public QMainWindow
@@ -25,7 +25,7 @@ private:
     bool verifiePruferEncode();
     bool verifiePruferDecode(const vector<int>& p);
 
-    menuSaisie *menuS;
+    menuAjout *menuS;
     //menuPruferDecode& menuPruferD;
 private slots :
     void onCheck_OrienteeChange(bool estoriente);
