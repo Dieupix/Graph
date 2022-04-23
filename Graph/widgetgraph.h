@@ -44,6 +44,8 @@ public:
     void loadFrom       (std::istream& ist);
     void saveIn         (std::ostream& ost);
 
+    void    loadGraph               (const Graph& g);
+
 public slots:
     void shuffle();
     void zoomIn();
@@ -71,7 +73,6 @@ private:
     void    setup                   ();
     void    transformeVersMatrice   ();
     void    transformeVersFS_APS    ();
-    void    loadGraph               (const Graph& g);
     Graph   toGraph                 ();
 };
 

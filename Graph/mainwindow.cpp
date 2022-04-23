@@ -504,6 +504,10 @@ void MainWindow::onValiderOrdonnancement()
 void MainWindow::onValideSaisieFSAPS()
 {
     //A faire quand on pourra charger des graphes
+    vector<int> FS = menuFSAPS->getFS();
+    vector<int> APS = menuFSAPS->getAPS();
+    Graph g{FS, APS};
+    d_wg.loadGraph(g);
 }
 
 
