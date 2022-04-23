@@ -3,8 +3,8 @@
 
 #include "algorithms.h"
 #include "graph.h"
-#include "widgetnode.h"
 #include "widgetedge.h"
+#include "widgetnode.h"
 
 #include <QGraphicsView>
 #include <QKeyEvent>
@@ -20,28 +20,29 @@ public:
 
     widgetGraph(const widgetGraph& wg);
 
-    vector<int> getFs();
-    vector<int> getAps();
-    vector<vector<int>> getCouts();
-    vector<vector<int>> getMatrice();
-    bool getUsingFSandAPS();
+    vector<int>         getFs() const;
+    vector<int>         getAps() const;
+    vector<vector<int>> getCouts() const;
+    vector<vector<int>> getMatrice() const;
+    bool                getUsingFSandAPS() const;
+    Graph               getGraph() const;
 
-    bool verifieFS_APS_NonVide();
-    bool verifieMatrice_NonVide();
-    vector<vector<int>> englobe_Distance();
-    vector<int> englobe_Rang();
-    widgetGraph englobe_Tarjan();
-    widgetGraph englobe_Ordonnancement(const vector<int>& duree_taches);
-    void englobe_Dijkstra(int sommet_depart,vector<int>& d, vector<int>& pr);
-    void englobe_Dantzig();
-    widgetGraph englobe_Kruskal();
-    vector<int> englobe_Prufer_encode();
-    widgetGraph englobe_Prufer_decode(const vector<int>& p);
+    void                englobe_Dantzig         ();
+    void                englobe_Dijkstra        (int sommet_depart,vector<int>& d, vector<int>& pr);
+    vector<vector<int>> englobe_Distance        ();
+    widgetGraph         englobe_Kruskal         ();
+    widgetGraph         englobe_Ordonnancement  (const vector<int>& duree_taches);
+    widgetGraph         englobe_Prufer_decode   (const vector<int>& p);
+    vector<int>         englobe_Prufer_encode   ();
+    vector<int>         englobe_Rang            ();
+    widgetGraph         englobe_Tarjan          ();
+    bool                verifieFS_APS_NonVide   ();
+    bool                verifieMatrice_NonVide  ();
 
-    void ajouterNoeud();
-    void itemMoved();
-    void loadFrom(std::istream& ist);
-    void saveIn(std::ostream& ost);
+    void ajouterNoeud   (const Noeud& noeud, const vector<int>& pred, const vector<int>& succ);
+    void itemMoved      ();
+    void loadFrom       (std::istream& ist);
+    void saveIn         (std::ostream& ost);
 
 public slots:
     void shuffle();
@@ -58,24 +59,20 @@ protected:
 #endif
 
 private:
-    vector<int> d_fs;
-    vector<int> d_aps;
-    vector<vector<int>> d_matrice;
-    vector<vector<int>> d_couts;
-    bool d_isUsingFsAndAps;
+    Graph d_g;
 
-    QGraphicsScene      *scene;
-    unsigned            sceneSizeW, sceneSizeH;
-    int                 timerId = 0;
+    QGraphicsScene* scene;
+    unsigned        sceneSizeW, sceneSizeH;
+    int             timerId = 0;
 
-    QList<widgetNode *> nodes;
-    widgetNode          *centerNode;
+    QList<widgetNode*>  nodes;
+    widgetNode*         centerNode;
 
-    void setup();
-    void transformeVersMatrice();
-    void transformeVersFS_APS();
-    void loadGraph(const Graph& g);
-    Graph toGraph();
+    void    setup                   ();
+    void    transformeVersMatrice   ();
+    void    transformeVersFS_APS    ();
+    void    loadGraph               (const Graph& g);
+    Graph   toGraph                 ();
 };
 
 #endif // WIDGETGRAPH_H

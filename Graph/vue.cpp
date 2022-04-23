@@ -3,7 +3,7 @@
 vue::vue(QMainWindow* fenetre) : d_fenetre{fenetre}
 {}
 
-void vue::creeInterface()
+void vue::creeInterface(widgetGraph& wg)
 {
     //setWindowState(Qt::WindowMaximized);
     d_fenetre->setWindowTitle("Graphe");
@@ -26,12 +26,12 @@ void vue::creeInterface()
 */
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
-    auto gwLayout = new QVBoxLayout();
-    mainLayout->addLayout(gwLayout);
+    auto wgLayout = new QVBoxLayout();
+    mainLayout->addLayout(wgLayout);
 
-    widgetGraph* gw = new widgetGraph();
-    gwLayout->addWidget(gw);
-    gw->show();
+    d_wg = &wg;
+    wgLayout->addWidget(d_wg);
+    d_wg->show();
     //gw->close(); //pour fermer le graph
 }
 
@@ -44,8 +44,21 @@ void vue::creeInterfaceSaisie()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 
-    menuSaisie();
+    menuAjout();
 }
+
+void vue::creeInterfaceSupprimer()
+{
+    d_fenetre->setWindowTitle("Supprimer Noeud");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreMenuSupprimer();
+}
+
 void vue::creeInterfacePruferDecode()
 {
     d_fenetre->setWindowTitle("Saisie pour Prufer (decode)");
@@ -57,6 +70,7 @@ void vue::creeInterfacePruferDecode()
 
     fenetrePruferDecode();
 }
+<<<<<<< HEAD
 void vue::creeInterfaceDijkstra()
 {
     d_fenetre->setWindowTitle("Saisie pour Dijkstra");
@@ -79,6 +93,8 @@ void vue::creeInterfaceOrdonnancement()
 
     fenetreOrdonnancement();
 }
+=======
+>>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 
 void vue::setupMenu()
 {
@@ -223,11 +239,11 @@ void vue::setupMenuInfo()
     SousMenuPrufer->addAction(infoPruferDecode);
     connect(infoPruferDecode, &QAction::triggered, this, &vue::oninfoPrufer_decode);
 }
-void vue::menuSaisie()
+void vue::menuAjout()
 {
     auto layoutBas = new QHBoxLayout{};
 
-    auto boutonValider = new QPushButton{"Valider", nullptr};
+    auto boutonValider = new QPushButton("Valider");
     layoutBas->addWidget(boutonValider);
     connect(boutonValider, &QPushButton::clicked, this, &vue::onAjouter);
 
@@ -238,14 +254,14 @@ void vue::menuSaisie()
     auto layoutInfo = new QVBoxLayout{};
 
     auto layoutId = new QHBoxLayout{};
-    auto labelId = new QLabel{"Identifiant du noeud", nullptr};
+    auto labelId = new QLabel("Identifiant du noeud");
     layoutId->addWidget(labelId,1);
 
     d_id = new QLineEdit{};
     layoutId->addWidget(d_id);
 
     auto layoutSucc = new QHBoxLayout{};
-    auto pannelSucc = new QLabel{"Successeur du noeud", nullptr};
+    auto pannelSucc = new QLabel{"Successeur du noeud"};
     layoutSucc->addWidget(pannelSucc,1);
     //auto textSucc = new QLineEdit{};
 
@@ -253,7 +269,7 @@ void vue::menuSaisie()
     layoutSucc->addWidget(d_suc);
 
     auto layoutPrec = new QHBoxLayout{};
-    auto pannelPrec = new QLabel{"Predecesseur du noeud", nullptr};
+    auto pannelPrec = new QLabel{"Predecesseur du noeud"};
     layoutPrec->addWidget(pannelPrec,1);
     //auto textPrec = new QLineEdit{};
 
@@ -261,7 +277,7 @@ void vue::menuSaisie()
     layoutPrec->addWidget(d_prec);
 
     auto layoutPoids = new QHBoxLayout{};
-    auto labelPoids = new QLabel{"Poids du noeud", nullptr};
+    auto labelPoids = new QLabel{"Poids du noeud"};
     layoutPoids->addWidget(labelPoids,1);
     //auto textPoids = new QLineEdit{};
 
@@ -285,18 +301,18 @@ void vue::fenetrePruferDecode()
 {
     auto layoutBas = new QHBoxLayout{};
 
-    auto boutonValider = new QPushButton{"Valider", nullptr};
+    auto boutonValider = new QPushButton{"Valider"};
     layoutBas->addWidget(boutonValider);
     connect(boutonValider, &QPushButton::clicked, this, &vue::onValide_PruferDecode);
 
-    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    auto boutonQuitter = new QPushButton{"Quitter"};
     layoutBas->addWidget(boutonQuitter);
     connect(boutonQuitter, &QPushButton::clicked, this, &vue::onQuitte_PruferDecode);
 
     auto layoutInfo = new QVBoxLayout{};
 
     auto layoutP = new QHBoxLayout{};
-    auto pannelP = new QLabel{"Saisie d'un tableau de Prufer", nullptr};
+    auto pannelP = new QLabel{"Saisie d'un tableau de Prufer"};
     layoutP->addWidget(pannelP);
     d_p = new QLineEdit{};
     layoutP->addWidget(d_p);
@@ -371,6 +387,36 @@ void vue::fenetreOrdonnancement()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 }
+
+void vue::fenetreMenuSupprimer()
+{
+    auto mainLayout = new QVBoxLayout;
+
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton{"Valider"};
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onAjouter);
+
+    auto boutonQuitter = new QPushButton{"Quitter"};
+    layoutBas->addWidget(boutonQuitter);
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
+
+    //auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutId = new QHBoxLayout{};
+    auto labelId = new QLabel("Identifiant du noeud");
+    layoutId->addWidget(labelId,1);
+
+    mainLayout->addLayout(layoutId);
+    mainLayout->addLayout(layoutBas);
+    //mainLayout->addLayout(layoutInfo);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+
 void vue::metAJourGraphe()
 {
     //MAj fs/aps..
@@ -390,18 +436,22 @@ void vue::onCharger()
 {
     emit Charger();
 }
+
 void vue::onSaisie()
 {
     emit Saisie();
 }
+
 void vue::onAjout()
 {
     emit Ajout();
 }
+
 void vue::onSuppression()
 {
     emit Suppression();
 }
+
 void vue::onDistance()
 {
     emit AlgorithmeSelectionneDistance();
@@ -421,58 +471,72 @@ void vue::onOrdonnancement()
 {
     emit AlgorithmeSelectionneOrdonnancement();
 }
+
 void vue::onDijkstra()
 {
     emit AlgorithmeSelectionneDijkstra();
 }
+
 void vue::onDantzig()
 {
     emit AlgorithmeSelectionneDantzig();
 }
+
 void vue::onKruskal()
 {
     emit AlgorithmeSelectionneKruskal();
 }
+
 void vue::onPruferEncode()
 {
     emit AlgorithmeSelectionnePruferEncode();
 }
+
 void vue::onPruferDecode()
 {
     emit AlgorithmeSelectionnePruferDecode();
 }
+
 void vue::oninfoDistance()
 {
     emit InfoDistance();
 }
+
 void vue::oninfoRang()
 {
     emit InfoRang();
 }
+
 void vue::oninfoTarjan()
 {
     emit InfoTarjan();
 }
+
 void vue::oninfoOrdonnancement()
 {
     emit InfoOrdonnancement();
 }
+
 void vue::oninfoDijkstra()
 {
     emit InfoDijkstra();
 }
+
 void vue::oninfoDantzig()
 {
     emit InfoDantzig();
 }
+
 void vue::oninfoKruskal()
 {
     emit InfoKruskal();
 }
+
 void vue::oninfoPrufer_encode()
 {
     emit InfoPrufer_encode();
 }
+
 void vue::oninfoPrufer_decode()
 {
     emit InfoPrufer_decode();
@@ -516,14 +580,26 @@ int vue::getPoids()
     return this->d_poids->text().toInt();
 }
 
-int vue::getSuc()
+vector<int> vue::getSuc()
 {
-    return this->d_suc->text().toInt();
+    QString s = this->d_suc->text();
+    vector<int> suc;
+    suc.push_back(0);
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        suc.push_back(list[i].toInt());
+    return suc;
 }
 
-int vue::getPred()
+vector<int> vue::getPred()
 {
-    return this->d_prec->text().toInt();
+    QString s = this->d_prec->text();
+    vector<int> prec;
+    prec.push_back(0);
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        prec.push_back(list[i].toInt());
+    return prec;
 }
 
 int vue::getId()

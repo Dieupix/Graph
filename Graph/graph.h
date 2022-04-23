@@ -110,6 +110,7 @@ public:
     // Destructor
 
     // Overloads
+    Graph& operator=(const Graph& g);
 
     // Getters
     /**

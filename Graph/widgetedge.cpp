@@ -1,6 +1,6 @@
 #include "widgetedge.h"
 
-widgetEdge::widgetEdge(widgetNode *sourceNode, widgetNode *destNode)
+widgetEdge::widgetEdge(widgetNode* sourceNode, widgetNode* destNode)
     : source(sourceNode), dest(destNode)
 {
     setAcceptedMouseButtons(Qt::NoButton);
@@ -9,12 +9,12 @@ widgetEdge::widgetEdge(widgetNode *sourceNode, widgetNode *destNode)
     adjust();
 }
 
-widgetNode *widgetEdge::sourceNode() const
+widgetNode* widgetEdge::sourceNode() const
 {
     return source;
 }
 
-widgetNode *widgetEdge::destNode() const
+widgetNode* widgetEdge::destNode() const
 {
     return dest;
 }
@@ -52,7 +52,7 @@ QRectF widgetEdge::boundingRect() const
         .adjusted(-extra, -extra, extra, extra);
 }
 
-void widgetEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void widgetEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (!source || !dest)
         return;

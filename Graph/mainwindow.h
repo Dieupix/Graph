@@ -3,10 +3,14 @@
 
 #include "widgetgraph.h"
 #include "vue.h"
-#include "menusaisie.h"
+#include "menuajout.h"
 #include "menupruferdecode.h"
+
 #include "menudijkstra.h"
 #include "menuordonnancement.h"
+
+#include "menusupprimer.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -14,7 +18,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QMainWindow* parent = nullptr);
 private:
-    widgetGraph d_g;
+    widgetGraph d_wg;
     vue d_vue;
 
     bool verifieDistance();
@@ -27,10 +31,12 @@ private:
     bool verifiePruferEncode();
     bool verifiePruferDecode(const vector<int>& p);
 
-    menuSaisie *menuS;
     menuPruferDecode *menuPruferD;
     menudijkstra *menuDijkstra;
     menuOrdonnancement *menuOrd;
+    menuAjout *menuS;
+    menuSupprimer *menuSuppr;
+
 private slots :
     void onCheck_OrienteeChange(bool estoriente);
     void onCheck_A_des_PoidsChange(bool a_des_poids);

@@ -193,6 +193,31 @@ Graph::Graph(const vector<vector<int>>& matAdj, const vector<unique_ptr<Noeud>>&
 
 
 // ---------- Overloads ----------
+Graph& Graph::operator=(const Graph& g)
+{
+    usingFsAndAps = g.usingFsAndAps;
+    est_oriente = g.est_oriente;
+    a_des_poids = g.a_des_poids;
+
+    if(usingFsAndAps)
+    {
+        FS = g.FS;
+        APS = g.APS;
+    } else
+    {
+        matAdj = g.matAdj;
+    }
+
+    if(a_des_poids) couts = g.couts;
+
+    sommets.resize(g.getSommets().size());
+    for(unsigned i = 1; i < sommets.size(); ++i)
+    {
+        sommets[i] = make_unique<Noeud>(*g.getSommets()[i]);
+    }
+
+    return *this;
+}
 // ---------- End of overloads ----------
 
 
