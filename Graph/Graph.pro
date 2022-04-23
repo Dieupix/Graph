@@ -15,12 +15,9 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
-<<<<<<< HEAD
     menudijkstra.cpp \
     menuordonnancement.cpp \
-=======
     menuajout.cpp \
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
     menupruferdecode.cpp \
     menusupprimer.cpp \
     noeud.cpp \
@@ -37,12 +34,9 @@ HEADERS += \
     exceptions.h \
     graph.h \
     mainwindow.h \
-<<<<<<< HEAD
     menudijkstra.h \
     menuordonnancement.h \
-=======
     menuajout.h \
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
     menupruferdecode.h \
     menusupprimer.h \
     noeud.h \

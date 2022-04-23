@@ -15,12 +15,7 @@ signals :
     void valide();
 
 private slots :
-<<<<<<< HEAD
     void onClick_valider();
-=======
-    void onValide();
-
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 private:
     vue d_vue;
     vector<int> d_p;

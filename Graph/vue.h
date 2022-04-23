@@ -22,13 +22,9 @@ public:
     void creeInterface(widgetGraph& wg);
     void creeInterfaceSaisie();
     void creeInterfacePruferDecode();
-<<<<<<< HEAD
     void creeInterfaceDijkstra();
     void creeInterfaceOrdonnancement();
-=======
     void creeInterfaceSupprimer();
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
-
     void metAJourGraphe();
     void metAJourNoeuds();
 
@@ -38,14 +34,11 @@ public:
     int getId();
     //Pour Prufer decode
     vector<int> getP();
-<<<<<<< HEAD
     //Pour Dijkstra
     int getSommet_depart();
     //Pour Ordonnancement
     vector<int> getDureeTaches();
-=======
 
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
@@ -71,14 +64,10 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenuInfo();
     void menuAjout();
     void fenetrePruferDecode();
-<<<<<<< HEAD
     void fenetreDijkstra();
     void fenetreOrdonnancement();
-=======
-
     void fenetreMenuSupprimer();
 
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 signals: //SIGNAUX EMIS
     void Quitter();
     void Charger();
@@ -98,7 +87,6 @@ signals: //SIGNAUX EMIS
     void AlgorithmeSelectionnePruferEncode();
     void AlgorithmeSelectionnePruferDecode();
 
-
     void InfoDistance();
     void InfoRang();
     void InfoTarjan();
@@ -110,16 +98,13 @@ signals: //SIGNAUX EMIS
     void InfoPrufer_decode();
 
     void Ajouter();
-<<<<<<< HEAD
     void Valider_PruferDecode();
     void Quitte_PruferDecode();
     void Valider_Dijkstra();
     void Quitter_Dijkstra();
     void Valider_Ordonnancement();
     void Quitter_Ordonnancement();
-=======
 
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();

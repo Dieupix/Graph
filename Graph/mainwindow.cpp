@@ -2,13 +2,7 @@
 #include<iostream>
 #include<QMessageBox>
 
-<<<<<<< HEAD
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuS{new menuSaisie},
-    menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}
-=======
-
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
 {
     d_vue.creeInterface(d_wg);
     d_vue.metAJourGraphe();
@@ -33,14 +27,10 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
 
-<<<<<<< HEAD
-    connect(menuS, &menuSaisie::envoieAjout, this, &MainWindow::onValiderAjout);
     connect(menuPruferD, &menuPruferDecode::valide, this, &MainWindow::onValiderPruferDecode);
     connect(menuDijkstra, &menudijkstra::valide, this, &MainWindow::onValiderDijkstra);
     connect(menuOrd, &menuOrdonnancement::valide, this, &MainWindow::onValiderOrdonnancement);
-=======
     connect(menuS, &menuAjout::envoieAjout, this, &MainWindow::onValiderAjout);
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -277,29 +267,11 @@ void MainWindow::onClick_Tarjan()
 }
 void MainWindow::onClick_Ordonnancement()
 {
-<<<<<<< HEAD
     menuOrd->show();
 }
 void MainWindow::onClick_Dijkstra()
 {
     menuDijkstra->show();
-=======
-    vector<int> duree_taches;
-    if(verifieOrdonnancement(duree_taches))
-    {
-        widgetGraph wg = d_wg.englobe_Ordonnancement(duree_taches);
-        d_vue.metAJourGraphe();
-    }
-}
-void MainWindow::onClick_Dijkstra()
-{
-    int sommet_depart = 1;//A faire saisir
-    vector<int> d, pr;
-    if(verifieDijkstra(sommet_depart))
-    {
-        d_wg.englobe_Dijkstra(sommet_depart,d,pr);
-    }//Retourner d et pr
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 }
 void MainWindow::onClick_Dantzig()
 {
@@ -327,15 +299,6 @@ void MainWindow::onClick_Prufer_encode()
 void MainWindow::onClick_Prufer_decode()
 {
     menuPruferD->show();
-<<<<<<< HEAD
-=======
-    /*vector<int> p = menuP->getP();
-    if(verifiePruferDecode(p))
-    {
-        widgetGraph wg = d_wg.englobe_Prufer_decode(p);
-        d_vue.metAJourGraphe();
-    }//retourner p*/
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 }
 
 void MainWindow::onClickDistance_INFO()
@@ -503,7 +466,7 @@ void MainWindow::onValiderPruferDecode()
 {
     if(verifiePruferDecode(menuPruferD->getP()))
     {
-        widgetGraph wg = d_g.englobe_Prufer_decode(menuPruferD->getP());
+        widgetGraph wg = d_wg.englobe_Prufer_decode(menuPruferD->getP());
         d_vue.metAJourGraphe();
     }
 }
@@ -512,7 +475,7 @@ void MainWindow::onValiderDijkstra()
     vector<int> d, pr;
     if(verifieDijkstra(menuDijkstra->getSommet()))
     {
-        d_g.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+        d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
     }
     cout<<"Affichage de d : "<<endl;
     printVector(d);
@@ -525,7 +488,7 @@ void MainWindow::onValiderOrdonnancement()
 {
     if(verifieOrdonnancement(menuOrd->getDuree()))
     {
-        widgetGraph wg = d_g.englobe_Ordonnancement(menuOrd->getDuree());
+        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree());
         d_vue.metAJourGraphe();
     }
 }

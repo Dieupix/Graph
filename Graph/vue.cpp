@@ -70,7 +70,7 @@ void vue::creeInterfacePruferDecode()
 
     fenetrePruferDecode();
 }
-<<<<<<< HEAD
+
 void vue::creeInterfaceDijkstra()
 {
     d_fenetre->setWindowTitle("Saisie pour Dijkstra");
@@ -93,8 +93,6 @@ void vue::creeInterfaceOrdonnancement()
 
     fenetreOrdonnancement();
 }
-=======
->>>>>>> 16369c14ef7cdf176108feafdbe3f420a8a2dd3b
 
 void vue::setupMenu()
 {
