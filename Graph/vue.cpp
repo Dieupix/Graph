@@ -256,10 +256,11 @@ void vue::fenetrePruferDecode()
 
     auto boutonValider = new QPushButton{"Valider", nullptr};
     layoutBas->addWidget(boutonValider);
-    //connect(boutonValider, &QPushButton::clicked, this, &vue::onValide);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onValide_PruferDecode);
 
     auto boutonQuitter = new QPushButton{"Quitter", nullptr};
     layoutBas->addWidget(boutonQuitter);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onQuitte_PruferDecode);
 
     auto layoutInfo = new QVBoxLayout{};
 
@@ -391,6 +392,16 @@ void vue::oninfoPrufer_decode()
 void vue::onAjouter()
 {
     emit Ajouter();
+}
+
+void vue::onValide_PruferDecode()
+{
+    emit Valider_PruferDecode();
+}
+
+void vue::onQuitte_PruferDecode()
+{
+    emit Quitte_PruferDecode();
 }
 
 int vue::getPoids()

@@ -3,7 +3,7 @@
 #include<QMessageBox>
 
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_g{widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}
 {
     d_vue.creeInterface();
     d_vue.metAJourGraphe();
@@ -303,14 +303,13 @@ void MainWindow::onClick_Prufer_encode()
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    menuPruferDecode* menuPruferD = new menuPruferDecode();
     menuPruferD->show();
-    /*vector<int> p = menuP->getP();
+
     if(verifiePruferDecode(p))
     {
         widgetGraph wg = d_g.englobe_Prufer_decode(p);
         d_vue.metAJourGraphe();
-    }//retourner p*/
+    }
 }
 
 void MainWindow::onClickDistance_INFO()

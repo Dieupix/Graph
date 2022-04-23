@@ -82,6 +82,8 @@ signals: //SIGNAUX EMIS
     void InfoPrufer_decode();
 
     void Ajouter();
+    void Valider_PruferDecode();
+    void Quitte_PruferDecode();
 private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void onQuitter();
     void onCharger();
@@ -110,6 +112,8 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
     void oninfoPrufer_decode();
 
     void onAjouter();
+    void onValide_PruferDecode();
+    void onQuitte_PruferDecode();
 };
 
 #endif // VUE_H
