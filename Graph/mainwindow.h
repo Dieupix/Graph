@@ -5,6 +5,7 @@
 #include "vue.h"
 #include "menuajout.h"
 #include "menupruferdecode.h"
+#include "menusupprimer.h"
 
 class MainWindow : public QMainWindow
 {
@@ -12,7 +13,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QMainWindow* parent = nullptr);
 private:
-    widgetGraph d_g;
+    widgetGraph d_wg;
     vue d_vue;
 
     bool verifieDistance();
@@ -26,6 +27,7 @@ private:
     bool verifiePruferDecode(const vector<int>& p);
 
     menuAjout *menuS;
+    menuSupprimer *menuSuppr;
     //menuPruferDecode& menuPruferD;
 private slots :
     void onCheck_OrienteeChange(bool estoriente);

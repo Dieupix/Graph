@@ -47,6 +47,18 @@ void vue::creeInterfaceSaisie()
     menuAjout();
 }
 
+void vue::creeInterfaceSupprimer()
+{
+    d_fenetre->setWindowTitle("Supprimer Noeud");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreMenuSupprimer();
+}
+
 void vue::creeInterfacePruferDecode()
 {
     d_fenetre->setWindowTitle("Saisie pour Prufer (encode)");
@@ -291,6 +303,36 @@ void vue::fenetrePruferDecode()
 
 
 }
+
+void vue::fenetreMenuSupprimer()
+{
+    auto mainLayout = new QVBoxLayout;
+
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton{"Valider"};
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onAjouter);
+
+    auto boutonQuitter = new QPushButton{"Quitter"};
+    layoutBas->addWidget(boutonQuitter);
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
+
+    //auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutId = new QHBoxLayout{};
+    auto labelId = new QLabel("Identifiant du noeud");
+    layoutId->addWidget(labelId,1);
+
+    mainLayout->addLayout(layoutId);
+    mainLayout->addLayout(layoutBas);
+    //mainLayout->addLayout(layoutInfo);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+
 void vue::metAJourGraphe()
 {
     //MAj fs/aps..
@@ -430,6 +472,7 @@ vector<int> vue::getSuc()
 {
     QString s = this->d_suc->text();
     vector<int> suc;
+    suc.push_back(0);
     QStringList list = s.split(',');
     for(unsigned i = 0 ; i < list.size() ; ++i)
         suc.push_back(list[i].toInt());
@@ -440,8 +483,9 @@ vector<int> vue::getPred()
 {
     QString s = this->d_prec->text();
     vector<int> prec;
+    prec.push_back(0);
     QStringList list = s.split(',');
-    for(unsigned i = 0 ; i < list.size() ; ++i)
+    for(unsigned i = 1 ; i < list.size() ; ++i)
         prec.push_back(list[i].toInt());
     return prec;
 }

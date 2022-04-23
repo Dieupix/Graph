@@ -17,6 +17,7 @@ SOURCES += \
     mainwindow.cpp \
     menuajout.cpp \
     menupruferdecode.cpp \
+    menusupprimer.cpp \
     noeud.cpp \
     test.cpp \
     vue.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     mainwindow.h \
     menuajout.h \
     menupruferdecode.h \
+    menusupprimer.h \
     noeud.h \
     test.h \
     vue.h \

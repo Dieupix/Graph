@@ -22,6 +22,8 @@ public:
     void creeInterface();
     void creeInterfaceSaisie();
     void creeInterfacePruferDecode();
+    void creeInterfaceSupprimer();
+
     void metAJourGraphe();
     void metAJourNoeuds();
 
@@ -54,6 +56,8 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void setupMenuInfo();
     void menuAjout();
     void fenetrePruferDecode();
+
+    void fenetreMenuSupprimer();
 
 signals: //SIGNAUX EMIS
     void Quitter();
