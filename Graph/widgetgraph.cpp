@@ -378,13 +378,13 @@ void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, cons
     {
         if(pred[i+1])
         {
-            auto edge = new widgetEdge(node, nodes[i]);
+            auto edge = new widgetEdge(nodes[i], node);
             nodes[i]->addEdge(edge);
             scene->addItem(edge);
         }
         if(succ[i+1])
         {
-            auto edge = new widgetEdge(nodes[i], node);
+            auto edge = new widgetEdge(node, nodes[i]);
             nodes[i]->addEdge(edge);
             scene->addItem(edge);
         }
