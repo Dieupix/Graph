@@ -100,16 +100,20 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
                 sommet_correct = false;
             else
             {
-                vector<vector<int>> couts = d_wg.getCouts();
-                if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
-                    couts_correct = false;
-                else
+                if(d_wg.verifieCout_NonVide())
                 {
-                    for(unsigned i = 1 ; i < couts.size() ; ++i)
-                        for(unsigned j = 1 ; j < couts[i].size() ; ++j)
-                            if(couts[i][j] < 0)
-                                couts_correct = false;
+                    vector<vector<int>> couts = d_wg.getCouts();
+                    if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                        couts_correct = false;
+                    else
+                    {
+                        for(unsigned i = 1 ; i < couts.size() ; ++i)
+                            for(unsigned j = 1 ; j < couts[i].size() ; ++j)
+                                if(couts[i][j] < 0)
+                                    couts_correct = false;
+                    }
                 }
+                else return false; //cout vide
             }
             return sommet_correct && couts_correct;
         }
@@ -142,8 +146,6 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
         }
         return false;
     }
-
-
 }
 bool MainWindow::verifieDantzig()
 {
@@ -251,18 +253,27 @@ void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
 
 void MainWindow::onClick_Distance()
 {
+    vector<vector<int>> mat_dist;
     if(verifieDistance())
     {
-        vector<vector<int>> mat_dist = d_wg.englobe_Distance();
-    }//retourner la matrice
+         mat_dist = d_wg.englobe_Distance();
+    }
+    //Mettre a jour ce qui affiche la matrice -- QMessageBox?
+    /*
+    for(unsigned i = 1 ; i < mat_dist.size() ; ++i)
+        printVector(mat_dist[i]);
+    */
 }
 
 void MainWindow::onClick_Rang()
 {
+    vector<int> rang;
     if(verifieRang())
     {
-        vector<int> rang = d_wg.englobe_Rang();
-    }//retourner le rang
+        rang = d_wg.englobe_Rang();
+    }
+    //Mettre a jour ce qui affiche le tableau de rang -- QMessageBox ?
+    //printVector(rang);
 }
 
 void MainWindow::onClick_Tarjan()
@@ -270,6 +281,7 @@ void MainWindow::onClick_Tarjan()
     if(verifieTarjan())
     {
         widgetGraph wg = d_wg.englobe_Tarjan();
+        //Mettre a jour la vue a partir du nouveau graphe -- A voir
         d_vue.metAJourGraphe();
     }
 
@@ -498,6 +510,7 @@ void MainWindow::onValiderOrdonnancement()
     {
         widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree());
         d_vue.metAJourGraphe();
+
     }
 }
 

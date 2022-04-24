@@ -273,8 +273,8 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
 
     //Affichage de la longueur critique
-    //...
-    //printVector(longueur_critique);
+    //Sur console ?
+    printVector(longueur_critique);
 
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{new_fs,new_aps});
@@ -345,23 +345,50 @@ bool widgetGraph::verifieFS_APS_NonVide()
 
 bool widgetGraph::verifieMatrice_NonVide()
 {
-    if(d_g.getMatAdj().empty())
+    vector<vector<int>> mat = d_g.getMatAdj();
+    if(mat.empty())
         return false;
-    else if(d_g.getMatAdj()[0].size() != 2)
+    else if(mat[0].size() != 2)
     {
         return false;
     }
     else
     {
-        unsigned size = d_g.getMatAdj()[1].size();
-        for(unsigned i = 2 ; i < d_g.getMatAdj().size() ; ++i)
+        unsigned size = mat[1].size();
+        for(unsigned i = 2 ; i < mat.size() ; ++i)
         {
-            if(d_g.getMatAdj()[i].size() != size)
+            if(mat[i].size() != size)
                 return false;
         }
         return true;
     }
 }
+
+bool widgetGraph::verifieCout_NonVide()
+{
+
+    if(d_g.getCouts().empty())
+        return false;
+    else
+    {
+         vector<vector<int>> cout = d_g.getCouts();
+        if(cout[0].size() != 2)
+        {
+            return false;
+        }
+        else
+        {
+            unsigned size = cout[1].size();
+            for(unsigned i = 2 ; i < cout.size() ; ++i)
+            {
+                if(cout[i].size() != size)
+                    return false;
+            }
+            return true;
+        }
+    }
+}
+
 
 void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
