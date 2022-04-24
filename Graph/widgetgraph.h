@@ -38,11 +38,14 @@ public:
     widgetGraph         englobe_Tarjan          ();
     bool                verifieFS_APS_NonVide   ();
     bool                verifieMatrice_NonVide  ();
+    bool                verifieCout_NonVide     ();
 
     void ajouterNoeud   (const Noeud& noeud, const vector<int>& pred, const vector<int>& succ);
     void itemMoved      ();
     void loadFrom       (std::istream& ist);
     void saveIn         (std::ostream& ost);
+
+    void    loadGraph               (const Graph& g);
 
 public slots:
     void shuffle();
@@ -71,7 +74,6 @@ private:
     void    setup                   ();
     void    transformeVersMatrice   ();
     void    transformeVersFS_APS    ();
-    void    loadGraph               (const Graph& g);
     Graph   toGraph                 ();
 };
 

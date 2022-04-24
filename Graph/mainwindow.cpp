@@ -2,8 +2,8 @@
 #include<iostream>
 #include<QMessageBox>
 
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}
 {
     d_vue.creeInterface(d_wg);
     d_vue.metAJourGraphe();
@@ -14,7 +14,8 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 
     connect(&d_vue, &vue::Quitter, this, &MainWindow::close);
     connect(&d_vue, &vue::Charger, this, &MainWindow::charge);
-    connect(&d_vue, &vue::Saisie, this, &MainWindow::saisie);
+    connect(&d_vue, &vue::SaisieFSAPS, this, &MainWindow::saisieFSAPS);
+    connect(&d_vue, &vue::SaisieMatrice, this, &MainWindow::saisieMatrice);
     connect(&d_vue, &vue::Ajout, this, &MainWindow::ajoute);
     connect(&d_vue, &vue::Suppression, this, &MainWindow::supprime);
 
@@ -28,7 +29,11 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferEncode, this, &MainWindow::onClick_Prufer_encode);
     connect(&d_vue, &vue::AlgorithmeSelectionnePruferDecode, this, &MainWindow::onClick_Prufer_decode);
 
+    connect(menuPruferD, &menuPruferDecode::valide, this, &MainWindow::onValiderPruferDecode);
+    connect(menuDijkstra, &menudijkstra::valide, this, &MainWindow::onValiderDijkstra);
+    connect(menuOrd, &menuOrdonnancement::valide, this, &MainWindow::onValiderOrdonnancement);
     connect(menuS, &menuAjout::envoieAjout, this, &MainWindow::onValiderAjout);
+    connect(menuFSAPS, &saisieFSAPS::envoieSaisieFSAPS, this, &MainWindow::onValideSaisieFSAPS);
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -95,16 +100,20 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
                 sommet_correct = false;
             else
             {
-                vector<vector<int>> couts = d_wg.getCouts();
-                if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
-                    couts_correct = false;
-                else
+                if(d_wg.verifieCout_NonVide())
                 {
-                    for(unsigned i = 1 ; i < couts.size() ; ++i)
-                        for(unsigned j = 1 ; j < couts[i].size() ; ++j)
-                            if(couts[i][j] < 0)
-                                couts_correct = false;
+                    vector<vector<int>> couts = d_wg.getCouts();
+                    if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                        couts_correct = false;
+                    else
+                    {
+                        for(unsigned i = 1 ; i < couts.size() ; ++i)
+                            for(unsigned j = 1 ; j < couts[i].size() ; ++j)
+                                if(couts[i][j] < 0)
+                                    couts_correct = false;
+                    }
                 }
+                else return false; //cout vide
             }
             return sommet_correct && couts_correct;
         }
@@ -137,8 +146,6 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
         }
         return false;
     }
-
-
 }
 bool MainWindow::verifieDantzig()
 {
@@ -202,15 +209,21 @@ void MainWindow::charge()
     //d_wg.loadFrom();
 }
 
-void MainWindow::saisie()
+void MainWindow::saisieMatrice()
 {
     //Saisie d'un widgetGraph
     //Ajouter un ostream
     //d_wg.save();
-
-
-
 }
+
+void MainWindow::saisieFSAPS()
+{
+    //Saisie d'un widgetGraph
+    //Ajouter un ostream
+    //d_wg.save();
+    menuFSAPS->show();
+}
+
 void MainWindow::ajoute()
 {
     //Ajoute un noeud
@@ -240,18 +253,27 @@ void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
 
 void MainWindow::onClick_Distance()
 {
+    vector<vector<int>> mat_dist;
     if(verifieDistance())
     {
-        vector<vector<int>> mat_dist = d_wg.englobe_Distance();
-    }//retourner la matrice
+         mat_dist = d_wg.englobe_Distance();
+    }
+    //Mettre a jour ce qui affiche la matrice -- QMessageBox?
+    /*
+    for(unsigned i = 1 ; i < mat_dist.size() ; ++i)
+        printVector(mat_dist[i]);
+    */
 }
 
 void MainWindow::onClick_Rang()
 {
+    vector<int> rang;
     if(verifieRang())
     {
-        vector<int> rang = d_wg.englobe_Rang();
-    }//retourner le rang
+        rang = d_wg.englobe_Rang();
+    }
+    //Mettre a jour ce qui affiche le tableau de rang -- QMessageBox ?
+    //printVector(rang);
 }
 
 void MainWindow::onClick_Tarjan()
@@ -259,27 +281,18 @@ void MainWindow::onClick_Tarjan()
     if(verifieTarjan())
     {
         widgetGraph wg = d_wg.englobe_Tarjan();
+        //Mettre a jour la vue a partir du nouveau graphe -- A voir
         d_vue.metAJourGraphe();
     }
 
 }
 void MainWindow::onClick_Ordonnancement()
 {
-    vector<int> duree_taches;
-    if(verifieOrdonnancement(duree_taches))
-    {
-        widgetGraph wg = d_wg.englobe_Ordonnancement(duree_taches);
-        d_vue.metAJourGraphe();
-    }
+    menuOrd->show();
 }
 void MainWindow::onClick_Dijkstra()
 {
-    int sommet_depart = 1;//A faire saisir
-    vector<int> d, pr;
-    if(verifieDijkstra(sommet_depart))
-    {
-        d_wg.englobe_Dijkstra(sommet_depart,d,pr);
-    }//Retourner d et pr
+    menuDijkstra->show();
 }
 void MainWindow::onClick_Dantzig()
 {
@@ -306,14 +319,7 @@ void MainWindow::onClick_Prufer_encode()
 }
 void MainWindow::onClick_Prufer_decode()
 {
-    menuPruferDecode* menuPruferD = new menuPruferDecode();
     menuPruferD->show();
-    /*vector<int> p = menuP->getP();
-    if(verifiePruferDecode(p))
-    {
-        widgetGraph wg = d_wg.englobe_Prufer_decode(p);
-        d_vue.metAJourGraphe();
-    }//retourner p*/
 }
 
 void MainWindow::onClickDistance_INFO()
@@ -450,7 +456,7 @@ void MainWindow::onValiderAjout()
     int k2 = 1;
 
 
-    int nbNoeud = 6;//d_wg.getAps()[0] + 2;
+    int nbNoeud = d_wg.getAps()[0] + 2;
 
     for(int i = 0; i < nbNoeud; i++)
     {
@@ -469,7 +475,6 @@ void MainWindow::onValiderAjout()
         else
             Suc.push_back(0);
     }
-
     printVector(menuPred);
     printVector(Suc);
     printVector(Pred);
@@ -477,11 +482,47 @@ void MainWindow::onValiderAjout()
     Noeud n{menuS->getId()};
     d_wg.ajouterNoeud(n, Pred, Suc);
 }
+void MainWindow::onValiderPruferDecode()
+{
+    if(verifiePruferDecode(menuPruferD->getP()))
+    {
+        widgetGraph wg = d_wg.englobe_Prufer_decode(menuPruferD->getP());
+        d_vue.metAJourGraphe();
+    }
+}
+void MainWindow::onValiderDijkstra()
+{
+    vector<int> d, pr;
+    if(verifieDijkstra(menuDijkstra->getSommet()))
+    {
+        d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+    }
+    cout<<"Affichage de d : "<<endl;
+    printVector(d);
+    cout<<endl;
+    cout<<"Affichage de pr : "<<endl;
+    printVector(pr);
+    cout<<endl;
+}
+void MainWindow::onValiderOrdonnancement()
+{
+    if(verifieOrdonnancement(menuOrd->getDuree()))
+    {
+        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree());
+        d_vue.metAJourGraphe();
 
+    }
+}
 
-
-
-
-
+void MainWindow::onValideSaisieFSAPS()
+{
+    //A faire quand on pourra charger des graphes
+    vector<int> FS = menuFSAPS->getFS();
+    vector<int> APS = menuFSAPS->getAPS();
+    Graph g{FS, APS};
+    printVector(FS);
+    printVector(APS);
+    d_wg.loadGraph(g);
+}
 
 

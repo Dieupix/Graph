@@ -15,10 +15,13 @@ SOURCES += \
     graph.cpp \
     main.cpp \
     mainwindow.cpp \
+    menudijkstra.cpp \
+    menuordonnancement.cpp \
     menuajout.cpp \
     menupruferdecode.cpp \
     menusupprimer.cpp \
     noeud.cpp \
+    saisiefsaps.cpp \
     test.cpp \
     vue.cpp \
     widgetedge.cpp \
@@ -32,10 +35,13 @@ HEADERS += \
     exceptions.h \
     graph.h \
     mainwindow.h \
+    menudijkstra.h \
+    menuordonnancement.h \
     menuajout.h \
     menupruferdecode.h \
     menusupprimer.h \
     noeud.h \
+    saisiefsaps.h \
     test.h \
     vue.h \
     widgetedge.h \

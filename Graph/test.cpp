@@ -53,8 +53,8 @@ void testDantzig()
 
 void testDijkstra()
 {
-    vector<int> APS_D{6, 1, 5, 7, 10, 13, 16};
-    vector<int> FS_D{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
+    vector<int> APS_D{6,1,5,7,10,13,16};
+    vector<int> FS_D{18,2,3,5,0,1,0,2,5,0,3,5,0,2,6,0,1,2,0};
     vector<vector<int>> cout_D
     {
         {6,12},

@@ -352,6 +352,7 @@ void mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<i
 {
     int n = APS[0];
     matriceDistance.resize(n+1);
+    matriceDistance[0].resize(2);
     for(int r = 1 ; r <= n ; r++)
     {
         descente_largeur(r,FS,APS,matriceDistance[r]);

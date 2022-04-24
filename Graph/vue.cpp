@@ -47,6 +47,18 @@ void vue::creeInterfaceSaisie()
     menuAjout();
 }
 
+void vue::creeInterfaceSaisieFSAPS()
+{
+    d_fenetre->setWindowTitle("Saisir graph FS/APS");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreSaisieFSAPS();
+}
+
 void vue::creeInterfaceSupprimer()
 {
     d_fenetre->setWindowTitle("Supprimer Noeud");
@@ -61,7 +73,7 @@ void vue::creeInterfaceSupprimer()
 
 void vue::creeInterfacePruferDecode()
 {
-    d_fenetre->setWindowTitle("Saisie pour Prufer (encode)");
+    d_fenetre->setWindowTitle("Saisie pour Prufer (decode)");
 
     auto central = new QWidget;
     auto mainLayout = new QVBoxLayout;
@@ -69,6 +81,29 @@ void vue::creeInterfacePruferDecode()
     d_fenetre->setCentralWidget(central);
 
     fenetrePruferDecode();
+}
+
+void vue::creeInterfaceDijkstra()
+{
+    d_fenetre->setWindowTitle("Saisie pour Dijkstra");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreDijkstra();
+}
+void vue::creeInterfaceOrdonnancement()
+{
+    d_fenetre->setWindowTitle("Saisie des taches");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreOrdonnancement();
 }
 
 void vue::setupMenu()
@@ -87,10 +122,17 @@ void vue::setupMenuFichier()
     menuGraph->addAction(actionCharger);
     connect(actionCharger, &QAction::triggered, this, &vue::onCharger);
 
-    auto actionSaisie = new QAction{"Saisie"};
-    actionSaisie->setToolTip("Saisir graph");
-    menuGraph->addAction(actionSaisie);
-    connect(actionSaisie, &QAction::triggered, this, &vue::onSaisie);
+    auto sousMenuSaisie = menuGraph->addMenu("Saisie");
+
+    auto actionSaisieFSAPS = new QAction{"Via FS/APS"};
+    actionSaisieFSAPS->setToolTip("FS/APS");
+    sousMenuSaisie->addAction(actionSaisieFSAPS);
+    connect(actionSaisieFSAPS, &QAction::triggered, this, &vue::onSaisieFSAPS);
+
+    auto actionSaisieMatrice = new QAction{"Via Matrice"};
+    actionSaisieMatrice->setToolTip("Matrice");
+    sousMenuSaisie->addAction(actionSaisieMatrice);
+    connect(actionSaisieMatrice, &QAction::triggered, this, &vue::onSaisieMatrice);
 
     menuGraph->addSeparator();
 
@@ -272,16 +314,74 @@ void vue::menuAjout()
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
 }
+
+void vue::fenetreSaisieFSAPS()
+{
+    auto mainLayout = new QVBoxLayout;
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutNbNoeud = new QHBoxLayout{};
+    auto labelNbNoeud = new QLabel{"Nombre de noeud : "};
+    layoutNbNoeud->addWidget(labelNbNoeud,1);
+    d_nSaisie = new QLineEdit{};
+    layoutNbNoeud->addWidget(d_nSaisie);
+
+    layoutInfo->addLayout(layoutNbNoeud,1);
+
+    auto layoutNbArc = new QHBoxLayout{};
+    auto labelNbArc = new QLabel{"Nombre d'arc : "};
+    layoutNbArc->addWidget(labelNbArc,1);
+    d_mSaisie = new QLineEdit{};
+    layoutNbArc->addWidget(d_mSaisie);
+
+    layoutInfo->addLayout(layoutNbArc,1);
+
+    auto layoutFS = new QHBoxLayout{};
+    auto labelFS = new QLabel{"FS : "};
+    layoutFS->addWidget(labelFS,1);
+    d_FSSaisie = new QLineEdit{};
+    layoutFS->addWidget(d_FSSaisie);
+
+    layoutInfo->addLayout(layoutFS,1);
+
+    auto layoutAPS = new QHBoxLayout{};
+    auto labelAPS = new QLabel{"APS : "};
+    layoutAPS->addWidget(labelAPS,1);
+    d_APSSaisie = new QLineEdit{};
+    layoutAPS->addWidget(d_APSSaisie);
+
+    layoutInfo->addLayout(layoutAPS,1);
+
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton("Valider");
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onSaisieFSAPSValider);
+
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
+    layoutBas->addWidget(boutonQuitter);
+
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+
 void vue::fenetrePruferDecode()
 {
     auto layoutBas = new QHBoxLayout{};
 
     auto boutonValider = new QPushButton{"Valider"};
     layoutBas->addWidget(boutonValider);
-    //connect(boutonValider, &QPushButton::clicked, this, &vue::onValide);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onValide_PruferDecode);
 
     auto boutonQuitter = new QPushButton{"Quitter"};
     layoutBas->addWidget(boutonQuitter);
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::onQuitte_PruferDecode);
 
     auto layoutInfo = new QVBoxLayout{};
 
@@ -300,8 +400,66 @@ void vue::fenetrePruferDecode()
     auto central = new QWidget;
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
+}
+void vue::fenetreDijkstra()
+{
+    auto layoutBas = new QHBoxLayout{};
 
+    auto boutonValider = new QPushButton{"Valider", nullptr};
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onValide_Dijkstra);
 
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    layoutBas->addWidget(boutonQuitter);
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::onQuitte_Dijkstra);
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutS = new QHBoxLayout{};
+    auto pannelS = new QLabel{"Saisie du sommet de depart", nullptr};
+    layoutS->addWidget(pannelS);
+    d_sommet_depart = new QLineEdit{};
+    layoutS->addWidget(d_sommet_depart);
+
+    layoutInfo->addLayout(layoutS);
+
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+void vue::fenetreOrdonnancement()
+{
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton{"Valider", nullptr};
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onValide_Ordonnancement);
+
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    layoutBas->addWidget(boutonQuitter);
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::onQuitte_Ordonnancement);
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutTache = new QHBoxLayout{};
+    auto pannelTache = new QLabel{"Saisie des taches sous la forme : NOM_TACHE>DUREE, ... ", nullptr};
+    layoutTache->addWidget(pannelTache);
+    d_taches = new QTextEdit{};
+    layoutTache->addWidget(d_taches);
+
+    layoutInfo->addLayout(layoutTache);
+
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
 }
 
 void vue::fenetreMenuSupprimer()
@@ -323,6 +481,9 @@ void vue::fenetreMenuSupprimer()
     auto layoutId = new QHBoxLayout{};
     auto labelId = new QLabel("Identifiant du noeud");
     layoutId->addWidget(labelId,1);
+
+    d_idSuppr = new QLineEdit{};
+    layoutId->addWidget(d_idSuppr);
 
     mainLayout->addLayout(layoutId);
     mainLayout->addLayout(layoutBas);
@@ -353,9 +514,14 @@ void vue::onCharger()
     emit Charger();
 }
 
-void vue::onSaisie()
+void vue::onSaisieFSAPS()
 {
-    emit Saisie();
+    emit SaisieFSAPS();
+}
+
+void vue::onSaisieMatrice()
+{
+    emit SaisieMatrice();
 }
 
 void vue::onAjout()
@@ -433,6 +599,11 @@ void vue::oninfoOrdonnancement()
     emit InfoOrdonnancement();
 }
 
+void vue::onSaisieFSAPSValider()
+{
+    emit saisieFSAPSValider();
+}
+
 void vue::oninfoDijkstra()
 {
     emit InfoDijkstra();
@@ -461,6 +632,34 @@ void vue::oninfoPrufer_decode()
 void vue::onAjouter()
 {
     emit Ajouter();
+}
+
+void vue::onValide_PruferDecode()
+{
+    emit Valider_PruferDecode();
+}
+
+void vue::onQuitte_PruferDecode()
+{
+    emit Quitte_PruferDecode();
+}
+void vue::onValide_Dijkstra()
+{
+    emit Valider_Dijkstra();
+}
+
+void vue::onQuitte_Dijkstra()
+{
+    emit Quitter_Dijkstra();
+}
+void vue::onValide_Ordonnancement()
+{
+    emit Valider_Ordonnancement();
+}
+
+void vue::onQuitte_Ordonnancement()
+{
+    emit Quitter_Ordonnancement();
 }
 
 int vue::getPoids()
@@ -498,6 +697,52 @@ int vue::getId()
 vector<int> vue::getP()
 {
     QString s = this->d_p->text();
+    vector<int> p;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        p.push_back(list[i].toInt());
+    return p;
+}
+int vue::getSommet_depart()
+{
+    return this->d_sommet_depart->text().toInt();
+}
+vector<int> vue::getDureeTaches()
+{
+    QString s = this->d_taches->toPlainText();
+    vector<int> duree;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+    {
+        QStringList nom = list[i].split('>');
+        duree.push_back(nom[1].toInt());
+    }
+    return duree;
+}
+
+int vue::getNSaisie()
+{
+    return d_nSaisie->text().toInt();
+}
+
+int vue::getMSaisie()
+{
+    return d_mSaisie->text().toInt();
+}
+
+vector<int> vue::getAPSSaisie()
+{
+    QString s = this->d_APSSaisie->text();
+    vector<int> p;
+    QStringList list = s.split(',');
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+        p.push_back(list[i].toInt());
+    return p;
+}
+
+vector<int> vue::getFSSaisie()
+{
+    QString s = this->d_FSSaisie->text();
     vector<int> p;
     QStringList list = s.split(',');
     for(unsigned i = 0 ; i < list.size() ; ++i)
