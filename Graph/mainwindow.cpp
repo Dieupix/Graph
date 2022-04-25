@@ -49,14 +49,14 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 
 bool MainWindow::verifieDistance()
 {
-    //Il faut que fs et aps soit initialisé ou la matrice.
-    return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
+    //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
+    return d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
 
 bool MainWindow::verifieRang()
 {
-    //Il faut que fs et aps soit initialisé ou la matrice.
-    return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
+    //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
+    return d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
 bool MainWindow::verifieTarjan()
 {
@@ -65,139 +65,154 @@ bool MainWindow::verifieTarjan()
 }
 bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
 {
+    //Il faut que le graphe soit oriente.
     //Il faut que fs et aps soit initialisé.
     //Il faut que duree_taches soit correctement initisalisé et saisie
-    if(d_wg.getUsingFSandAPS())
+    if(d_wg.getOriente())
     {
-        if(d_wg.verifieFS_APS_NonVide())
+        if(d_wg.getUsingFSandAPS())
         {
-            int n = d_wg.getAps()[0];
-            return (duree_taches[0] != n);
+            if(d_wg.verifieFS_APS_NonVide())
+            {
+                int n = d_wg.getAps()[0];
+                return (duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
+            }
+            return false; //Graphe Vide - Fs & Aps
         }
-        return false;
-    }
-    else
-    {
-        if(d_wg.verifieMatrice_NonVide())
+        else
         {
-            int n = d_wg.getMatrice()[0][0];
-            return(duree_taches[0] != n);
+            if(d_wg.verifieMatrice_NonVide())
+            {
+                int n = d_wg.getMatrice()[0][0];
+                return(duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
+            }
+            return false; //Graphe Vide - Matrice
         }
-        return false;
     }
+    else return false; //Graphe Non Oriente
 }
 bool MainWindow::verifieDijkstra(int sommet_depart)
 {
+    //Il faut que le graphe soit oriente.
     //Il faut que fs et aps soit initialisé ou la matrice.
     //Il faut que le cout soit correct, qu'il ne contienne pas de cout < 0
-    if(d_wg.getUsingFSandAPS())
+    if(d_wg.getOriente())
     {
-        if(d_wg.verifieFS_APS_NonVide())
+        if(d_wg.getUsingFSandAPS())
         {
-            bool sommet_correct = true;
-            bool couts_correct = true;
-            if(sommet_depart <= 0 || sommet_depart > d_wg.getAps()[0])
-                sommet_correct = false;
-            else
+            if(d_wg.verifieFS_APS_NonVide())
             {
-                if(d_wg.verifieCout_NonVide())
+                bool sommet_correct = true;
+                bool couts_correct = true;
+                if(sommet_depart <= 0 || sommet_depart > d_wg.getAps()[0])
+                    sommet_correct = false; //Le sommet saisi n'est pas valide !
+                else
+                {
+                    if(d_wg.verifieCout_NonVide())
+                    {
+                        vector<vector<int>> couts = d_wg.getCouts();
+                        if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                            couts_correct = false; //Les elements presents dans le cout ne correspondent pas avec le fs et aps
+                        else
+                        {
+                            for(unsigned i = 1 ; i < couts.size() ; ++i)
+                                for(unsigned j = 1 ; j < couts[i].size() ; ++j)
+                                    if(couts[i][j] < 0)
+                                        couts_correct = false; //Cout negatif interdit !
+                        }
+                    }
+                    else return false; //Cout vide
+                }
+                return sommet_correct && couts_correct;
+            }
+            return false; //Graphe Vide - Fs & Aps
+        }
+        else
+        {
+            if(d_wg.verifieMatrice_NonVide())
+            {
+                bool sommet_correct = true;
+                bool couts_correct = true;
+                int n = d_wg.getMatrice()[0][0];
+                int m = d_wg.getMatrice()[0][1];
+                if(sommet_depart <= 0 || sommet_depart > n)
+                    sommet_correct = false; //Le sommet saisi n'est pas valide !
+                else
                 {
                     vector<vector<int>> couts = d_wg.getCouts();
-                    if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
-                        couts_correct = false;
+                    if(couts[0][0] != n || couts[0][1] != m)
+                        couts_correct = false; //Les elements presents dans le cout ne correspondent pas avec la matrice
                     else
                     {
                         for(unsigned i = 1 ; i < couts.size() ; ++i)
                             for(unsigned j = 1 ; j < couts[i].size() ; ++j)
                                 if(couts[i][j] < 0)
-                                    couts_correct = false;
+                                    couts_correct = false; //Cout negatif interdit !
                     }
                 }
-                else return false; //cout vide
+                return sommet_correct && couts_correct;
             }
-            return sommet_correct && couts_correct;
+            return false; //Cout vide
         }
-        return false;
     }
-    else
-    {
-        if(d_wg.verifieMatrice_NonVide())
-        {
-            bool sommet_correct = true;
-            bool couts_correct = true;
-            int n = d_wg.getMatrice()[0][0];
-            int m = d_wg.getMatrice()[0][1];
-            if(sommet_depart <= 0 || sommet_depart > n)
-                sommet_correct = false;
-            else
-            {
-                vector<vector<int>> couts = d_wg.getCouts();
-                if(couts[0][0] != n || couts[0][1] != m)
-                    couts_correct = false;
-                else
-                {
-                    for(unsigned i = 1 ; i < couts.size() ; ++i)
-                        for(unsigned j = 1 ; j < couts[i].size() ; ++j)
-                            if(couts[i][j] < 0)
-                                couts_correct = false;
-                }
-            }
-            return sommet_correct && couts_correct;
-        }
-        return false;
-    }
+    else return false; //Graphe Non Oriente
 }
 bool MainWindow::verifieDantzig()
 {
+    //Il faut que le graphe soit oriente.
     //Il faut que le cout soit bien initialisé ou la matrice.
-    if(d_wg.getUsingFSandAPS())
+    if(d_wg.getOriente())
     {
-        if(d_wg.verifieFS_APS_NonVide())
+        if(d_wg.getUsingFSandAPS())
         {
-            bool cout_correct = true;
-            vector<vector<int>> couts = d_wg.getCouts();
-            if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
-                cout_correct = false;
-            return cout_correct;
+            if(d_wg.verifieFS_APS_NonVide())
+            {
+                bool cout_correct = true;
+                vector<vector<int>> couts = d_wg.getCouts();
+                if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                    cout_correct = false; //Les elements presents dans le cout ne correspondent pas avec le fs et aps
+                return cout_correct;
+            }
+            return false; //Graphe Vide - Fs & Aps
         }
-        return false;
+        else
+        {
+           if(d_wg.verifieMatrice_NonVide())
+           {
+               bool cout_correct = true;
+               int n = d_wg.getMatrice()[0][0];
+               int m = d_wg.getMatrice()[0][1];
+               vector<vector<int>> couts = d_wg.getCouts();
+               if(couts[0][0] != n || couts[0][1] != m)
+                   cout_correct = false; //Les elements presents dans le cout ne correspondent pas avec la matrice
+               return cout_correct;
+           }
+           return false; //Graphe Vide - Matrice
+        }
     }
-    else
-    {
-       if(d_wg.verifieMatrice_NonVide())
-       {
-           bool cout_correct = true;
-           int n = d_wg.getMatrice()[0][0];
-           int m = d_wg.getMatrice()[0][1];
-           vector<vector<int>> couts = d_wg.getCouts();
-           if(couts[0][0] != n || couts[0][1] != m)
-               cout_correct = false;
-           return cout_correct;
-       }
-       return false;
-    }
+    else return false; //Graphe Non Oriente
 }
 bool MainWindow::verifieKruskal()
 {
-    //Il faut que fs et aps soit initialisé ou la matrice.
-    return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
+    //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
+    return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
 bool MainWindow::verifiePruferEncode()
 {
-    //Il faut que fs et aps soit initialisé ou la matrice.
-    return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
+    //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
+    return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
 bool MainWindow::verifiePruferDecode(const vector<int>& p)
 {
     bool p_correct = true;
     unsigned m = p[0];
     if(m != p.size())
-        p_correct = false;
+        p_correct = false; //P n'est pas correctement saisi : p[0] contient le nombre total d'elements du tableau
     else
     {
         for(unsigned i = 1 ; i < m ; ++i)
             if(p[i] <= 0 || p[i] > (int)m+2)
-                p_correct = false;
+                p_correct = false; //P n'est pas correctement saisi : un (ou plusieurs) des elements est soit negatif soit superieur a p[0] + 2
     }
     return p_correct;
 }

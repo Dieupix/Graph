@@ -25,6 +25,7 @@ public:
     vector<vector<int>> getCouts() const;
     vector<vector<int>> getMatrice() const;
     bool                getUsingFSandAPS() const;
+    bool                getOriente() const;
     Graph               getGraph() const;
 
     void                englobe_Dantzig         ();

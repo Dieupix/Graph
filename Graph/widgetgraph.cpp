@@ -209,6 +209,11 @@ bool widgetGraph::getUsingFSandAPS() const
     return d_g.isUsingFsAndAps();
 }
 
+bool widgetGraph::getOriente() const
+{
+    return d_g.getEst_oriente();
+}
+
 Graph widgetGraph::getGraph() const
 {
     return d_g;
