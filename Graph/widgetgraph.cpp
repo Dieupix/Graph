@@ -442,10 +442,8 @@ void widgetGraph::transformeVersMatrice()
     cout<<matrice[0][0]<<" "<<matrice[0][1]<<endl;
     for(unsigned i = 1 ; i < matrice.size()  ; ++i)
         printVector(matrice[i]);
-    //d_g.setMatrice(matrice);
-    //d_g.setFSandAPS({},{});
 
-    //d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
+    d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
 }
 
 void widgetGraph::transformeVersFS_APS()

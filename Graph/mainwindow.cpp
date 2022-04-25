@@ -426,14 +426,10 @@ void MainWindow::onClickPrufer_encode_INFO()
 }
 void MainWindow::onClickPrufer_decode_INFO()
 {
-    QString texte = "Cet algorithme a pour but de decoder un tableau de Prufer en graphe."
-                    "Son resultat est donne sous la forme d'un graphe."
-                    "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Prufer [decodage]");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    QString texte = "Cet algorithme a pour but de decoder un tableau de Prufer en graphe.\n"
+                    "Son resultat est donne sous la forme d'un graphe.\n"
+                    "La complexite de cet algorithme est en O( .. ).";
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Prufer [decodage]",texte,QMessageBox::Close};
     info->exec();
 }
 
