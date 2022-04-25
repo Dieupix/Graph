@@ -25,7 +25,7 @@ private:
     bool verifieDistance();
     bool verifieRang();
     bool verifieTarjan();
-    bool verifieOrdonnancement(const vector<int>& duree_taches);
+    bool verifieOrdonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps);
     bool verifieDijkstra(int sommet_depart);
     bool verifieDantzig();
     bool verifieKruskal();

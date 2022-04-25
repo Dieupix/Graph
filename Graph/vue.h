@@ -45,6 +45,7 @@ public:
     int getSommet_depart();
     //Pour Ordonnancement
     vector<int> getDureeTaches();
+    vector<int> getFsOrd();
 
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...

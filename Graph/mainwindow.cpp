@@ -63,34 +63,15 @@ bool MainWindow::verifieTarjan()
     //Il faut que fs et aps soit initialisé ou la matrice.
     return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
 }
-bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches)
+bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps)
 {
-    //Il faut que le graphe soit oriente.
     //Il faut que fs et aps soit initialisé.
     //Il faut que duree_taches soit correctement initisalisé et saisie
-    if(d_wg.getOriente())
-    {
-        if(d_wg.getUsingFSandAPS())
-        {
-            if(d_wg.verifieFS_APS_NonVide())
-            {
-                int n = d_wg.getAps()[0];
-                return (duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
-            }
-            return false; //Graphe Vide - Fs & Aps
-        }
-        else
-        {
-            if(d_wg.verifieMatrice_NonVide())
-            {
-                int n = d_wg.getMatrice()[0][0];
-                return(duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
-            }
-            return false; //Graphe Vide - Matrice
-        }
-    }
-    else return false; //Graphe Non Oriente
+    ///IL FAUT VERIFIER FS ET APS OK
+    int n = aps[0];
+    return (duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
 }
+
 bool MainWindow::verifieDijkstra(int sommet_depart)
 {
     //Il faut que le graphe soit oriente.
@@ -493,11 +474,10 @@ void MainWindow::onValiderDijkstra()
 }
 void MainWindow::onValiderOrdonnancement()
 {
-    if(verifieOrdonnancement(menuOrd->getDuree()))
+    if(verifieOrdonnancement(menuOrd->getDuree(),menuOrd->getFs(),menuOrd->getAps()))
     {
-        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree());
+        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFs(),menuOrd->getAps());
         d_vue.metAJourGraphe();
-
     }
 }
 

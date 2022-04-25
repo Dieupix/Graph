@@ -261,7 +261,7 @@ widgetGraph widgetGraph::englobe_Kruskal()
     return wg;
 }
 
-widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
+widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps)
 {
     vector<int> new_fs, new_aps;
     vector<int> file_pred;
@@ -269,17 +269,14 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
     vector<int> longueur_critique;
-    if(!d_g.isUsingFsAndAps())
-    {
-       transformeVersFS_APS();
-    }
-    transforme_FS_APS_TO_FP_APP(d_g.getFS(), d_g.getAPS(), file_pred, adr_prem_pred);
+
+    transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
     Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
 
     //Affichage de la longueur critique
     //Sur console ?
-    printVector(longueur_critique);cout<<"OK";
+    printVector(longueur_critique);
 /*
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{new_fs,new_aps});*

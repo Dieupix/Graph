@@ -446,7 +446,7 @@ void vue::fenetreOrdonnancement()
     auto layoutInfo = new QVBoxLayout{};
 
     auto layoutTache = new QHBoxLayout{};
-    auto pannelTache = new QLabel{"Saisie des taches sous la forme : NOM_TACHE>DUREE, ... ", nullptr};
+    auto pannelTache = new QLabel{"Saisie des taches sous la forme : NOM_TACHE>DUREE>PREDECESSEURS_1-PREDECESSEURS_1-... OU '0', ... ", nullptr};
     layoutTache->addWidget(pannelTache);
     d_taches = new QTextEdit{};
     layoutTache->addWidget(d_taches);
@@ -718,6 +718,27 @@ vector<int> vue::getDureeTaches()
         duree.push_back(nom[1].toInt());
     }
     return duree;
+}
+
+vector<int> vue::getFsOrd()
+{
+    QString s = this->d_taches->toPlainText();
+    vector<int> fs;
+    QStringList list = s.split(',');
+    fs.push_back(0);
+    for(unsigned i = 0 ; i < list.size() ; ++i)
+    {
+        QStringList nom = list[i].split('>');
+        QStringList pred = nom[2].split('-');
+        for(unsigned j = 0 ; j < pred.size() ; ++j)
+        {
+            if(pred[j].toInt() != '0')
+                fs.push_back(pred[j].toInt());
+        }
+        fs.push_back(0);
+    }
+    fs[0] = fs.size();
+    return fs;
 }
 
 int vue::getNSaisie()
