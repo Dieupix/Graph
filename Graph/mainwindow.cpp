@@ -324,104 +324,80 @@ void MainWindow::onClick_Prufer_decode()
 
 void MainWindow::onClickDistance_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner l'ensemble des distances separant chaque sommet du graphe de l'ensemble des autres."
-                    "Son resultat est donne sous la forme d'une matrice appellee matrice des distances."
+    QString texte = "Cet algorithme a pour but de determiner l'ensemble des distances separant chaque sommet du graphe de l'ensemble des autres.\n"
+                    "Il sert notamment des les problèmes de réseaux ou de trajet lorsq'un arc ne possède pas de poids.\n"
+                    "Son resultat est donne sous la forme d'une matrice appelee matrice des distances.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme des distances");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme des distances",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickRang_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner le rang de chaque sommet du graphe."
-                    "Le rang d'un sommet est la longueur d'une plus long chemin arrivant à lui."
-                    "On suppose que si le graphe admet un circuit alors les sommets concernes auront un rang egal a -1."
-                    "Son resultat est donne sous la forme d'un tableau contenant le rang de chaque sommet."
+    QString texte = "Cet algorithme a pour but de determiner le rang de chaque sommet du graphe.\n"
+                    "Le rang d'un sommet est la longueur d'une plus long chemin arrivant à lui.\n"
+                    "On suppose que si le graphe admet un circuit alors les sommets concernes auront un rang egal a -1.\n"
+                    "Il sert dans le domaine mathematique afin de determiner par exemple la dimension d'un graphe.\n"
+                    "Son resultat est donne sous la forme d'un tableau contenant le rang de chaque sommet.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme du rang");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme du rang",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickTarjan_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner le graphe reduit du graphe courant."
-                    "Le graphe reduit est sans circuit et ses sommets correspondent aux composantes fortement connexes du graphe."
-                    "Son resultat est donne sous la forme d'un nouveau graphe (le graphe reduit)."
-                    "De plus, les bases des deux graphes seront aussi indiquees."
-                    "Pour rappel, la base d'un graphe est l'ensemble des sommets necessaires pour qu'a partir de ce dernier, on puisse atteindre n'importe quel sommet"
+    QString texte = "Cet algorithme a pour but de determiner le graphe reduit du graphe courant.\n"
+                    "Le graphe reduit est sans circuit et ses sommets correspondent aux composantes fortement connexes du graphe.\n"
+                    "Il est utilise pour simplifier des graphes complexes par exemple.\n"
+                    "Son resultat est donne sous la forme d'un nouveau graphe (le graphe reduit).\n"
+                    "De plus, les bases des deux graphes seront aussi indiquees.\n"
+                    "Pour rappel, la base d'un graphe est l'ensemble des sommets necessaires pour qu'a partir de ce dernier, on puisse atteindre n'importe quel sommet.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Tarjan");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Tarjan",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickOrdonnancement_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner l'ensemble des dates au plus tot et date au plus tard afin d'en deduire un (des) chemin(s) critique(s)."
-                    "Un chemin critique est un chemin du graphe composes de sommets dont les durees de realisation ne peuvent etre retardees."
-                    "Son resultat est donne sous la forme d'un nouveau graphe compose des sommets critiques et du(des) chemin(s) critique(s)."
+    QString texte = "Cet algorithme a pour but de determiner l'ensemble des dates au plus tot et date au plus tard afin d'en deduire un (des) chemin(s) critique(s).\n"
+                    "Un chemin critique est un chemin du graphe composes de sommets dont les durees de realisation ne peuvent etre retardees.\n"
+                    "Il est notamment utilise dans les gestion de planification de taches afin d'etablir le meilleur planning possible.\n"
+                    "Son resultat est donne sous la forme d'un nouveau graphe compose des sommets critiques et du(des) chemin(s) critique(s).\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : L'ordonnancement");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : L'ordonnancement",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickDijkstra_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner le(s) chemin(s) le(s) plus court(s) d'un graphe a partir d'un sommet de depart donne."
-                    "Son resultat est donne sous la forme de deux tableaux representant respectivement le poids minimal du chemin (d) et le chemin (pr)."
+    QString texte = "Cet algorithme a pour but de determiner le(s) chemin(s) le(s) plus court(s) d'un graphe a partir d'un sommet de depart donne.\n"
+                    "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
+                    "Son resultat est donne sous la forme de deux tableaux representant respectivement le poids minimal du chemin (d) et le chemin (pr).\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Dijkstra");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dijkstra",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickDantzig_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner la matrice de cout la plus optimale possible en tenant compte des raccourcis proposes par le graphe compte tenu de ses poids."
-                    "Son resultat est donne sous la forme d'une matrice appellee matrice des couts."
+    QString texte = "Cet algorithme a pour but de determiner la matrice de cout la plus optimale possible en tenant compte des raccourcis proposes par le graphe compte tenu de ses poids.\n"
+                    "Son resultat est donne sous la forme d'une matrice appellee matrice des couts.\n"
+                    "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Dantzig");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dantzig",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickKruskal_INFO()
 {
-    QString texte = "Cet algorithme a pour but de determiner un arbre recouvrant minimal d'un graphe non oriente."
-                    "Son resultat est donne sous la forme d'un nouveau graphe."
+    QString texte = "Cet algorithme a pour but de determiner un arbre recouvrant minimal d'un graphe non oriente.\n"
+                    "Il est par exemple utilise pour simplifier des cablages.\n"
+                    "Son resultat est donne sous la forme d'un nouveau graphe.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Kruskal");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Kruskal",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickPrufer_encode_INFO()
 {
-    QString texte = "Cet algorithme a pour but de coder un graphe donne sous la forme d'un tableau de Prufer."
-                    "Son resultat est donne sous la forme d'un tableau."
+    QString texte = "Cet algorithme a pour but de coder un graphe donne sous la forme d'un tableau de Prufer.\n"
+                    "Il peut etre utile pour representer n'importe quel probleme sous forme d'un tableau d'entier unique.\n"
+                    "Son resultat est donne sous la forme d'un tableau d'entier.\n"
                     "La complexite de cet algorithme est en O( .. )";
-    auto info = new QMessageBox{};
-    info->setWindowTitle("Information : Algorithme de Prufer [encodage]");
-    info->setText(texte);
-    info->setIcon(QMessageBox::Information);
-    info->setStandardButtons(QMessageBox::Close);
+    auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Prufer [encodage]",texte,QMessageBox::Close};
     info->exec();
 }
 void MainWindow::onClickPrufer_decode_INFO()
