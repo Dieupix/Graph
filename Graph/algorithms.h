@@ -29,5 +29,8 @@ void Tarjan                     (const vector<int>& FS, const vector<int>& APS);
 void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, vector<int>& fs, vector<int>& aps);
 void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, vector<int>& fp, vector<int>& app);
 void traversee                  (int s, int& p, int& k, const vector<int>& FS, const vector<int>& APS, vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& tarj, vector<bool>& entarj, vector<int>& num, vector<int>& ro);
+int  partition                  (vector<int>& t, int g, int d);
+void TrierTableau_QuickSort     (vector<int>& tab, int g, int d);
+void versGrapheReduit           (const vector<int>& cfc, const vector<int>& prem, const vector<int>& fs, const vector<int>& aps, vector<vector<int>>& mat);
 
 #endif // ALGORITHMS_H

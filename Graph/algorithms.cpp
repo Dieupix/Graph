@@ -672,6 +672,121 @@ void transforme_FS_APS_TO_FP_APP(const vector<int>& fs, const vector<int>& aps, 
     }
 }
 
+int partition(vector<int>& t, int g, int d)
+{
+    //Sert pour le tri du tableau
+    int m = g;
+    for(int i = g+1 ; i <= d ; ++i)
+    {
+        if(t[i] < t[g])
+        {
+            ++m;
+            std::swap(t[i],t[m]);
+        }
+    }
+    std::swap(t[g],t[m]);
+    return m;
+}
+
+void TrierTableau_QuickSort(vector<int>& tab, int g, int d)
+{
+    if(g<d)
+    {
+        int m = partition(tab,g,d);
+        TrierTableau_QuickSort(tab,g,m-1);
+        TrierTableau_QuickSort(tab,m+1,d);
+    }
+}
+
+void versGrapheReduit(const vector<int>& cfc, const vector<int>& prem,const vector<int>& fs,const vector<int>& aps, vector<vector<int>>& mat)
+{
+    //On initialise correctement la matrice representant le futur graphe reduit
+    mat.resize(prem[0]+1);
+    mat[0].resize(2);
+    mat[0][0] = prem[0];
+    for(int i = 1; i <= prem[0] ; ++i)
+            mat[i].resize(prem[0]+1,0);
+
+    //On commence par l'ordre croissant des composantes
+    bool est_deja_dans_composant = false;
+    for(int composant = 1; composant <= prem[0] ; ++composant)
+    {
+        //On commence par chercher l'ensemble des sommets qui sont dans le composant courant
+        for(int i = 1 ; i <= cfc[0] ; ++i)
+        {
+            //Si le sommet courant est dans la composante, on regarde tous ses successeurs
+            if(cfc[i] == composant)
+            {
+                vector<int> est_deja; //Tableau qui nous renseigne sur le fait qu'une composante a deja ete trouvee (on ne la met pas deux fois)
+                bool est_vide = true;
+                est_deja.reserve(prem[0]); //Au maximum...
+                //On commence a chercher les successeurs...
+                int j = aps[i];
+                while(fs[j] != 0) //Parcourt des successeurs
+                {
+                    //Le composant du successeurs
+                    int comp_suiv = cfc[fs[j]];
+                    if(!est_vide) //Si est_deja n'est pas vide
+                    {
+                        //On regarde si la composante trouvee est deja presente
+                        for(unsigned k = 0 ; k < est_deja.size() ; ++k)
+                        {
+                            //Si elle est deja ou que le successeur est en fait dans la meme composante
+                            if(comp_suiv == est_deja[k] || comp_suiv == composant)
+                                est_deja_dans_composant = true;
+                        }
+                    }
+                    //Si la comoosante n'est pas encore dans est_deja
+                    if(!est_deja_dans_composant)
+                    {
+                        if(composant != comp_suiv)//Dans le cas ou c'est vide, il faut verifier cette condition avant de l'ajouter
+                        {
+                            est_deja.push_back(comp_suiv);
+                            est_vide = false;
+                        }
+                    }
+                    //On regarde le successeur suivant
+                    ++j;
+                    est_deja_dans_composant = false;
+                }
+                //Si le tableau est_deja contient plus d'un élément
+                if(est_deja.size() > 1)
+                {
+                    TrierTableau_QuickSort(est_deja, 0, est_deja.size());
+                }
+                //Si est_deja n'est pas vide (dans le cas ou aucun des sommets de la composante
+                //n'a de successeur autre que des sommets appartenant a cette composante)
+                if(!est_vide)
+                {
+                    unsigned cpt = 0;
+                    unsigned k = 1;
+                    //On met les composantes trouvees dans la matrice en tant que successeur de la composante courante
+                    while(cpt < est_deja.size() && k < mat[composant].size())
+                    {
+                        if(est_deja[cpt] == (int)k)
+                        {
+                            mat[composant][k] = 1;
+                            ++cpt;
+                        }
+                        ++k;
+                    }
+                }
+                //On enleve tous les elements du tableau
+                est_deja.clear();
+            } // fin du if
+        }//fin du for i
+    } //fin des composantes
+
+    //A ce stade l'integralite de la matrice est remplie sauf la cellule contenant le nombre d'arcs et de sommets.
+    //On parcourt la matrice definitive pour determiner le nombre d'arcs pour en deduire mat[0][1]
+    int nb_arcs = 0;
+    for(unsigned i = 1 ; i < mat.size() ; ++i)
+        for(unsigned j = 1 ; j < mat[i].size() ; ++j)
+            if(mat[i][j] == 1)
+                nb_arcs++;
+
+    mat[0][1] = prem[0] + nb_arcs;
+} //fin de la fonction
 
 
 

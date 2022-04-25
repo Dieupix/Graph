@@ -274,16 +274,16 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches)
 
     //Affichage de la longueur critique
     //Sur console ?
-    printVector(longueur_critique);
-
+    printVector(longueur_critique);cout<<"OK";
+/*
     widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{new_fs,new_aps});
-    return new_wg;
+    new_wg.loadGraph(Graph{new_fs,new_aps});*
+    return new_wg;*/return widgetGraph{};
 }
 
 widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 {
-    if(!d_g.isUsingFsAndAps())
+    if(d_g.isUsingFsAndAps())
     {
         transformeVersMatrice();
     }
@@ -299,11 +299,15 @@ widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 vector<int> widgetGraph::englobe_Prufer_encode()
 {
     vector<int> p;
-    if(!d_g.isUsingFsAndAps())
+    if(d_g.isUsingFsAndAps())
     {
         transformeVersMatrice();
-    }
-    Prufer_encode(d_g.getMatAdj(), p);
+    }/*
+    vector<vector<int>> mat = d_g.getMatAdj();
+    cout<<mat[0][0]<<" "<<mat[0][1]<<endl;
+    for(unsigned i = 1 ; i < mat.size()  ; ++i)
+        printVector(mat[i]);
+    //Prufer_encode(d_g.getMatAdj(), p);*/
     return p;
 }
 
@@ -326,11 +330,17 @@ widgetGraph widgetGraph::englobe_Tarjan()
         transformeVersFS_APS();
     }
     fortconnexe(d_g.getFS(),d_g.getAPS(),cfc,pilch,pred,prem);
-    //Ecrire une fonction qui transforme en un nouveau widgetGraph
+
+    //traitement du resultat
     vector<vector<int>> mat;
-    Graph g{mat};
+    printVector(cfc);
+    printVector(prem);
+    printVector(d_g.getFS());
+    printVector(d_g.getAPS());
+    versGrapheReduit(cfc,prem,d_g.getFS(),d_g.getAPS(),mat);
+
     widgetGraph new_wg(this);
-    new_wg.loadGraph(g);
+    new_wg.loadGraph(Graph{mat});
     return new_wg;
 }
 
@@ -429,8 +439,13 @@ void widgetGraph::transformeVersMatrice()
 {
     vector<vector<int>> matrice;
     d_g.FS_APS_to_MatAdj(matrice);
+    cout<<matrice[0][0]<<" "<<matrice[0][1]<<endl;
+    for(unsigned i = 1 ; i < matrice.size()  ; ++i)
+        printVector(matrice[i]);
+    //d_g.setMatrice(matrice);
+    //d_g.setFSandAPS({},{});
 
-    d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
+    //d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
 }
 
 void widgetGraph::transformeVersFS_APS()
