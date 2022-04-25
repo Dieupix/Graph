@@ -32,5 +32,8 @@ void traversee                  (int s, int& p, int& k, const vector<int>& FS, c
 int  partition                  (vector<int>& t, int g, int d);
 void TrierTableau_QuickSort     (vector<int>& tab, int g, int d);
 void versGrapheReduit           (const vector<int>& cfc, const vector<int>& prem, const vector<int>& fs, const vector<int>& aps, vector<vector<int>>& mat);
+void Graph_reduit               (const vector<int>& prem,const vector<int>& pilch,const vector<int>& cfc,const vector<int>& fs, const vector<int>& aps,vector<int>&fsr, vector<int>& apsr);
+void base_Greduit               (const vector<int>& fsR, const vector<int>& apsR, vector<int>& baseR_GrapheR);
+void edition_bases              (const vector<int>& prem, const vector<int>& pilch, const vector<int>& baseR, vector<int>& baseInitiale);
 
 #endif // ALGORITHMS_H

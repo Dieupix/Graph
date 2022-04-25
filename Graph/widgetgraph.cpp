@@ -338,14 +338,24 @@ widgetGraph widgetGraph::englobe_Tarjan()
 
     //traitement du resultat
     vector<vector<int>> mat;
-    printVector(cfc);
-    printVector(prem);
-    printVector(d_g.getFS());
-    printVector(d_g.getAPS());
     versGrapheReduit(cfc,prem,d_g.getFS(),d_g.getAPS(),mat);
 
+    //Nouveau graphe (Reduit)
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{mat});
+
+    //determination de la base du graphe reduit :
+    vector<int> fs, aps, base, baseInitiale;
+    new_wg.d_g.matAdj_to_FS_APS(fs,aps);
+    base_Greduit(fs,aps,base);
+
+    printVector(base);
+
+    //determination de la base du graphe initial :
+    edition_bases(prem,pilch,base,baseInitiale);
+
+    printVector(baseInitiale);
+
     return new_wg;
 }
 

@@ -223,9 +223,9 @@ void fortconnexe(const vector<int>& FS, const vector<int>& APS, vector<int>& cfc
     }
 
     prem[0] = k;
-
+/*
     cout << "num:   "; printVector(num);
-    cout << "ro:    "; printVector(ro);
+    cout << "ro:    "; printVector(ro);*/
 }
 
 void Kruskal(const Graph& g, Graph &t)
@@ -788,9 +788,87 @@ void versGrapheReduit(const vector<int>& cfc, const vector<int>& prem,const vect
     mat[0][1] = prem[0] + nb_arcs;
 } //fin de la fonction
 
+//Fonction du prof -- Faux pour le moment
+void Graph_reduit(const vector<int>& prem,const vector<int>& pilch,const vector<int>& cfc,const vector<int>& fs, const vector<int>& aps,vector<int>&fsr, vector<int>& apsr)
+{
+     int s, kr = 1, nb_comp = prem[0];
+     vector<bool> deja_mis(nb_comp+1);
+     fsr.resize(fs[0]+1);
+     apsr.resize(nb_comp+1);
+     apsr[0] = kr;
+     for(int i = 1 ; i < nb_comp ; i++)
+     {
+         apsr[i]= kr;
+         for(int j = 1; j <= nb_comp ; j++)
+         {
+            deja_mis[j]=false;
+         }
+         deja_mis[i] = true;
+         s = prem[0];
+         while(s!=0)
+         {
+             for(int t = aps[s] ; fs[t] != 0 ; t++)
+             {
+                 if(deja_mis[cfc[fs[t]]] == false)
+                 {
+                     fsr[kr] = cfc[fs[t]];
+                     kr++;
+                     deja_mis[cfc[fs[t]]] = true;
+                 }
+             }
+            s = pilch[s];
+         }
+         fsr[kr] = 0;
+         kr++;
+     }
+     fsr[0] = kr-1;
+     deja_mis.clear();
+}
+
+void base_Greduit(const vector<int>& fsR, const vector<int>& apsR, vector<int>& baseR_GrapheR)
+{
+    int nb_sommets = apsR[0];
+    baseR_GrapheR.resize(nb_sommets+1);
+    vector<int> ddir(nb_sommets+1);
+    for(int i = 0 ; i <= nb_sommets ; ++i)
+        ddir[i] = 0;
+
+    for(int kr = 1 ; kr <= fsR[kr] ; kr++)
+        ddir[fsR[kr]]++;
 
 
+    int nb = 0;
+    for(int c = 1 ; c <= nb_sommets ; c++)
+        if (ddir[c] == 0)
+            baseR_GrapheR[++nb] = c;
 
+    baseR_GrapheR[0] = nb;
+}
+
+void edition_bases(const vector<int>& prem, const vector<int>& pilch, const vector<int>& baseR, vector<int>& baseInitiale)
+{
+    int nb = baseR[0];                  // Nombre de CFC de l’unique base du graphe réduit
+    baseInitiale.resize(nb+1);            // pile qui mémorise les sommets des bases du graphe initial
+    baseInitiale[0] = nb;
+    int p = 1;
+    int som = prem[baseR[1]];           // premier sommet de la première CFC
+    while(p >= 1)
+    {
+        if((p<= nb) && (som != 0))
+        {
+             baseInitiale[p] = som;
+             p++;
+             if(p <= nb)
+                 som = prem[baseR[p]];
+             //else printVector(Base);    // Affiche le contenu du tableau Base contenant les sommets d’une base du graphe initial
+        }
+        else
+        {
+             p--;
+             som = pilch[baseInitiale[p]];
+        }
+    }
+}
 
 
 
