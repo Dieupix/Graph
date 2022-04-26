@@ -62,16 +62,16 @@ void widgetGraph::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
+        moveGraph(0, -20);
         break;
     case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
+        moveGraph(0, 20);
         break;
     case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
+        moveGraph(-20, 0);
         break;
     case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
+        moveGraph(20, 0);
         break;
     case Qt::Key_Plus:
         zoomIn();
@@ -81,11 +81,16 @@ void widgetGraph::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Space:
     case Qt::Key_Enter:
-        shuffle();
+        centerGraph();
         break;
     default:
         QGraphicsView::keyPressEvent(event);
     }
+}
+
+void widgetGraph::moveGraph(qreal dx, qreal dy)
+{
+    for(auto node : nodes) node->moveBy(dx, dy);
 }
 
 void widgetGraph::timerEvent(QTimerEvent *event)
@@ -172,16 +177,6 @@ void widgetGraph::zoomIn()
 void widgetGraph::zoomOut()
 {
     scaleView(1 / 1.2);
-}
-
-void widgetGraph::shuffle()
-{
-    Noeud noeud(nodes.back()->getNoeud()->getId()+1);
-    vector<int> pred(d_g.getAPS()[0]+1, 0), succ(d_g.getAPS()[0]+1, 0);
-
-    pred[1] = succ[1] = 1;
-
-    ajouterNoeud(noeud, pred, succ);
 }
 
 vector<int> widgetGraph::getFs() const
@@ -415,13 +410,9 @@ bool widgetGraph::verifieCout_NonVide()
 void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
     auto node = new widgetNode(this, noeud);
+    nodes << node;
     scene->addItem(node);
-    if(nodes.size() != 0)
-    {
-        auto p = nodes.back()->pos();
-        node->setPos(p.x() + 50, std::pow(-1, nodes.back()->getNoeud()->getId()) * 50 + p.y());
-    }
-    else node->setPos(0, 50);
+    centerNode(node);
 
     for(unsigned i = 0; i < nodes.size(); ++i)
     {
@@ -438,7 +429,6 @@ void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, cons
             scene->addItem(edge);
         }
     }
-    nodes << node;
     d_g.ajouterNoeud(noeud, pred, succ);
 }
 
@@ -471,34 +461,65 @@ void widgetGraph::loadGraph(const Graph& g)
     d_g = g;
     scene->clear();
     nodes.resize(0);
-    unsigned modulo = sqrt(g.getSommets().size());
-    int xOff = -(int)modulo;
-    for(unsigned i = 1; i < g.getSommets().size(); ++i)
-    {
-        if(xOff % modulo == 0) xOff = -(int)modulo;
 
-        auto node = new widgetNode(this, *g.getSommets()[i]);
-        if(nodes.contains(node)) continue;
+    for(unsigned i = 1; i < d_g.getSommets().size(); ++i)
+    {
+        auto node = new widgetNode(this, *d_g.getSommets()[i]);
 
         nodes << node;
         scene->addItem(node);
-        node->setPos(g.getSommets()[i]->getId() * 30, xOff * 30);
-
-        ++xOff;
     }
 
-    for(unsigned i = 1; i < d_g.getAPS().size(); ++i)
+    centerGraph();
+
+    if(d_g.isUsingFsAndAps())
     {
-        unsigned j = d_g.getFS()[d_g.getAPS()[i]], k = i;
-        while(j != 0)
+        for(unsigned i = 1; i < d_g.getAPS().size(); ++i)
         {
-            int iBis = i-1, jBis = j-1;
-            auto edge = new widgetEdge(nodes[iBis], nodes[jBis]);
-            nodes[iBis]->addEdge(edge);
-            scene->addItem(edge);
-            ++k;
-            j = d_g.getFS()[k];
+            unsigned j = d_g.getFS()[d_g.getAPS()[i]], k = i;
+            while(j != 0)
+            {
+                int iBis = i-1, jBis = j-1;
+                auto edge = new widgetEdge(nodes[iBis], nodes[jBis]);
+                nodes[iBis]->addEdge(edge);
+                scene->addItem(edge);
+                ++k;
+                j = d_g.getFS()[k];
+            }
         }
+    }
+    else
+    {
+        for(unsigned i = 1; i < d_g.getMatAdj().size(); ++i)
+        {
+            for(unsigned j = 1; j < d_g.getMatAdj()[i].size(); ++j)
+            {
+                if(d_g.getMatAdj()[i][j] != 0)
+                {
+                    int iBis = i-1, jBis = j-1;
+                    auto edge = new widgetEdge(nodes[iBis], nodes[jBis]);
+                    nodes[iBis]->addEdge(edge);
+                    scene->addItem(edge);
+                }
+            }
+        }
+    }
+}
+
+void widgetGraph::centerGraph()
+{
+    for(auto node : nodes) centerNode(node);
+}
+
+void widgetGraph::centerNode(widgetNode* node)
+{
+    if(nodes[0] == node)
+    {
+        node->setPos(0, 0);
+    } else {
+        auto i = nodes.indexOf(node);
+        auto p = nodes[i-1]->pos();
+        nodes[i]->setPos(p.x() + 50, std::pow(-1, nodes[i-1]->getNoeud()->getId()) * 50 + p.y());
     }
 }
 

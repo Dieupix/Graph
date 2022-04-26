@@ -60,9 +60,6 @@ bool Graph::verifIntegriteeSommets_MatAdj()
 {
     if(matAdj[0][0] == 1) return true;
 
-    int nbSommets = matAdj[0][0];
-    vector<bool> integritee(nbSommets + 1, false);
-
     for(unsigned i = 1; i < matAdj.size(); ++i)
     {
         unsigned j = 1;
@@ -72,21 +69,15 @@ bool Graph::verifIntegriteeSommets_MatAdj()
             if(matAdj[i][j] != 0) verif = true;
             ++j;
         }
-    }
+        if(verif) continue;
 
-    for(unsigned i = 1; i < integritee.size(); ++i)
-    {
-        if(!integritee[i])
+        j = 1;
+        while(j < matAdj.size() and !verif)
         {
-            unsigned j = 1;
-            bool verif = false;
-            while(j < matAdj.size() and !verif)
-            {
-                if(matAdj[j][i] != 0) verif = true;
-                ++j;
-            }
-            if(!verif) return false;
+            if(matAdj[j][i] != 0) verif = true;
+            ++j;
         }
+        if(!verif) return false;
     }
 
     return true;

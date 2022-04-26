@@ -42,14 +42,13 @@ public:
     bool                verifieCout_NonVide     ();
 
     void ajouterNoeud   (const Noeud& noeud, const vector<int>& pred, const vector<int>& succ);
+    void centerGraph    ();
     void itemMoved      ();
     void loadFrom       (std::istream& ist);
+    void loadGraph      (const Graph& g);
     void saveIn         (std::ostream& ost);
 
-    void    loadGraph               (const Graph& g);
-
 public slots:
-    void shuffle();
     void zoomIn();
     void zoomOut();
 
@@ -70,8 +69,9 @@ private:
     int             timerId = 0;
 
     QList<widgetNode*>  nodes;
-    widgetNode*         centerNode;
 
+    void    centerNode              (widgetNode* node);
+    void    moveGraph               (qreal dx, qreal dy);
     void    setup                   ();
     void    transformeVersMatrice   ();
     void    transformeVersFS_APS    ();
