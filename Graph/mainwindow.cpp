@@ -44,11 +44,11 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 bool MainWindow::verifieDistance()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
-    if(d_wg.getOriente())
+    if(d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
                 return true;
             else
             {
@@ -57,7 +57,7 @@ bool MainWindow::verifieDistance()
                 return false;
             }
         }
-        else if(d_wg.verifieMatrice_NonVide())
+        else if(d_wg->verifieMatrice_NonVide())
         {
             return true;
         }
@@ -79,11 +79,11 @@ bool MainWindow::verifieDistance()
 bool MainWindow::verifieRang()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
-    if(d_wg.getOriente())
+    if(d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
                 return true;
             else
             {
@@ -92,7 +92,7 @@ bool MainWindow::verifieRang()
                 return false;
             }
         }
-        else if(d_wg.verifieMatrice_NonVide())
+        else if(d_wg->verifieMatrice_NonVide())
         {
             return true;
         }
@@ -113,11 +113,11 @@ bool MainWindow::verifieRang()
 bool MainWindow::verifieTarjan()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    if(d_wg.getOriente())
+    if(d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
                 return true;
             else
             {
@@ -126,7 +126,7 @@ bool MainWindow::verifieTarjan()
                 return false;
             }
         }
-        else if(d_wg.verifieMatrice_NonVide())
+        else if(d_wg->verifieMatrice_NonVide())
         {
             return true;
         }
@@ -154,15 +154,15 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
     //Il faut que le graphe soit oriente.
     //Il faut que fs et aps soit initialisé ou la matrice.
     //Il faut que le cout soit correct, qu'il ne contienne pas de cout < 0
-    if(d_wg.getOriente())
+    if(d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
             {
-                if(sommet_depart <= 0 || sommet_depart > d_wg.getAps()[0])
+                if(sommet_depart <= 0 || sommet_depart > d_wg->getAps()[0])
                 {
-                    string str = std::to_string(d_wg.getAps()[0]);
+                    string str = std::to_string(d_wg->getAps()[0]);
                     QString s = "Le sommet saisi n'est pas valide ! Veuillez saisir un sommet compris entre 1 et ";
                     s += s.fromStdString(str);
                     auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DIJKSTRA: ",s,QMessageBox::Ok};
@@ -171,10 +171,10 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
                 }
                 else
                 {
-                    if(d_wg.verifieCout_NonVide())
+                    if(d_wg->verifieCout_NonVide())
                     {
-                        vector<vector<int>> couts = d_wg.getCouts();
-                        if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                        vector<vector<int>> couts = d_wg->getCouts();
+                        if(couts[0][0] != d_wg->getAps()[0] || couts[0][1] != (d_wg->getFs()[0] - d_wg->getAps()[0]))
                         {
                             auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DIJKSTRA: ","Les elements presents dans le cout en ligne 0 ne correspondent pas avec le fs et aps",QMessageBox::Ok};
                             info->exec();
@@ -222,10 +222,10 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
         }
         else
         {
-            if(d_wg.verifieMatrice_NonVide())
+            if(d_wg->verifieMatrice_NonVide())
             {
-                int n = d_wg.getMatrice()[0][0];
-                int m = d_wg.getMatrice()[0][1];
+                int n = d_wg->getMatrice()[0][0];
+                int m = d_wg->getMatrice()[0][1];
                 if(sommet_depart <= 0 || sommet_depart > n)
                 {
                     string str = std::to_string(n);
@@ -237,9 +237,9 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
                 }
                 else
                 {
-                    if(d_wg.verifieCout_NonVide())
+                    if(d_wg->verifieCout_NonVide())
                     {
-                        vector<vector<int>> couts = d_wg.getCouts();
+                        vector<vector<int>> couts = d_wg->getCouts();
                         if(couts[0][0] != n || couts[0][1] != m)
                         {
                             auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DIJKSTRA: ","Les elements presents dans le cout en ligne 0 ne correspondent pas avec la matrice",QMessageBox::Ok};
@@ -297,20 +297,29 @@ bool MainWindow::verifieDantzig()
 {
     //Il faut que le graphe soit oriente.
     //Il faut que le cout soit bien initialisé ou la matrice.
-    if(d_wg.getOriente())
+    if(d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
             {
-                vector<vector<int>> couts = d_wg.getCouts();
-                if(couts[0][0] != d_wg.getAps()[0] || couts[0][1] != (d_wg.getFs()[0] - d_wg.getAps()[0]))
+                if(d_wg->verifieCout_NonVide())
                 {
-                    auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DANTZIG: ","Les elements presents dans le cout en ligne 0 ne correspondent pas avec le fs et aps",QMessageBox::Ok};
-                    info->exec();
-                    return false;//Les elements presents dans le cout ne correspondent pas avec le fs et aps
+                    vector<vector<int>> couts = d_wg->getCouts();
+                    if(couts[0][0] != d_wg->getAps()[0] || couts[0][1] != (d_wg->getFs()[0] - d_wg->getAps()[0]))
+                    {
+                        auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DANTZIG: ","Les elements presents dans le cout en ligne 0 ne correspondent pas avec le fs et aps",QMessageBox::Ok};
+                        info->exec();
+                        return false;//Les elements presents dans le cout ne correspondent pas avec le fs et aps
+                    }
+                    return true;
                 }
-                return true;
+                else
+                {
+                    auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DANTZIG: ","Cout vide !",QMessageBox::Ok};
+                    info->exec();
+                    return false; //Cout vide
+                }
             }
             else
             {
@@ -321,11 +330,11 @@ bool MainWindow::verifieDantzig()
         }
         else
         {
-           if(d_wg.verifieMatrice_NonVide())
+           if(d_wg->verifieMatrice_NonVide())
            {
-               int n = d_wg.getMatrice()[0][0];
-               int m = d_wg.getMatrice()[0][1];
-               vector<vector<int>> couts = d_wg.getCouts();
+               int n = d_wg->getMatrice()[0][0];
+               int m = d_wg->getMatrice()[0][1];
+               vector<vector<int>> couts = d_wg->getCouts();
                if(couts[0][0] != n || couts[0][1] != m)
                {
                    auto info = new QMessageBox{QMessageBox::Warning,"ERREUR DANTZIG: ","Les elements presents dans le cout en ligne 0 ne correspondent pas avec la matrice",QMessageBox::Ok};
@@ -353,11 +362,11 @@ bool MainWindow::verifieDantzig()
 bool MainWindow::verifieKruskal()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
-    if(!d_wg.getOriente())
+    if(!d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
             {
                 return true;
             }
@@ -368,7 +377,7 @@ bool MainWindow::verifieKruskal()
                 return false;
             }
         }
-        else if(d_wg.verifieMatrice_NonVide())
+        else if(d_wg->verifieMatrice_NonVide())
         {
             return true;
         }
@@ -390,11 +399,11 @@ bool MainWindow::verifieKruskal()
 bool MainWindow::verifiePruferEncode()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
-    if(!d_wg.getOriente())
+    if(!d_wg->getOriente())
     {
-        if(d_wg.getUsingFSandAPS())
+        if(d_wg->getUsingFSandAPS())
         {
-            if(d_wg.verifieFS_APS_NonVide())
+            if(d_wg->verifieFS_APS_NonVide())
                 return true;
             else
             {
@@ -403,7 +412,7 @@ bool MainWindow::verifiePruferEncode()
                 return false;
             }
         }
-        else if(d_wg.verifieMatrice_NonVide())
+        else if(d_wg->verifieMatrice_NonVide())
         {
             return true;
         }
@@ -491,7 +500,7 @@ void MainWindow::onClick_Distance()
     vector<vector<int>> mat_dist;
     if(verifieDistance())
     {
-         mat_dist = d_wg.englobe_Distance();
+         mat_dist = d_wg->englobe_Distance();
          QString s = "";
          for(unsigned i = 0 ; i < mat_dist.size() ; ++i)
          {
@@ -507,7 +516,7 @@ void MainWindow::onClick_Rang()
     vector<int> rang;
     if(verifieRang())
     {
-        rang = d_wg.englobe_Rang();
+        rang = d_wg->englobe_Rang();
         QString s = "";
         s += s.fromStdString(toStringVector(rang));
         auto info = new QMessageBox{QMessageBox::Information,"Resultat du rang : ",s,QMessageBox::Ok};
@@ -520,7 +529,7 @@ void MainWindow::onClick_Tarjan()
     if(verifieTarjan())
     {
         vector<int> cfc, prem, pred, pilch, baseR, baseI;
-        widgetGraph wg = d_wg.englobe_Tarjan(cfc,pilch,pred,prem,baseR,baseI);
+        widgetGraph wg = d_wg->englobe_Tarjan(cfc,pilch,pred,prem,baseR,baseI);
         QString s = "";
         s += "cfc : ";
         s += s.fromStdString(toStringVector(cfc));
@@ -543,7 +552,7 @@ void MainWindow::onClick_Tarjan()
         auto info = new QMessageBox{QMessageBox::Information,"Resultat de Tarjan : ",s,QMessageBox::Ok};
         info->exec();
 
-        d_wg = wg;
+        d_wg = &wg;
         d_vue.setWidgetGraph(d_wg);
     }
 
@@ -563,7 +572,7 @@ void MainWindow::onClick_Dantzig()
 {
     if(verifieDantzig())
     {
-        d_wg.englobe_Dantzig();
+        d_wg->englobe_Dantzig();
         d_vue.setWidgetGraph(d_wg);
     }
 }
@@ -572,7 +581,7 @@ void MainWindow::onClick_Kruskal()
 {
     if(verifieKruskal())
     {
-        d_wg.englobe_Kruskal();
+        d_wg->englobe_Kruskal();
         d_vue.setWidgetGraph(d_wg);
     }
 }
@@ -581,7 +590,7 @@ void MainWindow::onClick_Prufer_encode()
 {
     if(verifiePruferEncode())
     {
-        vector<int> p = d_wg.englobe_Prufer_encode();
+        vector<int> p = d_wg->englobe_Prufer_encode();
         QString s;
         auto info = new QMessageBox{QMessageBox::Information,"Resultat du codage de Prufer : ",s.fromStdString(toStringVector(p)),QMessageBox::Ok};
         info->exec();
@@ -700,7 +709,7 @@ void MainWindow::onValiderAjout()
     int k2 = 1;
 
 
-    int nbNoeud = d_wg.getAps()[0] + 2;
+    int nbNoeud = d_wg->getAps()[0] + 2;
 
     for(int i = 0; i < nbNoeud; i++)
     {
@@ -720,16 +729,16 @@ void MainWindow::onValiderAjout()
             Suc.push_back(0);
     }
 
-    Noeud n{d_wg.getAps()[0] + 1};
-    d_wg.ajouterNoeud(n, Pred, Suc);
+    Noeud n{d_wg->getAps()[0] + 1};
+    d_wg->ajouterNoeud(n, Pred, Suc);
 }
 
 void MainWindow::onValiderPruferDecode()
 {
     if(verifiePruferDecode(menuPruferD->getP()))
     {
-        widgetGraph wg = d_wg.englobe_Prufer_decode(menuPruferD->getP());
-        d_wg = wg;
+        widgetGraph wg = d_wg->englobe_Prufer_decode(menuPruferD->getP());
+        d_wg = &wg;
         d_vue.setWidgetGraph(d_wg);
     }
 }
@@ -740,7 +749,7 @@ void MainWindow::onValiderDijkstra()
     if(verifieDijkstra(menuDijkstra->getSommet()))
     {
         cout<<"VALIDE";
-        d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+        d_wg->englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
         QString s = "";
         s += "distance : ";
         s += s.fromStdString(toStringVector(d));
@@ -758,11 +767,11 @@ void MainWindow::onValiderOrdonnancement()
     if(verifieOrdonnancement())
     {
         vector<int> long_critique;
-        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp(),long_critique);
+        widgetGraph wg = d_wg->englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp(),long_critique);
         QString s = "";
         auto info = new QMessageBox{QMessageBox::Information,"Resultat de l'ordonnancement : Longueur Critique",s.fromStdString(toStringVector(long_critique)),QMessageBox::Ok};
         info->exec();
-        d_wg = wg;
+        d_wg = &wg;
         d_vue.setWidgetGraph(d_wg);
     }
 }
@@ -778,7 +787,7 @@ void MainWindow::onValideSaisieFSAPS()
         vector<vector<int>> cout = menuFSAPS->getCout();
         g.setCout(cout);
     }
-    d_wg.loadGraph(g);
+    d_wg->loadGraph(g);
 }
 
 
