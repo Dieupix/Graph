@@ -280,7 +280,7 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
 void Graph::setCout(const vector<vector<int>>& mat)
 {
     couts = mat;
-    usingFsAndAps = false;
+    //usingFsAndAps = false;
     verifIntegritee();
 }
 // ---------- End of setters ----------

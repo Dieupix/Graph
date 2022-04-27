@@ -510,8 +510,11 @@ void MainWindow::onValideSaisieFSAPS()
     vector<int> FS = menuFSAPS->getFS();
     vector<int> APS = menuFSAPS->getAPS();
     Graph g{FS, APS};
-    printVector(FS);
-    printVector(APS);
+    if(menuFSAPS->getCheck())
+    {
+        vector<vector<int>> cout = menuFSAPS->getCout();
+        g.setCout(cout);
+    }
     d_wg.loadGraph(g);
 }
 
