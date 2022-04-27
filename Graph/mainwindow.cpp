@@ -259,6 +259,13 @@ void MainWindow::onClick_Distance()
     if(verifieDistance())
     {
          mat_dist = d_wg.englobe_Distance();
+         QString s = "";
+         for(unsigned i = 0 ; i < mat_dist.size() ; ++i)
+         {
+             s += s.fromStdString(toStringVector(mat_dist[i])) + "\n";
+         }
+         auto info = new QMessageBox{QMessageBox::Information,"Resultat de l'algorithme des distances : ",s,QMessageBox::Ok};
+         info->exec();
     }
     //Mettre a jour ce qui affiche la matrice -- QMessageBox?
     /*
@@ -273,6 +280,10 @@ void MainWindow::onClick_Rang()
     if(verifieRang())
     {
         rang = d_wg.englobe_Rang();
+        QString s = "";
+        s += s.fromStdString(toStringVector(rang));
+        auto info = new QMessageBox{QMessageBox::Information,"Resultat du rang : ",s,QMessageBox::Ok};
+        info->exec();
     }
     //Mettre a jour ce qui affiche le tableau de rang -- QMessageBox ?
     //printVector(rang);
@@ -486,20 +497,25 @@ void MainWindow::onValiderDijkstra()
     if(verifieDijkstra(menuDijkstra->getSommet()))
     {
         d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
+        QString s = "";
+        s += s.fromStdString(toStringVector(d));
+        s += "\n";
+        s += s.fromStdString(toStringVector(pr));
+        auto info = new QMessageBox{QMessageBox::Information,"Resultat de Dijkstra",s,QMessageBox::Ok};
+        info->exec();
     }
-    cout<<"Affichage de d : "<<endl;
-    printVector(d);
-    cout<<endl;
-    cout<<"Affichage de pr : "<<endl;
-    printVector(pr);
-    cout<<endl;
 }
 
 void MainWindow::onValiderOrdonnancement()
 {
-    if(verifieOrdonnancement(menuOrd->getDuree(),menuOrd->getFs(),menuOrd->getAps()))
+    if(verifieOrdonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp()))
     {
-        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFs(),menuOrd->getAps());
+        vector<int> long_critique;
+        widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp(),long_critique);
+        printVector(long_critique);
+        QString s = "";
+        auto info = new QMessageBox{QMessageBox::Information,"Resultat de l'ordonnancement : Longueur Critique",s.fromStdString(toStringVector(long_critique)),QMessageBox::Ok};
+        info->exec();
         d_vue.metAJourGraphe();
     }
 }

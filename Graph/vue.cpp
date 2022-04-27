@@ -720,12 +720,12 @@ vector<int> vue::getDureeTaches()
     return duree;
 }
 
-vector<int> vue::getFsOrd()
+vector<int> vue::getFpOrd()
 {
     QString s = this->d_taches->toPlainText();
-    vector<int> fs;
+    vector<int> fp;
     QStringList list = s.split(',');
-    fs.push_back(0);
+    //fp.push_back(0);
     for(unsigned i = 0 ; i < list.size() ; ++i)
     {
         QStringList nom = list[i].split('>');
@@ -733,12 +733,12 @@ vector<int> vue::getFsOrd()
         for(unsigned j = 0 ; j < pred.size() ; ++j)
         {
             if(pred[j].toInt() != '0')
-                fs.push_back(pred[j].toInt());
+                fp.push_back(pred[j].toInt());
         }
-        fs.push_back(0);
+        fp.push_back(0);
     }
-    fs[0] = fs.size();
-    return fs;
+    fp[0] = fp.size()-1;
+    return fp;
 }
 
 int vue::getNSaisie()

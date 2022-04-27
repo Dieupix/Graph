@@ -32,7 +32,7 @@ public:
     void                englobe_Dijkstra        (int sommet_depart,vector<int>& d, vector<int>& pr);
     vector<vector<int>> englobe_Distance        ();
     widgetGraph         englobe_Kruskal         ();
-    widgetGraph         englobe_Ordonnancement  (const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps);
+    widgetGraph         englobe_Ordonnancement  (const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique);
     widgetGraph         englobe_Prufer_decode   (const vector<int>& p);
     vector<int>         englobe_Prufer_encode   ();
     vector<int>         englobe_Rang            ();

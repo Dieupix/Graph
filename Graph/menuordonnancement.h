@@ -12,8 +12,8 @@ public:
     explicit menuOrdonnancement(QMainWindow *parent = nullptr);
 
     vector<int> getDuree() const;
-    vector<int> getFs() const;
-    vector<int> getAps() const;
+    vector<int> getFp() const;
+    vector<int> getApp() const;
 signals :
     void valide();
 private slots :
@@ -21,8 +21,8 @@ private slots :
 private:
     vue d_vue;
     vector<int> d_duree;
-    vector<int> d_fs;
-    vector<int> d_aps;
+    vector<int> d_fp;
+    vector<int> d_app;
 };
 
 

@@ -636,8 +636,8 @@ void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, 
         {
             if(fp[j] == i)
             {
-                int k = 1;
-                while(app[k] <= j)
+                unsigned k = 1;
+                while(k < app.size() && app[k] <= j)
                 {
                     k++;
                 }
@@ -869,7 +869,16 @@ void edition_bases(const vector<int>& prem, const vector<int>& pilch, const vect
         }
     }
 }
-
+string toStringVector(const vector<int>& tab)
+{
+    string s = "[ ";
+    for(unsigned i = 0 ; i < tab.size() ; ++i)
+    {
+        s += std::to_string(tab[i]) + ", ";
+    }
+    s += "]";
+    return s;
+}
 
 
 

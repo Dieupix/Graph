@@ -13,40 +13,40 @@ vector<int> menuOrdonnancement::getDuree() const
     return d_duree;
 }
 
-vector<int> menuOrdonnancement::getFs() const
+vector<int> menuOrdonnancement::getFp() const
 {
-    return d_fs;
+    return d_fp;
 }
 
-vector<int> menuOrdonnancement::getAps() const
+vector<int> menuOrdonnancement::getApp() const
 {
-    return d_aps;
+    return d_app;
 }
 
 
 void menuOrdonnancement::onClick_valider()
 {
     d_duree = d_vue.getDureeTaches();
-    d_fs = d_vue.getFsOrd();
+    d_fp = d_vue.getFpOrd();
 
-    vector<int> new_aps(d_duree.size()+1);
+    vector<int> new_app(d_duree.size()+1);
 
-    //Construire APS a partir de FS
-    new_aps[0] = 0;
-    new_aps[1] = 1;
+    //Construire APP a partir de FP
+    new_app[0] = d_duree.size();
+    new_app[1] = 1;
     int k = 2;
-    int ind_crt = 1;
-    for(int i = 1 ; i < d_fs[0] ; ++i)
+    int ind_crt = 2;
+    for(int i = 1 ; i <= d_fp[0] ; ++i)
     {
-        if(d_fs[i] == 0 && k < d_fs[0])
+        if(d_fp[i] == 0 && k < d_fp[0])
         {
-            new_aps[ind_crt] = k;
+            new_app[ind_crt] = k;
             ind_crt++;
         }
         k++;
     }
 
-    d_aps = new_aps;
+    d_app = new_app;
 
     emit valide();
 

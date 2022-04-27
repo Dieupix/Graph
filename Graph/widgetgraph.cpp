@@ -256,26 +256,32 @@ widgetGraph widgetGraph::englobe_Kruskal()
     return wg;
 }
 
-widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps)
+widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique)
 {
     vector<int> new_fs, new_aps;
-    vector<int> file_pred;
-    vector<int> adr_prem_pred;
+    //vector<int> file_pred;
+    //vector<int> adr_prem_pred;
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
-    vector<int> longueur_critique;
 
-    transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
-    Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+    //transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
+    //Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+    Ordonnancement(fp, app, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
 
-    //Affichage de la longueur critique
-    //Sur console ?
+    printVector(fp);
+    printVector(app);
+    printVector(duree_taches);
+    cout<<"-----"<<endl;
+    printVector(new_fs);
+    printVector(new_aps);
+    printVector(file_pred_critique);
+    printVector(adr_prem_pred_critique);
     printVector(longueur_critique);
-    /*
+
     widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{new_fs,new_aps});*
-    return new_wg;*/return widgetGraph{};
+    new_wg.loadGraph(Graph{new_fs,new_aps});
+    return new_wg;
 }
 
 widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
