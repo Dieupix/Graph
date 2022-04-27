@@ -11,8 +11,8 @@ public:
     explicit saisieFSAPS(QWidget *parent = nullptr);
     vector<int> getFS();
     vector<int> getAPS();
-    int getN();
-    int getM();
+    vector<vector<int>> getCout();
+    bool getCheck();
 signals:
     void envoieSaisieFSAPS();
 
@@ -20,10 +20,10 @@ private slots:
     void onClick_valider();
 private:
     vue d_vue;
-    int d_n;
-    int d_m;
     vector<int> d_FS;
     vector<int> d_APS;
+    vector<vector<int>> d_cout;
+    bool d_Check;
 };
 
 #endif // SAISIEFSAPS_H
