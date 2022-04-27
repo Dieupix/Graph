@@ -279,25 +279,11 @@ widgetGraph widgetGraph::englobe_Kruskal()
 widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique)
 {
     vector<int> new_fs, new_aps;
-    //vector<int> file_pred;
-    //vector<int> adr_prem_pred;
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
 
-    //transforme_FS_APS_TO_FP_APP(fs, aps, file_pred, adr_prem_pred);
-    //Ordonnancement(file_pred, adr_prem_pred, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     Ordonnancement(fp, app, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
-
-    printVector(fp);
-    printVector(app);
-    printVector(duree_taches);
-    cout<<"-----"<<endl;
-    printVector(new_fs);
-    printVector(new_aps);
-    printVector(file_pred_critique);
-    printVector(adr_prem_pred_critique);
-    printVector(longueur_critique);
 
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{new_fs,new_aps});
@@ -306,15 +292,10 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches,
 
 widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 {
-    if(d_g.isUsingFsAndAps())
-    {
-        transformeVersMatrice();
-    }
-
     vector<vector<int>> mat;
     Prufer_decode(p, mat);
 
-    widgetGraph new_wg(this);
+    widgetGraph new_wg;
     new_wg.loadGraph(Graph{mat});
     return new_wg;
 }
@@ -325,12 +306,9 @@ vector<int> widgetGraph::englobe_Prufer_encode()
     if(d_g.isUsingFsAndAps())
     {
         transformeVersMatrice();
-    }/*
-    vector<vector<int>> mat = d_g.getMatAdj();
-    cout<<mat[0][0]<<" "<<mat[0][1]<<endl;
-    for(unsigned i = 1 ; i < mat.size()  ; ++i)
-        printVector(mat[i]);
-    //Prufer_encode(d_g.getMatAdj(), p);*/
+    }
+    //vector<vector<int>> mat = d_g.getMatAdj();
+    //Prufer_encode(mat, p);
     return p;
 }
 
@@ -460,10 +438,10 @@ void widgetGraph::loadFrom(std::istream& ist)
 
 void widgetGraph::transformeVersMatrice()
 {
-    vector<vector<int>> matrice;
+    vector<vector<int>> matrice ;
     d_g.FS_APS_to_MatAdj(matrice);
-    cout<<matrice[0][0]<<" "<<matrice[0][1]<<endl;
-    for(unsigned i = 1 ; i < matrice.size()  ; ++i)
+
+    for(unsigned i = 1 ; i < matrice.size() ; ++i)
         printVector(matrice[i]);
 
     d_g = Graph(matrice, d_g.getSommets(), d_g.getEst_oriente(), d_g.getA_Des_Poids());
