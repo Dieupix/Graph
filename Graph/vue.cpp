@@ -59,6 +59,18 @@ void vue::creeInterfaceSaisieFSAPS()
     fenetreSaisieFSAPS();
 }
 
+void vue::creeInterfaceSaisieMatrice()
+{
+    d_fenetre->setWindowTitle("Saisir graph Matrice");
+
+    auto central = new QWidget;
+    auto mainLayout = new QVBoxLayout;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+
+    fenetreSaisieMatrice();
+}
+
 void vue::creeInterfaceSupprimer()
 {
     d_fenetre->setWindowTitle("Supprimer Noeud");
@@ -273,7 +285,6 @@ void vue::menuAjout()
     auto layoutSucc = new QHBoxLayout{};
     auto pannelSucc = new QLabel{"Successeur du noeud"};
     layoutSucc->addWidget(pannelSucc,1);
-    //auto textSucc = new QLineEdit{};
 
     d_suc = new QLineEdit{};
     layoutSucc->addWidget(d_suc);
@@ -281,7 +292,6 @@ void vue::menuAjout()
     auto layoutPrec = new QHBoxLayout{};
     auto pannelPrec = new QLabel{"Predecesseur du noeud"};
     layoutPrec->addWidget(pannelPrec,1);
-    //auto textPrec = new QLineEdit{};
 
     d_prec = new QLineEdit{};
     layoutPrec->addWidget(d_prec);
@@ -289,15 +299,76 @@ void vue::menuAjout()
     auto layoutPoids = new QHBoxLayout{};
     auto labelPoids = new QLabel{"Poids du noeud"};
     layoutPoids->addWidget(labelPoids,1);
-    //auto textPoids = new QLineEdit{};
 
     d_poids = new QLineEdit{};
     layoutPoids->addWidget(d_poids);
 
-    //layoutInfo->addLayout(layoutId);
     layoutInfo->addLayout(layoutSucc);
     layoutInfo->addLayout(layoutPrec);
     layoutInfo->addLayout(layoutPoids);
+
+    auto mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(layoutInfo);
+    mainLayout->addLayout(layoutBas);
+
+    auto central = new QWidget;
+    central->setLayout(mainLayout);
+    d_fenetre->setCentralWidget(central);
+}
+
+void vue::fenetreSaisieMatrice()
+{
+    auto layoutBas = new QHBoxLayout{};
+
+    auto boutonValider = new QPushButton("Valider");
+    layoutBas->addWidget(boutonValider);
+    connect(boutonValider, &QPushButton::clicked, this, &vue::onSaisieMatriceValider);
+
+    auto boutonQuitter = new QPushButton{"Quitter", nullptr};
+    connect(boutonQuitter, &QPushButton::clicked, this, &vue::Quitter);
+    layoutBas->addWidget(boutonQuitter);
+
+    auto layoutInfo = new QVBoxLayout{};
+
+    auto layoutN= new QHBoxLayout{};
+    auto labelN = new QLabel{"Nombre de noeud : "};
+    layoutN->addWidget(labelN,1);
+    d_n = new QLineEdit{};
+    layoutN->addWidget(d_n);
+
+    layoutInfo->addLayout(layoutN);
+
+    auto layoutM = new QHBoxLayout{};
+    auto labelM = new QLabel{"Nombre d'arc : "};
+    layoutM->addWidget(labelM,1);
+    d_m = new QLineEdit{};
+    layoutM->addWidget(d_m);
+
+    layoutInfo->addLayout(layoutM);
+
+    auto layoutMatrice= new QHBoxLayout{};
+    auto labelMatrice = new QLabel{"Matrice : "};
+    layoutMatrice->addWidget(labelMatrice,1);
+    d_matriceSaisie = new QTextEdit{};
+    layoutMatrice->addWidget(d_matriceSaisie);
+
+    layoutInfo->addLayout(layoutMatrice);
+
+    auto layoutCoutBox= new QHBoxLayout{};
+    auto labelCoutBox = new QLabel{"Cout ? "};
+    layoutCoutBox->addWidget(labelCoutBox,1);
+    d_coutBox = new QCheckBox{};
+    layoutCoutBox->addWidget(d_coutBox);
+
+    layoutInfo->addLayout(layoutCoutBox,1);
+
+    auto layoutCout= new QHBoxLayout{};
+    auto labelCout = new QLabel{"Cout : "};
+    layoutCout->addWidget(labelCout,1);
+    d_coutSaisie = new QTextEdit{};
+    layoutCout->addWidget(d_coutSaisie);
+
+    layoutInfo->addLayout(layoutCout,1);
 
     auto mainLayout = new QVBoxLayout;
     mainLayout->addLayout(layoutInfo);
@@ -597,6 +668,11 @@ void vue::onSaisieFSAPSValider()
     emit saisieFSAPSValider();
 }
 
+void vue::onSaisieMatriceValider()
+{
+    emit saisieMatriceValider();
+}
+
 void vue::oninfoDijkstra()
 {
     emit InfoDijkstra();
@@ -779,4 +855,40 @@ vector<int> vue::getFSSaisie()
 bool vue::getBoxSaisie()
 {
     return d_coutBox->isChecked();
+}
+
+int vue::getN()
+{
+    return d_n->text().toInt();
+}
+
+int vue::getM()
+{
+    return d_m->text().toInt();
+}
+
+
+vector<vector<int>> vue::getMatriceSaisie()
+{
+    QString s = this->d_matriceSaisie->toPlainText();
+    QStringList ligne = s.split(",");
+    int n = getN();
+    int m = getM();
+    vector<vector<int>> matrice(n+1);
+    int cpt = 0;
+    matrice[0].resize(2);
+    matrice[0][0] = n;
+    matrice[0][1] = m;
+
+    for(int i = 1; i <= n; ++i)
+    {
+           matrice[i].reserve(n+1);
+           matrice[i].push_back(0);
+           for(int j = 1; j <= n; ++j)
+           {
+               matrice[i].push_back(ligne[cpt].toInt());
+               cpt++;
+           }
+    }
+    return matrice;
 }

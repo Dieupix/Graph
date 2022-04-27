@@ -22,6 +22,7 @@ SOURCES += \
     menusupprimer.cpp \
     noeud.cpp \
     saisiefsaps.cpp \
+    saisiematrice.cpp \
     test.cpp \
     vue.cpp \
     widgetedge.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     menusupprimer.h \
     noeud.h \
     saisiefsaps.h \
+    saisiematrice.h \
     test.h \
     vue.h \
     widgetedge.h \

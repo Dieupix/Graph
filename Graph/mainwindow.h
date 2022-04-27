@@ -11,7 +11,7 @@
 
 #include "menusupprimer.h"
 #include "saisiefsaps.h"
-
+#include "saisiematrice.h"
 
 class MainWindow : public QMainWindow
 {
@@ -38,7 +38,7 @@ private:
     menuAjout *menuS;
     menuSupprimer *menuSuppr;
     saisieFSAPS *menuFSAPS;
-    //menuPruferDecode& menuPruferD;
+    saisieMatrice *menuMatrice;
 private slots :
     void onCheck_OrienteeChange(bool estoriente);
     void onCheck_A_des_PoidsChange(bool a_des_poids);
@@ -74,6 +74,7 @@ private slots :
     void onValiderDijkstra();
     void onValiderOrdonnancement();
     void onValideSaisieFSAPS();
+    void onValideSaisieMatrice();
 };
 
 #endif // MAINWINDOW_H

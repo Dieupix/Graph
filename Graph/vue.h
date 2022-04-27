@@ -27,6 +27,7 @@ public:
     void creeInterfaceOrdonnancement();
     void creeInterfaceSupprimer();
     void creeInterfaceSaisieFSAPS();
+    void creeInterfaceSaisieMatrice();
 
     void metAJourGraphe();
     void metAJourNoeuds();
@@ -35,6 +36,11 @@ public:
     vector<int> getAPSSaisie();
     vector<vector<int>> getCoutSaisie();
     bool getBoxSaisie();
+
+    vector<vector<int>> getMatriceSaisie();
+
+    int getN();
+    int getM();
 
     int getPoids();
     vector<int> getSuc();
@@ -68,6 +74,11 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QTextEdit* d_coutSaisie;
     QCheckBox* d_coutBox;
 
+    QLineEdit* d_n;
+    QLineEdit* d_m;
+
+    QTextEdit* d_matriceSaisie;
+
     QTextEdit* d_taches;
 
     QLineEdit* d_idSuppr;
@@ -79,6 +90,8 @@ private://FENETRE DONT ON GERE L'INTERFACE
     void menuAjout();
     void fenetrePruferDecode();
     void fenetreSaisieFSAPS();
+    void fenetreSaisieMatrice();
+
 
     void fenetreDijkstra();
     void fenetreOrdonnancement();
@@ -116,6 +129,7 @@ signals: //SIGNAUX EMIS
 
     void Ajouter();
     void saisieFSAPSValider();
+    void saisieMatriceValider();
     void Valider_PruferDecode();
     void Quitte_PruferDecode();
     void Valider_Dijkstra();
@@ -153,6 +167,8 @@ private slots : //TRANSFORME LA VALEUR D'UN SIGNAL
 
     void onAjouter();
     void onSaisieFSAPSValider();
+    void onSaisieMatriceValider();
+
     void onValide_PruferDecode();
     void onQuitte_PruferDecode();
     void onValide_Dijkstra();

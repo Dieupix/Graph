@@ -2,7 +2,7 @@
 #include<iostream>
 #include<QMessageBox>
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}, menuMatrice{new class saisieMatrice}
 
 {
     d_vue.creeInterface(d_wg);
@@ -34,6 +34,9 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
     connect(menuOrd, &menuOrdonnancement::valide, this, &MainWindow::onValiderOrdonnancement);
     connect(menuS, &menuAjout::envoieAjout, this, &MainWindow::onValiderAjout);
     connect(menuFSAPS, &saisieFSAPS::envoieSaisieFSAPS, this, &MainWindow::onValideSaisieFSAPS);
+    connect(menuMatrice, &saisieMatrice::envoieSaisieMatrice, this, &MainWindow::onValideSaisieMatrice);
+
+
 
     connect(&d_vue, &vue::InfoDistance, this, &MainWindow::onClickDistance_INFO);
     connect(&d_vue, &vue::InfoRang, this, &MainWindow::onClickRang_INFO);
@@ -213,6 +216,7 @@ void MainWindow::saisieMatrice()
     //Saisie d'un widgetGraph
     //Ajouter un ostream
     //d_wg.save();
+    menuMatrice->show();
 }
 
 void MainWindow::saisieFSAPS()
@@ -515,4 +519,15 @@ void MainWindow::onValideSaisieFSAPS()
     d_wg.loadGraph(g);
 }
 
+void MainWindow::onValideSaisieMatrice()
+{
+    vector<vector<int>> matrice = menuMatrice->getMatrice();
+    Graph g{matrice};
+    if(menuMatrice->getCheck())
+    {
+        vector<vector<int>> cout = menuMatrice->getCout();
+        g.setCout(cout);
+    }
+    d_wg.loadGraph(g);
+}
 
