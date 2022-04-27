@@ -20,6 +20,8 @@ public:
 
     widgetGraph(const widgetGraph& wg);
 
+    widgetGraph& operator=(const widgetGraph& wg);
+
     vector<int>         getFs() const;
     vector<int>         getAps() const;
     vector<vector<int>> getCouts() const;
@@ -62,13 +64,11 @@ protected:
 #endif
 
 private:
-    Graph d_g;
-
-    QGraphicsScene* scene;
-    unsigned        sceneSizeW, sceneSizeH;
-    int             timerId = 0;
-
+    Graph               d_g;
     QList<widgetNode*>  nodes;
+    QGraphicsScene*     scene;
+    unsigned            sceneSizeW, sceneSizeH;
+    int                 timerId = 0;
 
     void    centerNode              (widgetNode* node);
     void    moveGraph               (qreal dx, qreal dy);

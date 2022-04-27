@@ -486,11 +486,8 @@ void MainWindow::onValiderAjout()
         else
             Suc.push_back(0);
     }
-    printVector(menuPred);
-    printVector(Suc);
-    printVector(Pred);
 
-    Noeud n{menuS->getId()};
+    Noeud n{d_wg.getAps()[0] + 1};
     d_wg.ajouterNoeud(n, Pred, Suc);
 }
 

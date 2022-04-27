@@ -19,6 +19,8 @@ protected:
 public:
     widgetEdge(widgetNode* sourceNode, widgetNode* destNode);
 
+    widgetEdge& operator=(const widgetEdge& we);
+
     widgetNode* sourceNode() const;
     widgetNode* destNode() const;
 

@@ -21,7 +21,26 @@ widgetGraph::widgetGraph(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *pare
 widgetGraph::widgetGraph(const widgetGraph& wg) : QGraphicsView(wg.parentWidget()),
     sceneSizeW{wg.sceneSizeW}, sceneSizeH{wg.sceneSizeH}
 {
-    setup();
+    d_g = wg.d_g;
+    nodes = wg.nodes;
+    scene = wg.scene;
+    sceneSizeW = wg.sceneSizeW;
+    sceneSizeH = wg.sceneSizeH;
+    timerId = wg.timerId;
+}
+
+widgetGraph& widgetGraph::operator=(const widgetGraph& wg)
+{
+    if(this == &wg) return *this;
+
+    d_g = wg.d_g;
+    nodes = wg.nodes;
+    scene = wg.scene;
+    sceneSizeW = wg.sceneSizeW;
+    sceneSizeH = wg.sceneSizeH;
+    timerId = wg.timerId;
+
+    return *this;
 }
 
 void widgetGraph::setup()

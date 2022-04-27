@@ -36,7 +36,6 @@ public:
     int getPoids();
     vector<int> getSuc();
     vector<int> getPred();
-    int getId();
     //Pour Prufer decode
     vector<int> getP();
     //Pour Dijkstra
@@ -44,6 +43,8 @@ public:
     //Pour Ordonnancement
     vector<int> getDureeTaches();
     vector<int> getFpOrd();
+
+    void setWidgetGraph(widgetGraph& wg);
 
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
@@ -57,7 +58,6 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_suc;
     QLineEdit* d_prec;
     QLineEdit* d_poids;
-    QLineEdit* d_id;
 
     QLineEdit* d_p;
     QLineEdit* d_sommet_depart;

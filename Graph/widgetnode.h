@@ -19,6 +19,8 @@ public:
 
     widgetNode(widgetGraph *widgetGraph, const Noeud& noeud);
 
+    widgetNode& operator=(const widgetNode& wn);
+
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;
     const std::unique_ptr<Noeud>& getNoeud() const;
@@ -40,10 +42,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    QList<widgetEdge *> edgeList;
-    QPointF newPos;
-    widgetGraph *graph;
+    QList<widgetEdge*>      edgeList;
+    widgetGraph*            graph;
+    QPointF                 newPos;
+    std::unique_ptr<Noeud>  noeud;
 
-    std::unique_ptr<Noeud> noeud;
 };
 #endif // WIDGETNODE_H
