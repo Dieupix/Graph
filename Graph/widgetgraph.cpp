@@ -277,7 +277,7 @@ widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches,
     //Affichage de la longueur critique
     //Sur console ?
     printVector(longueur_critique);
-/*
+    /*
     widgetGraph new_wg(this);
     new_wg.loadGraph(Graph{new_fs,new_aps});*
     return new_wg;*/return widgetGraph{};
