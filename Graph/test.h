@@ -3,6 +3,10 @@
 
 #include "algorithms.h"
 
+#include <fstream>
+
+using std::cerr;
+
 const int COUT_INFINI = 500000;
 
 /** FS_1 & APS_1 + cout_1
@@ -109,6 +113,7 @@ void testAjoutNoeud();
 void testDantzig();
 void testDijkstra();
 void testDistance();
+void testLoadGraph();
 void testOrdonnancement();
 void testPrufer();
 void testRang();
