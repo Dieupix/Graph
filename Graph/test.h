@@ -118,5 +118,6 @@ void testOrdonnancement();
 void testPrufer();
 void testRang();
 void testTarjan();
+void testTransforme_FP_APP_TO_FS_APS();
 
 #endif // TEST_H

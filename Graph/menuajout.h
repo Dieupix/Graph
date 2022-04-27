@@ -21,7 +21,6 @@ private slots:
 
 private:
     vue d_vue;
-    //int d_id;
     int d_poids;
     vector<int> d_suc;
     vector<int> d_pred;

@@ -626,25 +626,36 @@ void transforme_FP_APP_TO_FS_APS(const vector<int>& fp, const vector<int>& app, 
 {
     int n = app[0];
 
+    aps.clear();
+    fs.clear();
+
+    aps.reserve(n+1);
     aps.push_back(n);
+
+    fs.reserve(fp[0]+1);
     fs.push_back(fp[0]);
 
-    for(int i = 1 ; i <= n ; ++i)
+    for(int i = 1; i <= n; ++i)
     {
-        aps.push_back(fs.size());
-        for(int j = 1 ; j <= fp[0] ; ++j)
+        for(int j = 1; j <= fp[0]; ++j)
         {
             if(fp[j] == i)
             {
-                int k = 1;
-                while(app[k] <= j)
+                unsigned k = 1;
+                while(k < app.size() and app[k] <= j)
                 {
-                    k++;
+                    ++k;
                 }
                 fs.push_back(k-1);
             }
         }
         fs.push_back(0);
+    }
+
+    aps.push_back(1);
+    for(unsigned i = 1; i < fs.size()-1; ++i)
+    {
+        if(fs[i] == 0) aps.push_back(i+1);
     }
 }
 
