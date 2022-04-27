@@ -6,11 +6,6 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 
 {
     d_vue.creeInterface(d_wg);
-    d_vue.metAJourGraphe();
-
-    connect(&d_vue, &vue::OrienteeChange, this, &MainWindow::onCheck_OrienteeChange);
-    connect(&d_vue, &vue::A_des_PoidsChange, this, &MainWindow::onCheck_A_des_PoidsChange);
-    connect(&d_vue, &vue::FsAps_MatAdjChange, this, &MainWindow::onCheck_FsAps_MatAdjChange);
 
     connect(&d_vue, &vue::Quitter, this, &MainWindow::close);
     connect(&d_vue, &vue::Charger, this, &MainWindow::charge);
@@ -50,26 +45,38 @@ MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widg
 bool MainWindow::verifieDistance()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
-    return d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
+    if(d_wg.getUsingFSandAPS())
+    {
+        return d_wg.verifieFS_APS_NonVide();
+    }
+    else return d_wg.verifieMatrice_NonVide();
 }
 
 bool MainWindow::verifieRang()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit oriente.
-    return d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
+    if(d_wg.getOriente())
+    {
+        if(d_wg.getUsingFSandAPS())
+        {
+            return d_wg.verifieFS_APS_NonVide();
+        }
+        else return d_wg.verifieMatrice_NonVide();
+    }
+    return false ;//Graphe Non Oriente
 }
 bool MainWindow::verifieTarjan()
 {
     //Il faut que fs et aps soit initialisé ou la matrice.
-    return d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide();
+    if(d_wg.getUsingFSandAPS())
+    {
+        return d_wg.verifieFS_APS_NonVide();
+    }
+    else return d_wg.verifieMatrice_NonVide();
 }
-bool MainWindow::verifieOrdonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps)
+bool MainWindow::verifieOrdonnancement()
 {
-    //Il faut que fs et aps soit initialisé.
-    //Il faut que duree_taches soit correctement initisalisé et saisie
-    ///IL FAUT VERIFIER FS ET APS OK
-    int n = aps[0];
-    return (duree_taches[0] != n); //FALSE : pas assez de duree dans le tableau pour le nombre de sommets saisis !
+    return true; //Dans tous les cas, c'est deja verifie..
 }
 
 bool MainWindow::verifieDijkstra(int sommet_depart)
@@ -177,13 +184,25 @@ bool MainWindow::verifieDantzig()
 bool MainWindow::verifieKruskal()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
-    return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
+    if(d_wg.getUsingFSandAPS())
+    {
+        return d_wg.verifieFS_APS_NonVide();
+    }
+    else return d_wg.verifieMatrice_NonVide();
 }
 
 bool MainWindow::verifiePruferEncode()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
-    return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
+    if(d_wg.getOriente())
+    {
+        if(d_wg.getUsingFSandAPS())
+        {
+            return d_wg.verifieFS_APS_NonVide();
+        }
+        else return d_wg.verifieMatrice_NonVide();
+    }
+    return false ;//Graphe Non Oriente
 }
 
 bool MainWindow::verifiePruferDecode(const vector<int>& p)
@@ -235,24 +254,6 @@ void MainWindow::supprime()
     menuSuppr->show();
 }
 
-void MainWindow::onCheck_OrienteeChange(bool estoriente)
-{
-    //COMPLETER + MAJ la vue
-    d_vue.metAJourGraphe();
-}
-
-void MainWindow::onCheck_A_des_PoidsChange(bool a_des_poids)
-{
-    //COMPLETER + MAJ la vue
-    d_vue.metAJourGraphe();
-}
-
-void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
-{
-    //COMPLETER + MAJ la vue
-    d_vue.metAJourGraphe();
-}
-
 void MainWindow::onClick_Distance()
 {
     vector<vector<int>> mat_dist;
@@ -267,11 +268,6 @@ void MainWindow::onClick_Distance()
          auto info = new QMessageBox{QMessageBox::Information,"Resultat de l'algorithme des distances : ",s,QMessageBox::Ok};
          info->exec();
     }
-    //Mettre a jour ce qui affiche la matrice -- QMessageBox?
-    /*
-    for(unsigned i = 1 ; i < mat_dist.size() ; ++i)
-        printVector(mat_dist[i]);
-    */
 }
 
 void MainWindow::onClick_Rang()
@@ -285,17 +281,38 @@ void MainWindow::onClick_Rang()
         auto info = new QMessageBox{QMessageBox::Information,"Resultat du rang : ",s,QMessageBox::Ok};
         info->exec();
     }
-    //Mettre a jour ce qui affiche le tableau de rang -- QMessageBox ?
-    //printVector(rang);
 }
 
 void MainWindow::onClick_Tarjan()
 {
     if(verifieTarjan())
     {
-        widgetGraph wg = d_wg.englobe_Tarjan();
-        //Mettre a jour la vue a partir du nouveau graphe -- A voir
-        d_vue.metAJourGraphe();
+        vector<int> cfc, prem, pred, pilch, baseR, baseI;
+        widgetGraph wg = d_wg.englobe_Tarjan(cfc,pilch,pred,prem,baseR,baseI);
+        QString s = "";
+        s += "cfc : ";
+        s += s.fromStdString(toStringVector(cfc));
+        s += "\n";
+        s += "prem : ";
+        s += s.fromStdString(toStringVector(prem));
+        s += "\n";
+        s += "pilch : ";
+        s += s.fromStdString(toStringVector(pilch));
+        s += "\n";
+        s += "pred : ";
+        s += s.fromStdString(toStringVector(pred));
+        s += "\n";
+        s += "base reduite du graphe reduit : ";
+        s += s.fromStdString(toStringVector(baseR));
+        s += "\n";
+        s += "base initiale du graphe : ";
+        s += s.fromStdString(toStringVector(baseI));
+        s += "\n";
+        auto info = new QMessageBox{QMessageBox::Information,"Resultat de Tarjan : ",s,QMessageBox::Ok};
+        info->exec();
+
+        //d_wg = wg;
+        //d_vue.setWg();
     }
 
 }
@@ -315,7 +332,8 @@ void MainWindow::onClick_Dantzig()
     if(verifieDantzig())
     {
         d_wg.englobe_Dantzig();
-        d_vue.metAJourGraphe();
+        //d_wg = wg;
+        //d_vue.setWg();
     }
 }
 
@@ -324,7 +342,8 @@ void MainWindow::onClick_Kruskal()
     if(verifieKruskal())
     {
         d_wg.englobe_Kruskal();
-        d_vue.metAJourGraphe();
+        //d_wg = wg;
+        //d_vue.setWg();
     }
 }
 
@@ -438,13 +457,6 @@ void MainWindow::onClickPrufer_decode_INFO()
 
 void MainWindow::onValiderAjout()
 {
-    /*cout<<"ID : "<<menuS->getId()<<endl;
-    cout<<"Poids : "<<menuS->getPoids()<<endl;
-    cout<<"Suc : ";
-    printVector(menuS->getSuc());
-    cout<<"Pred : ";
-    printVector(menuS->getPred());*/
-
     vector<int> Pred;
     vector<int> Suc;
 
@@ -487,7 +499,8 @@ void MainWindow::onValiderPruferDecode()
     if(verifiePruferDecode(menuPruferD->getP()))
     {
         widgetGraph wg = d_wg.englobe_Prufer_decode(menuPruferD->getP());
-        d_vue.metAJourGraphe();
+        //d_wg = wg;
+        //d_vue.setWg();
     }
 }
 
@@ -498,17 +511,20 @@ void MainWindow::onValiderDijkstra()
     {
         d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
         QString s = "";
+        s += "distance : ";
         s += s.fromStdString(toStringVector(d));
         s += "\n";
+        s += "pr : ";
         s += s.fromStdString(toStringVector(pr));
         auto info = new QMessageBox{QMessageBox::Information,"Resultat de Dijkstra",s,QMessageBox::Ok};
         info->exec();
     }
+    else cout<<"OKKK";
 }
 
 void MainWindow::onValiderOrdonnancement()
 {
-    if(verifieOrdonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp()))
+    if(verifieOrdonnancement())
     {
         vector<int> long_critique;
         widgetGraph wg = d_wg.englobe_Ordonnancement(menuOrd->getDuree(),menuOrd->getFp(),menuOrd->getApp(),long_critique);
@@ -516,7 +532,8 @@ void MainWindow::onValiderOrdonnancement()
         QString s = "";
         auto info = new QMessageBox{QMessageBox::Information,"Resultat de l'ordonnancement : Longueur Critique",s.fromStdString(toStringVector(long_critique)),QMessageBox::Ok};
         info->exec();
-        d_vue.metAJourGraphe();
+        //d_wg = wg;
+        //d_vue.setWg();
     }
 }
 
@@ -526,8 +543,11 @@ void MainWindow::onValideSaisieFSAPS()
     vector<int> FS = menuFSAPS->getFS();
     vector<int> APS = menuFSAPS->getAPS();
     Graph g{FS, APS};
-    printVector(FS);
-    printVector(APS);
+    if(menuFSAPS->getCheck())
+    {
+        vector<vector<int>> cout = menuFSAPS->getCout();
+        g.setCout(cout);
+    }
     d_wg.loadGraph(g);
 }
 

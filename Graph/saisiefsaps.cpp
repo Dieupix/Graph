@@ -10,10 +10,11 @@ saisieFSAPS::saisieFSAPS(QWidget *parent) : QMainWindow{parent}, d_vue{this}
 
 void saisieFSAPS::onClick_valider()
 {
-    d_n = d_vue.getNSaisie();
-    d_m = d_vue.getMSaisie();
     d_FS = d_vue.getFSSaisie();
     d_APS = d_vue.getAPSSaisie();
+    d_Check = d_vue.getBoxSaisie();
+    if(d_Check)
+        d_cout = d_vue.getCoutSaisie();
 
     emit envoieSaisieFSAPS();
 
@@ -30,12 +31,12 @@ vector<int> saisieFSAPS::getAPS()
     return d_APS;
 }
 
-int saisieFSAPS::getN()
+vector<vector<int>> saisieFSAPS::getCout()
 {
-    return d_n;
+    return d_cout;
 }
 
-int saisieFSAPS::getM()
+bool saisieFSAPS::getCheck()
 {
-    return d_m;
+    return d_Check;
 }

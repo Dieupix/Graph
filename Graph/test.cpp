@@ -3,7 +3,7 @@
 
 void test()
 {
-    testAjoutNoeud();
+
 }
 
 /* -------------------------------------------------- */
@@ -88,6 +88,25 @@ void testDistance()
     }
 }
 
+void testLoadGraph()
+{
+    Graph g;
+    string fileName = "";
+
+    std::ifstream ifs(fileName);
+
+    if(!ifs)
+    {
+        cerr << "Cannot open file \"" << fileName << "\"" << endl;
+    }
+    else
+    {
+        g.loadFrom(ifs);
+    }
+
+    cout << "g = " << g << endl;
+}
+
 void testOrdonnancement()
 {
     vector<int> new_fs, new_aps;
@@ -126,4 +145,16 @@ void testTarjan()
 {
     cout << "Tarjan: " << endl;
     Tarjan(FS_4, APS_4);
+}
+
+void testTransforme_FP_APP_TO_FS_APS()
+{
+    vector<int> fp{12,0,1,0,1,0,2,0,3,4,0,5,0};
+    vector<int> app{6,1,2,4,6,8,11};
+    vector<int> fs, aps;
+
+    transforme_FP_APP_TO_FS_APS(fp, app, fs, aps);
+
+    cout << "fs: "; printVector(fs);
+    cout << "aps:"; printVector(aps);
 }

@@ -321,22 +321,6 @@ void vue::fenetreSaisieFSAPS()
 
     auto layoutInfo = new QVBoxLayout{};
 
-    auto layoutNbNoeud = new QHBoxLayout{};
-    auto labelNbNoeud = new QLabel{"Nombre de noeud : "};
-    layoutNbNoeud->addWidget(labelNbNoeud,1);
-    d_nSaisie = new QLineEdit{};
-    layoutNbNoeud->addWidget(d_nSaisie);
-
-    layoutInfo->addLayout(layoutNbNoeud,1);
-
-    auto layoutNbArc = new QHBoxLayout{};
-    auto labelNbArc = new QLabel{"Nombre d'arc : "};
-    layoutNbArc->addWidget(labelNbArc,1);
-    d_mSaisie = new QLineEdit{};
-    layoutNbArc->addWidget(d_mSaisie);
-
-    layoutInfo->addLayout(layoutNbArc,1);
-
     auto layoutFS = new QHBoxLayout{};
     auto labelFS = new QLabel{"FS : "};
     layoutFS->addWidget(labelFS,1);
@@ -352,6 +336,22 @@ void vue::fenetreSaisieFSAPS()
     layoutAPS->addWidget(d_APSSaisie);
 
     layoutInfo->addLayout(layoutAPS,1);
+
+    auto layoutCoutBox= new QHBoxLayout{};
+    auto labelCoutBox = new QLabel{"Cout ? "};
+    layoutCoutBox->addWidget(labelCoutBox,1);
+    d_coutBox = new QCheckBox{};
+    layoutCoutBox->addWidget(d_coutBox);
+
+    layoutInfo->addLayout(layoutCoutBox,1);
+
+    auto layoutCout= new QHBoxLayout{};
+    auto labelCout = new QLabel{"Cout : "};
+    layoutCout->addWidget(labelCout,1);
+    d_coutSaisie = new QTextEdit{};
+    layoutCout->addWidget(d_coutSaisie);
+
+    layoutInfo->addLayout(layoutCout,1);
 
     auto layoutBas = new QHBoxLayout{};
 
@@ -492,17 +492,6 @@ void vue::fenetreMenuSupprimer()
     auto central = new QWidget;
     central->setLayout(mainLayout);
     d_fenetre->setCentralWidget(central);
-}
-
-void vue::metAJourGraphe()
-{
-    //MAj fs/aps..
-    metAJourNoeuds();
-}
-
-void vue::metAJourNoeuds()
-{
-    //Ici, on modifie fs / aps / matrice voire meme le graphe jsp
 }
 
 void vue::onQuitter()
@@ -741,14 +730,30 @@ vector<int> vue::getFpOrd()
     return fp;
 }
 
-int vue::getNSaisie()
+vector<vector<int>> vue::getCoutSaisie()
 {
-    return d_nSaisie->text().toInt();
-}
+    QString s = this->d_coutSaisie->toPlainText();
+    QStringList ligne = s.split(",");
+    int n = getAPSSaisie()[0];
+    int m = getFSSaisie()[0];
+    vector<vector<int>> nCout(n+1);
+    int cpt = 0;
+    nCout[0].resize(2);
+    nCout[0][0] = n;
+    nCout[0][1] = m;
 
-int vue::getMSaisie()
-{
-    return d_mSaisie->text().toInt();
+    for(int i = 1; i <= n; ++i)
+    {
+           nCout[i].reserve(n+1);
+           nCout[i].push_back(0);
+           for(int j = 1; j <= n; ++j)
+           {
+               nCout[i].push_back(ligne[cpt].toInt());
+               cpt++;
+           }
+    }
+
+    return nCout;
 }
 
 vector<int> vue::getAPSSaisie()
@@ -769,4 +774,9 @@ vector<int> vue::getFSSaisie()
     for(unsigned i = 0 ; i < list.size() ; ++i)
         p.push_back(list[i].toInt());
     return p;
+}
+
+bool vue::getBoxSaisie()
+{
+    return d_coutBox->isChecked();
 }

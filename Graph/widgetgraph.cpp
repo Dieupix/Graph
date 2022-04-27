@@ -229,6 +229,7 @@ void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int
     {
         transformeVersFS_APS();
     }
+    cout<<"OK";
     Dijkstra(d_g.getFS(),d_g.getAPS(),d_g.getCouts(),sommet_depart,d,pr);
 }
 
@@ -325,9 +326,8 @@ vector<int> widgetGraph::englobe_Rang()
     return rg;
 }
 
-widgetGraph widgetGraph::englobe_Tarjan()
+widgetGraph widgetGraph::englobe_Tarjan(vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& base, vector<int>& baseInitiale)
 {
-    vector<int> cfc, pilch, pred, prem;
     if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
@@ -339,20 +339,16 @@ widgetGraph widgetGraph::englobe_Tarjan()
     versGrapheReduit(cfc,prem,d_g.getFS(),d_g.getAPS(),mat);
 
     //Nouveau graphe (Reduit)
-    widgetGraph new_wg(this);
+    widgetGraph new_wg;
     new_wg.loadGraph(Graph{mat});
 
     //determination de la base du graphe reduit :
-    vector<int> fs, aps, base, baseInitiale;
+    vector<int> fs, aps;
     new_wg.d_g.matAdj_to_FS_APS(fs,aps);
     base_Greduit(fs,aps,base);
 
-    printVector(base);
-
     //determination de la base du graphe initial :
     edition_bases(prem,pilch,base,baseInitiale);
-
-    printVector(baseInitiale);
 
     return new_wg;
 }

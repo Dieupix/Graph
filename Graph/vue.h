@@ -12,6 +12,7 @@
 #include <QMenuBar>
 #include <QPushButton>
 #include <QTextEdit>
+#include <QCheckBox>
 
 class vue : public QMainWindow
 {
@@ -27,13 +28,10 @@ public:
     void creeInterfaceSupprimer();
     void creeInterfaceSaisieFSAPS();
 
-    void metAJourGraphe();
-    void metAJourNoeuds();
-
-    int getNSaisie();
-    int getMSaisie();
     vector<int> getFSSaisie();
     vector<int> getAPSSaisie();
+    vector<vector<int>> getCoutSaisie();
+    bool getBoxSaisie();
 
     int getPoids();
     vector<int> getSuc();
@@ -66,8 +64,8 @@ private://FENETRE DONT ON GERE L'INTERFACE
 
     QLineEdit* d_FSSaisie;
     QLineEdit* d_APSSaisie;
-    QLineEdit* d_nSaisie;
-    QLineEdit* d_mSaisie;
+    QTextEdit* d_coutSaisie;
+    QCheckBox* d_coutBox;
 
     QTextEdit* d_taches;
 

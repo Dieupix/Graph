@@ -280,7 +280,7 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
 void Graph::setCout(const vector<vector<int>>& mat)
 {
     couts = mat;
-    usingFsAndAps = false;
+    //usingFsAndAps = false;
     verifIntegritee();
 }
 // ---------- End of setters ----------
@@ -395,25 +395,67 @@ void Graph::loadFrom(std::istream& ist)
     char c = '0';
     unsigned i = 0, sequence = 0;
     string tmp = "";
-    vector<string> str;
 
     for(i = 0; i < buf.size(); ++i)
     {
         c = buf[i];
         if(c == '\n' or c == '\r')
         {
-            if(tmp != "") str.push_back(tmp);
+            if(tmp != "")
+            {
+                switch(sequence)
+                {
+                case 0:
+                    if(tmp[0] == 'e' and tmp[1] == 's' and tmp[2] == 't' and tmp[3] == 'O' and tmp[4] == 'r')
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
             tmp = "";
 
         } else {
             tmp += c;
         }
     }
-    if(tmp != "") str.push_back(tmp);
 
-    for(i = 0; i < str.size(); ++i)
+    if(tmp != "")
     {
 
+    }
+
+
+
+    switch(sequence)
+    {
+    case 0:
+        ist >> tmp;
+        if(tmp == "estOriente:")
+        {
+            ist >> tmp;
+            if(tmp == "true") est_oriente = true;
+            else if(tmp == "false") est_oriente = false;
+            else std::cerr << "pas bon" << std::endl;
+        }
+        else std::cerr << "pas bon" << std::endl;
+        ++sequence;
+        break;
+
+    case 1:
+        ist >> tmp;
+        if(tmp == "FS:")
+        {
+            int nb;
+            ist >> nb;
+
+
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -514,73 +556,74 @@ void Graph::saveIn(std::ostream& ost) const
 
 string Graph::toString() const
 {
-    string toPrint = "Graph:\n";
+    string toPrint = "Graph{";
 
-    toPrint += "est_oriente: ";
+    toPrint += "est_oriente=";
     toPrint += (est_oriente ? "true" : "false");
-    toPrint += "\n";
 
-    toPrint += "usingFsAndAps: ";
+    toPrint += ", usingFsAndAps=";
     toPrint += (usingFsAndAps ? "true" : "false");
-    toPrint += "\n";
 
-    toPrint += "a_des_poids: ";
+    toPrint += ", a_des_poids=";
     toPrint += (a_des_poids ? "true" : "false");
-    toPrint += "\n";
 
     if(usingFsAndAps)
     {
-        toPrint += "FS: [";
+        toPrint += ", FS[";
         unsigned i = 0;
         for(i = 0; i < FS.size() - 1; ++i)
         {
             toPrint += std::to_string(FS[i]) + ", ";
         }
-        toPrint += std::to_string(FS[i]) + "]\n";
+        toPrint += std::to_string(FS[i]) + "]";
 
-        toPrint += "APS: [";
+        toPrint += ", APS[";
         for(i = 0; i < APS.size() - 1; ++i)
         {
             toPrint += std::to_string(APS[i]) + ", ";
         }
-        toPrint += std::to_string(APS[i]) + "]\n";
+        toPrint += std::to_string(APS[i]) + "]";
 
     } else {
-        toPrint += "MATADJ: {\n";
+        toPrint += ", MATADJ[";
         unsigned i = 0, j = 0;
         for(i = 0; i < matAdj.size(); ++i)
         {
-            toPrint += "{";
+            toPrint += "[";
             for(j = 0; j < matAdj[i].size() - 1; ++j)
             {
                 toPrint += std::to_string(matAdj[i][j]) + ", ";
             }
-            toPrint += std::to_string(matAdj[i][j]) + "}\n";
+            toPrint += std::to_string(matAdj[i][j]) + "]";
         }
-        toPrint += "}\n";
+        toPrint += "]";
     }
 
     if(a_des_poids)
     {
-        toPrint += "Couts: {\n";
+        toPrint += ", Couts[";
         unsigned i = 0, j = 0;
         for(i = 0; i < couts.size(); ++i)
         {
-            toPrint += "{";
+            toPrint += "[";
             for(j = 0; j < couts[i].size() - 1; ++j)
             {
                 toPrint += std::to_string(couts[i][j]) + ", ";
             }
-            toPrint += std::to_string(couts[i][j]) + "}\n";
+            toPrint += std::to_string(couts[i][j]) + "]";
         }
-        toPrint += "}\n";
+        toPrint += "]";
     }
 
-    for(unsigned i = 0; i < sommets.size(); ++i)
+    if(!sommets.empty())
     {
-        toPrint += sommets[i]->toString();
-        toPrint += "\n";
+        toPrint += ", ";
+        for(unsigned i = 1; i < sommets.size(); ++i)
+        {
+            toPrint += sommets[i]->toString();
+        }
     }
+    toPrint += "}";
 
     return toPrint;
 }
