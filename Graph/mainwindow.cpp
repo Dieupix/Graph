@@ -173,16 +173,19 @@ bool MainWindow::verifieDantzig()
     }
     else return false; //Graphe Non Oriente
 }
+
 bool MainWindow::verifieKruskal()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
     return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
+
 bool MainWindow::verifiePruferEncode()
 {
     //Il faut que fs et aps soit initialisé ou la matrice ET que le graphe soit non oriente.
     return !d_wg.getOriente() && (d_wg.verifieFS_APS_NonVide() || d_wg.verifieMatrice_NonVide());
 }
+
 bool MainWindow::verifiePruferDecode(const vector<int>& p)
 {
     bool p_correct = true;
@@ -231,16 +234,19 @@ void MainWindow::supprime()
     //Supprime un noeud
     menuSuppr->show();
 }
+
 void MainWindow::onCheck_OrienteeChange(bool estoriente)
 {
     //COMPLETER + MAJ la vue
     d_vue.metAJourGraphe();
 }
+
 void MainWindow::onCheck_A_des_PoidsChange(bool a_des_poids)
 {
     //COMPLETER + MAJ la vue
     d_vue.metAJourGraphe();
 }
+
 void MainWindow::onCheck_FsAps_MatAdjChange(bool fs_aps_utilise)
 {
     //COMPLETER + MAJ la vue
@@ -282,14 +288,17 @@ void MainWindow::onClick_Tarjan()
     }
 
 }
+
 void MainWindow::onClick_Ordonnancement()
 {
     menuOrd->show();
 }
+
 void MainWindow::onClick_Dijkstra()
 {
     menuDijkstra->show();
 }
+
 void MainWindow::onClick_Dantzig()
 {
     if(verifieDantzig())
@@ -298,6 +307,7 @@ void MainWindow::onClick_Dantzig()
         d_vue.metAJourGraphe();
     }
 }
+
 void MainWindow::onClick_Kruskal()
 {
     if(verifieKruskal())
@@ -306,6 +316,7 @@ void MainWindow::onClick_Kruskal()
         d_vue.metAJourGraphe();
     }
 }
+
 void MainWindow::onClick_Prufer_encode()
 {
     if(verifiePruferEncode())
@@ -313,6 +324,7 @@ void MainWindow::onClick_Prufer_encode()
         vector<int> p = d_wg.englobe_Prufer_encode();
     }
 }
+
 void MainWindow::onClick_Prufer_decode()
 {
     menuPruferD->show();
@@ -327,6 +339,7 @@ void MainWindow::onClickDistance_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme des distances",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickRang_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner le rang de chaque sommet du graphe.\n"
@@ -338,6 +351,7 @@ void MainWindow::onClickRang_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme du rang",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickTarjan_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner le graphe reduit du graphe courant.\n"
@@ -350,6 +364,7 @@ void MainWindow::onClickTarjan_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Tarjan",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickOrdonnancement_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner l'ensemble des dates au plus tot et date au plus tard afin d'en deduire un (des) chemin(s) critique(s).\n"
@@ -360,6 +375,7 @@ void MainWindow::onClickOrdonnancement_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : L'ordonnancement",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickDijkstra_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner le(s) chemin(s) le(s) plus court(s) d'un graphe a partir d'un sommet de depart donne.\n"
@@ -369,6 +385,7 @@ void MainWindow::onClickDijkstra_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dijkstra",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickDantzig_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner la matrice de cout la plus optimale possible en tenant compte des raccourcis proposes par le graphe compte tenu de ses poids.\n"
@@ -378,6 +395,7 @@ void MainWindow::onClickDantzig_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dantzig",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickKruskal_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner un arbre recouvrant minimal d'un graphe non oriente.\n"
@@ -387,6 +405,7 @@ void MainWindow::onClickKruskal_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Kruskal",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickPrufer_encode_INFO()
 {
     QString texte = "Cet algorithme a pour but de coder un graphe donne sous la forme d'un tableau de Prufer.\n"
@@ -396,6 +415,7 @@ void MainWindow::onClickPrufer_encode_INFO()
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Prufer [encodage]",texte,QMessageBox::Close};
     info->exec();
 }
+
 void MainWindow::onClickPrufer_decode_INFO()
 {
     QString texte = "Cet algorithme a pour but de decoder un tableau de Prufer en graphe.\n"
@@ -450,6 +470,7 @@ void MainWindow::onValiderAjout()
     Noeud n{menuS->getId()};
     d_wg.ajouterNoeud(n, Pred, Suc);
 }
+
 void MainWindow::onValiderPruferDecode()
 {
     if(verifiePruferDecode(menuPruferD->getP()))
@@ -458,6 +479,7 @@ void MainWindow::onValiderPruferDecode()
         d_vue.metAJourGraphe();
     }
 }
+
 void MainWindow::onValiderDijkstra()
 {
     vector<int> d, pr;
@@ -472,6 +494,7 @@ void MainWindow::onValiderDijkstra()
     printVector(pr);
     cout<<endl;
 }
+
 void MainWindow::onValiderOrdonnancement()
 {
     if(verifieOrdonnancement(menuOrd->getDuree(),menuOrd->getFs(),menuOrd->getAps()))

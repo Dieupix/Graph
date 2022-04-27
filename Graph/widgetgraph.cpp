@@ -476,7 +476,8 @@ void widgetGraph::loadGraph(const Graph& g)
     {
         for(unsigned i = 1; i < d_g.getAPS().size(); ++i)
         {
-            unsigned j = d_g.getFS()[d_g.getAPS()[i]], k = i;
+            unsigned j = d_g.getFS()[d_g.getAPS()[i]];
+            unsigned k = d_g.getAPS()[i];
             while(j != 0)
             {
                 int iBis = i-1, jBis = j-1;
