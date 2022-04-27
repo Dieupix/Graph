@@ -9,6 +9,19 @@ widgetEdge::widgetEdge(widgetNode* sourceNode, widgetNode* destNode)
     adjust();
 }
 
+widgetEdge& widgetEdge::operator=(const widgetEdge& we)
+{
+    if(this == &we) return *this;
+
+    source = we.source;
+    dest = we.dest;
+    sourcePoint = we.sourcePoint;
+    destPoint = we.destPoint;
+    arrowSize = we.arrowSize;
+
+    return *this;
+}
+
 widgetNode* widgetEdge::sourceNode() const
 {
     return source;

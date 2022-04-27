@@ -32,7 +32,7 @@ void vue::creeInterface(widgetGraph& wg)
     d_wg = &wg;
     wgLayout->addWidget(d_wg);
     d_wg->show();
-    //gw->close(); //pour fermer le graph
+    //d_wg->close(); //pour fermer le graph
 }
 
 void vue::creeInterfaceSaisie()
@@ -790,4 +790,9 @@ vector<int> vue::getFSSaisie()
 bool vue::getBoxSaisie()
 {
     return d_coutBox->isChecked();
+}
+
+void vue::setWidgetGraph(widgetGraph& wg)
+{
+    d_wg = &wg;
 }

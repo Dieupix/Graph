@@ -48,6 +48,8 @@ public:
     vector<int> getDureeTaches();
     vector<int> getFsOrd();
 
+    void setWidgetGraph(widgetGraph& wg);
+
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;

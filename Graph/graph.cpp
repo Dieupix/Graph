@@ -290,8 +290,6 @@ void Graph::setCout(const vector<vector<int>>& mat)
 // ---------- Public functions ----------
 void Graph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
-    ///@todo - Alex : to be implemented
-
     int id = noeud.getId();
     if(usingFsAndAps)
     {
@@ -387,8 +385,6 @@ Graph Graph::loadGraphFrom(std::istream& ist)
 
 void Graph::loadFrom(std::istream& ist)
 {
-    ///@todo - Alex : to be implemented
-
     stringstream buffer;
     buffer << ist.rdbuf();
     string buf = buffer.str();
