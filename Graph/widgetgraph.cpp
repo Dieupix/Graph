@@ -230,11 +230,12 @@ void widgetGraph::englobe_Dantzig()
 
 void widgetGraph::englobe_Dijkstra(int sommet_depart, vector<int>& d, vector<int>& pr)
 {
+    cout<<"DIJK";
     if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
-    cout<<"OK";
+
     Dijkstra(d_g.getFS(),d_g.getAPS(),d_g.getCouts(),sommet_depart,d,pr);
 }
 

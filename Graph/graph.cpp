@@ -92,7 +92,7 @@ Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_o
     initialiserSommets();
 }
 
-Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{false}
+Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
@@ -105,21 +105,21 @@ Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAd
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
-Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& couts, bool est_oriente) : matAdj{matAdj},
-    usingFsAndAps{false}, couts{couts}, est_oriente{est_oriente}
+Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& cout, bool est_oriente) : matAdj{matAdj},
+    usingFsAndAps{false}, couts{cout}, est_oriente{est_oriente}
 {
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
@@ -280,6 +280,7 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
 void Graph::setCout(const vector<vector<int>>& mat)
 {
     couts = mat;
+    a_des_poids = true;
     //usingFsAndAps = false;
     verifIntegritee();
 }

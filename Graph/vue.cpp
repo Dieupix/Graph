@@ -724,7 +724,7 @@ vector<vector<int>> vue::getCoutSaisie()
     QString s = this->d_coutSaisie->toPlainText();
     QStringList ligne = s.split(",");
     int n = getAPSSaisie()[0];
-    int m = getFSSaisie()[0];
+    int m = getFSSaisie()[0] - n;
     vector<vector<int>> nCout(n+1);
     int cpt = 0;
     nCout[0].resize(2);

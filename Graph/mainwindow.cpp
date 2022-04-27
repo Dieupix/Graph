@@ -186,7 +186,7 @@ bool MainWindow::verifieDijkstra(int sommet_depart)
                             {
                                 for(unsigned j = 1 ; j < couts[i].size() ; ++j)
                                 {
-                                    if(couts[i][j] < 0)
+                                    if(couts[i][j] < -1)
                                     {
                                         string str = std::to_string(i);
                                         string str2 = std::to_string(j);
@@ -781,13 +781,24 @@ void MainWindow::onValideSaisieFSAPS()
     //A faire quand on pourra charger des graphes
     vector<int> FS = menuFSAPS->getFS();
     vector<int> APS = menuFSAPS->getAPS();
-    Graph g{FS, APS};
+    Graph g{FS, APS, false};
     if(menuFSAPS->getCheck())
     {
         vector<vector<int>> cout = menuFSAPS->getCout();
         g.setCout(cout);
     }
     d_wg->loadGraph(g);
+    /*
+    vector<vector<int>> cout = {{7,8},
+                               {0,0,1,0,0,2,0,0,0},
+                               {0,1,0,2,1,1,0,0,0},
+                               {0,0,2,0,1,0,0,0,3},
+                               {0,0,1,1,0,0,0,2,0},
+                               {0,2,1,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,1,0},
+                               {0,0,0,0,2,0,1,0,1},
+                               {0,0,0,3,0,0,0,1,0}};
+*/
 }
 
 
