@@ -26,7 +26,6 @@ SOURCES += \
     vue.cpp \
     widgetedge.cpp \
     widgetgraph.cpp \
-    widgetgraphbis.cpp \
     widgetnode.cpp
 
 HEADERS += \
@@ -46,7 +45,6 @@ HEADERS += \
     vue.h \
     widgetedge.h \
     widgetgraph.h \
-    widgetgraphbis.h \
     widgetnode.h
 
 # Default rules for deployment.

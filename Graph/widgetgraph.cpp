@@ -18,17 +18,6 @@ widgetGraph::widgetGraph(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *pare
     setup();
 }
 
-widgetGraph::widgetGraph(const widgetGraph& wg) : QGraphicsView(wg.parentWidget()),
-    sceneSizeW{wg.sceneSizeW}, sceneSizeH{wg.sceneSizeH}
-{
-    d_g = wg.d_g;
-    nodes = wg.nodes;
-    scene = wg.scene;
-    sceneSizeW = wg.sceneSizeW;
-    sceneSizeH = wg.sceneSizeH;
-    timerId = wg.timerId;
-}
-
 void widgetGraph::setup()
 {
     setMinimumSize(sceneSizeW, sceneSizeH);
@@ -250,41 +239,36 @@ vector<vector<int>> widgetGraph::englobe_Distance()
     return matriceDistance;
 }
 
-widgetGraph widgetGraph::englobe_Kruskal()
+void widgetGraph::englobe_Kruskal()
 {
-    widgetGraph wg;
     Graph t;
     if(!d_g.isUsingFsAndAps())
     {
         transformeVersFS_APS();
     }
     Kruskal(d_g,t);
-    wg.loadGraph(t);
-    return wg;
+    loadGraph(t);
 }
 
-widgetGraph widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique)
+void widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique)
 {
     vector<int> new_fs, new_aps;
     vector<int> file_pred_critique;
     vector<int> adr_prem_pred_critique;
 
     Ordonnancement(fp, app, duree_taches, file_pred_critique, adr_prem_pred_critique, longueur_critique);
+
     transforme_FP_APP_TO_FS_APS(file_pred_critique,adr_prem_pred_critique,new_fs,new_aps);
 
-    widgetGraph new_wg(this);
-    new_wg.loadGraph(Graph{new_fs,new_aps});
-    return new_wg;
+    loadGraph(Graph{new_fs,new_aps});
 }
 
-widgetGraph widgetGraph::englobe_Prufer_decode(const vector<int>& p)
+void widgetGraph::englobe_Prufer_decode(const vector<int>& p)
 {
     vector<vector<int>> mat;
     Prufer_decode(p, mat);
 
-    widgetGraph new_wg;
-    new_wg.loadGraph(Graph{mat});
-    return new_wg;
+    loadGraph(Graph{mat});
 }
 
 vector<int> widgetGraph::englobe_Prufer_encode()
@@ -310,7 +294,7 @@ vector<int> widgetGraph::englobe_Rang()
     return rg;
 }
 
-widgetGraph widgetGraph::englobe_Tarjan(vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& base, vector<int>& baseInitiale)
+void widgetGraph::englobe_Tarjan(vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& base, vector<int>& baseInitiale)
 {
     if(!d_g.isUsingFsAndAps())
     {
@@ -323,18 +307,15 @@ widgetGraph widgetGraph::englobe_Tarjan(vector<int>& cfc, vector<int>& pilch, ve
     versGrapheReduit(cfc,prem,d_g.getFS(),d_g.getAPS(),mat);
 
     //Nouveau graphe (Reduit)
-    widgetGraph new_wg;
-    new_wg.loadGraph(Graph{mat});
+    loadGraph(Graph{mat});
 
     //determination de la base du graphe reduit :
     vector<int> fs, aps;
-    new_wg.d_g.matAdj_to_FS_APS(fs,aps);
+    d_g.matAdj_to_FS_APS(fs,aps);
     base_Greduit(fs,aps,base);
 
     //determination de la base du graphe initial :
     edition_bases(prem,pilch,base,baseInitiale);
-
-    return new_wg;
 }
 
 bool widgetGraph::verifieFS_APS_NonVide()
