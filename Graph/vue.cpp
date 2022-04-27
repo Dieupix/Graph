@@ -3,7 +3,7 @@
 vue::vue(QMainWindow* fenetre) : d_fenetre{fenetre}
 {}
 
-void vue::creeInterface(widgetGraph* wg)
+void vue::creeInterface(widgetGraph& wg)
 {
     //setWindowState(Qt::WindowMaximized);
     d_fenetre->setWindowTitle("Graphe");
@@ -26,10 +26,10 @@ void vue::creeInterface(widgetGraph* wg)
 */
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
-    auto wgLayout = new QVBoxLayout();
+    wgLayout = new QVBoxLayout();
     mainLayout->addLayout(wgLayout);
 
-    d_wg = wg;
+    d_wg = &wg;
     wgLayout->addWidget(d_wg);
     d_wg->show();
     //d_wg->close(); //pour fermer le graph

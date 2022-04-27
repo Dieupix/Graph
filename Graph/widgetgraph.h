@@ -18,8 +18,6 @@ public:
     widgetGraph(unsigned sceneSize, QWidget *parent = nullptr);
     widgetGraph(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *parent = nullptr);
 
-    widgetGraph(const widgetGraph& wg);
-
     vector<int>         getFs() const;
     vector<int>         getAps() const;
     vector<vector<int>> getCouts() const;
@@ -31,12 +29,12 @@ public:
     void                englobe_Dantzig         ();
     void                englobe_Dijkstra        (int sommet_depart,vector<int>& d, vector<int>& pr);
     vector<vector<int>> englobe_Distance        ();
-    widgetGraph         englobe_Kruskal         ();
-    widgetGraph         englobe_Ordonnancement  (const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique);
-    widgetGraph         englobe_Prufer_decode   (const vector<int>& p);
+    void                englobe_Kruskal         ();
+    void                englobe_Ordonnancement  (const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique);
+    void                englobe_Prufer_decode   (const vector<int>& p);
     vector<int>         englobe_Prufer_encode   ();
     vector<int>         englobe_Rang            ();
-    widgetGraph         englobe_Tarjan          (vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& base, vector<int>& baseInitiale);
+    void                englobe_Tarjan          (vector<int>& cfc, vector<int>& pilch, vector<int>& pred, vector<int>& prem, vector<int>& base, vector<int>& baseInitiale);
     bool                verifieFS_APS_NonVide   ();
     bool                verifieMatrice_NonVide  ();
     bool                verifieCout_NonVide     ();
@@ -73,7 +71,6 @@ private:
     void    setup                   ();
     void    transformeVersMatrice   ();
     void    transformeVersFS_APS    ();
-    Graph   toGraph                 ();
 };
 
 #endif // WIDGETGRAPH_H

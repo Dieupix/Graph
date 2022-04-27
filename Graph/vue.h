@@ -20,7 +20,7 @@ class vue : public QMainWindow
 public:
     vue(QMainWindow* fenetre = nullptr);
 
-    void creeInterface(widgetGraph* wg);
+    void creeInterface(widgetGraph& wg);
     void creeInterfaceSaisie();
     void creeInterfacePruferDecode();
     void creeInterfaceDijkstra();
@@ -50,6 +50,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
     widgetGraph* d_wg;
+    QBoxLayout* wgLayout;
     QLabel* d_fs;
     QLabel* d_aps;
     QLabel* d_matrice;

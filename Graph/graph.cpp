@@ -158,8 +158,8 @@ Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est
 Graph::Graph(const vector<int>& fs, const vector<int>& aps, const vector<unique_ptr<Noeud>>& sommets, bool est_oriente, bool a_des_poids)
     : FS{fs}, APS{aps}, usingFsAndAps{true}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {
-    initialiserSommets(sommets.size());
-    for(unsigned i = 0; i < this->sommets.size(); ++i)
+    initialiserSommets(sommets.size()-1);
+    for(unsigned i = 1; i < this->sommets.size(); ++i)
     {
         *this->sommets[i] = *sommets[i];
     }
@@ -168,8 +168,8 @@ Graph::Graph(const vector<int>& fs, const vector<int>& aps, const vector<unique_
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<unique_ptr<Noeud>>& sommets, bool est_oriente, bool a_des_poids)
     : matAdj{matAdj}, usingFsAndAps{false}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {
-    initialiserSommets(sommets.size());
-    for(unsigned i = 0; i < this->sommets.size(); ++i)
+    initialiserSommets(sommets.size()-1);
+    for(unsigned i = 1; i < this->sommets.size(); ++i)
     {
         *this->sommets[i] = *sommets[i];
     }
