@@ -29,20 +29,6 @@ widgetGraph::widgetGraph(const widgetGraph& wg) : QGraphicsView(wg.parentWidget(
     timerId = wg.timerId;
 }
 
-widgetGraph& widgetGraph::operator=(const widgetGraph& wg)
-{
-    if(this == &wg) return *this;
-
-    d_g = wg.d_g;
-    nodes = wg.nodes;
-    scene = wg.scene;
-    sceneSizeW = wg.sceneSizeW;
-    sceneSizeH = wg.sceneSizeH;
-    timerId = wg.timerId;
-
-    return *this;
-}
-
 void widgetGraph::setup()
 {
     setMinimumSize(sceneSizeW, sceneSizeH);

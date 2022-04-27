@@ -19,8 +19,6 @@ public:
 
     widgetNode(widgetGraph *widgetGraph, const Noeud& noeud);
 
-    widgetNode& operator=(const widgetNode& wn);
-
     void addEdge(widgetEdge *edge);
     QList<widgetEdge *> edges() const;
     const std::unique_ptr<Noeud>& getNoeud() const;

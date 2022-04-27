@@ -11,18 +11,6 @@ widgetNode::widgetNode(widgetGraph *widgetGraph, const Noeud& noeud)
     setZValue(-1);
 }
 
-widgetNode& widgetNode::operator=(const widgetNode &wn)
-{
-    if(this == &wn) return *this;
-
-    edgeList = wn.edgeList;
-    graph = wn.graph;
-    newPos = wn.newPos;
-    *noeud = *wn.noeud;
-
-    return *this;
-}
-
 void widgetNode::addEdge(widgetEdge *edge)
 {
     edgeList << edge;

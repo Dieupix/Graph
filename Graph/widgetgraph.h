@@ -20,8 +20,6 @@ public:
 
     widgetGraph(const widgetGraph& wg);
 
-    widgetGraph& operator=(const widgetGraph& wg);
-
     vector<int>         getFs() const;
     vector<int>         getAps() const;
     vector<vector<int>> getCouts() const;

@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QMainWindow* parent = nullptr);
 private:
-    widgetGraph d_wg;
+    widgetGraph* d_wg;
     vue d_vue;
 
     bool verifieDistance();
