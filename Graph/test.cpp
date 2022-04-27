@@ -3,7 +3,7 @@
 
 void test()
 {
-    testAjoutNoeud();
+    testLoadGraph();
 }
 
 /* -------------------------------------------------- */
@@ -86,6 +86,25 @@ void testDistance()
         for(auto j : matriceDistance[i]) cout << j << " ";
         cout<<endl;
     }
+}
+
+void testLoadGraph()
+{
+    Graph g;
+    string fileName = "";
+
+    std::ifstream ifs(fileName);
+
+    if(!ifs)
+    {
+        cerr << "Cannot open file \"" << fileName << "\"" << endl;
+    }
+    else
+    {
+        g.loadFrom(ifs);
+    }
+
+    //cout << "g = " << g << endl;
 }
 
 void testOrdonnancement()

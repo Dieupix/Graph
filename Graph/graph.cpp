@@ -395,25 +395,67 @@ void Graph::loadFrom(std::istream& ist)
     char c = '0';
     unsigned i = 0, sequence = 0;
     string tmp = "";
-    vector<string> str;
 
     for(i = 0; i < buf.size(); ++i)
     {
         c = buf[i];
         if(c == '\n' or c == '\r')
         {
-            if(tmp != "") str.push_back(tmp);
+            if(tmp != "")
+            {
+                switch(sequence)
+                {
+                case 0:
+                    if(tmp[0] == 'e' and tmp[1] == 's' and tmp[2] == 't' and tmp[3] == 'O' and tmp[4] == 'r')
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
             tmp = "";
 
         } else {
             tmp += c;
         }
     }
-    if(tmp != "") str.push_back(tmp);
 
-    for(i = 0; i < str.size(); ++i)
+    if(tmp != "")
     {
 
+    }
+
+
+
+    switch(sequence)
+    {
+    case 0:
+        ist >> tmp;
+        if(tmp == "estOriente:")
+        {
+            ist >> tmp;
+            if(tmp == "true") est_oriente = true;
+            else if(tmp == "false") est_oriente = false;
+            else std::cerr << "pas bon" << std::endl;
+        }
+        else std::cerr << "pas bon" << std::endl;
+        ++sequence;
+        break;
+
+    case 1:
+        ist >> tmp;
+        if(tmp == "FS:")
+        {
+            int nb;
+            ist >> nb;
+
+
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
