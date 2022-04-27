@@ -40,10 +40,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-    QList<widgetEdge *> edgeList;
-    QPointF newPos;
-    widgetGraph *graph;
+    QList<widgetEdge*>      edgeList;
+    widgetGraph*            graph;
+    QPointF                 newPos;
+    std::unique_ptr<Noeud>  noeud;
 
-    std::unique_ptr<Noeud> noeud;
 };
 #endif // WIDGETNODE_H

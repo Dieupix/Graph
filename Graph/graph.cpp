@@ -92,7 +92,7 @@ Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_o
     initialiserSommets();
 }
 
-Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{false}
+Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
@@ -105,21 +105,21 @@ Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAd
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{false}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
-Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& couts, bool est_oriente) : matAdj{matAdj},
-    usingFsAndAps{false}, couts{couts}, est_oriente{est_oriente}
+Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& cout, bool est_oriente) : matAdj{matAdj},
+    usingFsAndAps{false}, couts{cout}, est_oriente{est_oriente}
 {
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
@@ -158,8 +158,8 @@ Graph::Graph(const Graph& g) : usingFsAndAps{g.usingFsAndAps}, est_oriente{g.est
 Graph::Graph(const vector<int>& fs, const vector<int>& aps, const vector<unique_ptr<Noeud>>& sommets, bool est_oriente, bool a_des_poids)
     : FS{fs}, APS{aps}, usingFsAndAps{true}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {
-    initialiserSommets(sommets.size());
-    for(unsigned i = 0; i < this->sommets.size(); ++i)
+    initialiserSommets(sommets.size()-1);
+    for(unsigned i = 1; i < this->sommets.size(); ++i)
     {
         *this->sommets[i] = *sommets[i];
     }
@@ -168,8 +168,8 @@ Graph::Graph(const vector<int>& fs, const vector<int>& aps, const vector<unique_
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<unique_ptr<Noeud>>& sommets, bool est_oriente, bool a_des_poids)
     : matAdj{matAdj}, usingFsAndAps{false}, est_oriente{est_oriente}, a_des_poids{a_des_poids}
 {
-    initialiserSommets(sommets.size());
-    for(unsigned i = 0; i < this->sommets.size(); ++i)
+    initialiserSommets(sommets.size()-1);
+    for(unsigned i = 1; i < this->sommets.size(); ++i)
     {
         *this->sommets[i] = *sommets[i];
     }
@@ -280,6 +280,7 @@ void Graph::setMatrice(const vector<vector<int>>& mat)
 void Graph::setCout(const vector<vector<int>>& mat)
 {
     couts = mat;
+    a_des_poids = true;
     //usingFsAndAps = false;
     verifIntegritee();
 }
@@ -290,8 +291,6 @@ void Graph::setCout(const vector<vector<int>>& mat)
 // ---------- Public functions ----------
 void Graph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
-    ///@todo - Alex : to be implemented
-
     int id = noeud.getId();
     if(usingFsAndAps)
     {
@@ -387,8 +386,6 @@ Graph Graph::loadGraphFrom(std::istream& ist)
 
 void Graph::loadFrom(std::istream& ist)
 {
-    ///@todo - Alex : to be implemented
-
     stringstream buffer;
     buffer << ist.rdbuf();
     string buf = buffer.str();

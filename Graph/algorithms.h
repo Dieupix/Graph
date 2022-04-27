@@ -35,5 +35,6 @@ void versGrapheReduit           (const vector<int>& cfc, const vector<int>& prem
 void Graph_reduit               (const vector<int>& prem,const vector<int>& pilch,const vector<int>& cfc,const vector<int>& fs, const vector<int>& aps,vector<int>&fsr, vector<int>& apsr);
 void base_Greduit               (const vector<int>& fsR, const vector<int>& apsR, vector<int>& baseR_GrapheR);
 void edition_bases              (const vector<int>& prem, const vector<int>& pilch, const vector<int>& baseR, vector<int>& baseInitiale);
+string toStringVector             (const vector<int>& tab);
 
 #endif // ALGORITHMS_H

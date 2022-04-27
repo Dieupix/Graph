@@ -880,7 +880,16 @@ void edition_bases(const vector<int>& prem, const vector<int>& pilch, const vect
         }
     }
 }
-
+string toStringVector(const vector<int>& tab)
+{
+    string s = "[ ";
+    for(unsigned i = 0 ; i < tab.size() ; ++i)
+    {
+        s += std::to_string(tab[i]) + ", ";
+    }
+    s += "]";
+    return s;
+}
 
 
 

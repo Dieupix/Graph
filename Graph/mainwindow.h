@@ -25,7 +25,7 @@ private:
     bool verifieDistance();
     bool verifieRang();
     bool verifieTarjan();
-    bool verifieOrdonnancement(const vector<int>& duree_taches, const vector<int>& fs, const vector<int>& aps);
+    bool verifieOrdonnancement();
     bool verifieDijkstra(int sommet_depart);
     bool verifieDantzig();
     bool verifieKruskal();
@@ -40,9 +40,6 @@ private:
     saisieFSAPS *menuFSAPS;
     saisieMatrice *menuMatrice;
 private slots :
-    void onCheck_OrienteeChange(bool estoriente);
-    void onCheck_A_des_PoidsChange(bool a_des_poids);
-    void onCheck_FsAps_MatAdjChange(bool fs_aps_utilise);
 
     void charge();
     void saisieMatrice();

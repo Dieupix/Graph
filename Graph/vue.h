@@ -29,9 +29,6 @@ public:
     void creeInterfaceSaisieFSAPS();
     void creeInterfaceSaisieMatrice();
 
-    void metAJourGraphe();
-    void metAJourNoeuds();
-
     vector<int> getFSSaisie();
     vector<int> getAPSSaisie();
     vector<vector<int>> getCoutSaisie();
@@ -51,12 +48,15 @@ public:
     int getSommet_depart();
     //Pour Ordonnancement
     vector<int> getDureeTaches();
-    vector<int> getFsOrd();
+    vector<int> getFpOrd();
+
+    void setWidgetGraph(widgetGraph* wg);
 
 private://FENETRE DONT ON GERE L'INTERFACE
     //ICI, on insère les objets QCheckBox, QLabel, ...
     QMainWindow* d_fenetre;
     widgetGraph* d_wg;
+    QBoxLayout* wgLayout;
     QLabel* d_fs;
     QLabel* d_aps;
     QLabel* d_matrice;

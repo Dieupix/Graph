@@ -26,13 +26,13 @@ void vue::creeInterface(widgetGraph& wg)
 */
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
-    auto wgLayout = new QVBoxLayout();
+    wgLayout = new QVBoxLayout();
     mainLayout->addLayout(wgLayout);
 
     d_wg = &wg;
     wgLayout->addWidget(d_wg);
     d_wg->show();
-    //gw->close(); //pour fermer le graph
+    //d_wg->close(); //pour fermer le graph
 }
 
 void vue::creeInterfaceSaisie()
@@ -558,17 +558,6 @@ void vue::fenetreMenuSupprimer()
     d_fenetre->setCentralWidget(central);
 }
 
-void vue::metAJourGraphe()
-{
-    //MAj fs/aps..
-    metAJourNoeuds();
-}
-
-void vue::metAJourNoeuds()
-{
-    //Ici, on modifie fs / aps / matrice voire meme le graphe jsp
-}
-
 void vue::onQuitter()
 {
     emit Quitter();
@@ -785,12 +774,12 @@ vector<int> vue::getDureeTaches()
     return duree;
 }
 
-vector<int> vue::getFsOrd()
+vector<int> vue::getFpOrd()
 {
     QString s = this->d_taches->toPlainText();
-    vector<int> fs;
+    vector<int> fp;
     QStringList list = s.split(',');
-    fs.push_back(0);
+    //fp.push_back(0);
     for(unsigned i = 0 ; i < list.size() ; ++i)
     {
         QStringList nom = list[i].split('>');
@@ -798,12 +787,12 @@ vector<int> vue::getFsOrd()
         for(unsigned j = 0 ; j < pred.size() ; ++j)
         {
             if(pred[j].toInt() != '0')
-                fs.push_back(pred[j].toInt());
+                fp.push_back(pred[j].toInt());
         }
-        fs.push_back(0);
+        fp.push_back(0);
     }
-    fs[0] = fs.size();
-    return fs;
+    fp[0] = fp.size()-1;
+    return fp;
 }
 
 vector<vector<int>> vue::getCoutSaisie()
@@ -811,7 +800,7 @@ vector<vector<int>> vue::getCoutSaisie()
     QString s = this->d_coutSaisie->toPlainText();
     QStringList ligne = s.split(",");
     int n = getAPSSaisie()[0];
-    int m = getFSSaisie()[0];
+    int m = getFSSaisie()[0] - n;
     vector<vector<int>> nCout(n+1);
     int cpt = 0;
     nCout[0].resize(2);
@@ -857,6 +846,7 @@ bool vue::getBoxSaisie()
     return d_coutBox->isChecked();
 }
 
+<<<<<<< HEAD
 int vue::getN()
 {
     return d_n->text().toInt();
@@ -891,4 +881,9 @@ vector<vector<int>> vue::getMatriceSaisie()
            }
     }
     return matrice;
+=======
+void vue::setWidgetGraph(widgetGraph* wg)
+{
+    d_wg = wg;
+>>>>>>> d14c4c4d37a2c964052c5ca4d53cea1b2aa82154
 }
