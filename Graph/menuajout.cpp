@@ -11,7 +11,7 @@ menuAjout::menuAjout(QMainWindow *parent) : QMainWindow{parent}, d_vue{this}
 
 void menuAjout::onClick_valider()
 {
-    d_id = d_vue.getId();
+    //d_id = d_vue.getId();
     d_poids = d_vue.getPoids();
     d_pred = d_vue.getPred();
     d_suc = d_vue.getSuc();
@@ -24,12 +24,6 @@ void menuAjout::onClick_valider()
 int  menuAjout::getPoids() const
 {
     return d_poids;
-}
-
-
-int  menuAjout::getId() const
-{
-    return d_id;
 }
 
 vector<int> menuAjout::getPred() const

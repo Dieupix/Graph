@@ -270,13 +270,6 @@ void vue::menuAjout()
 
     auto layoutInfo = new QVBoxLayout{};
 
-    auto layoutId = new QHBoxLayout{};
-    auto labelId = new QLabel("Identifiant du noeud");
-    layoutId->addWidget(labelId,1);
-
-    d_id = new QLineEdit{};
-    layoutId->addWidget(d_id);
-
     auto layoutSucc = new QHBoxLayout{};
     auto pannelSucc = new QLabel{"Successeur du noeud"};
     layoutSucc->addWidget(pannelSucc,1);
@@ -301,7 +294,7 @@ void vue::menuAjout()
     d_poids = new QLineEdit{};
     layoutPoids->addWidget(d_poids);
 
-    layoutInfo->addLayout(layoutId);
+    //layoutInfo->addLayout(layoutId);
     layoutInfo->addLayout(layoutSucc);
     layoutInfo->addLayout(layoutPrec);
     layoutInfo->addLayout(layoutPoids);
@@ -689,10 +682,6 @@ vector<int> vue::getPred()
     return prec;
 }
 
-int vue::getId()
-{
-    return this->d_id->text().toInt();
-}
 
 vector<int> vue::getP()
 {

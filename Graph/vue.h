@@ -39,7 +39,6 @@ public:
     int getPoids();
     vector<int> getSuc();
     vector<int> getPred();
-    int getId();
     //Pour Prufer decode
     vector<int> getP();
     //Pour Dijkstra
@@ -60,7 +59,6 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_suc;
     QLineEdit* d_prec;
     QLineEdit* d_poids;
-    QLineEdit* d_id;
 
     QLineEdit* d_p;
     QLineEdit* d_sommet_depart;

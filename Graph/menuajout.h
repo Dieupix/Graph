@@ -9,7 +9,6 @@ class menuAjout : public QMainWindow
 public:
     explicit menuAjout(QMainWindow *parent = nullptr);
 
-    int getId() const;
     int getPoids() const;
     vector<int> getSuc() const;
     vector<int> getPred() const;
@@ -22,7 +21,7 @@ private slots:
 
 private:
     vue d_vue;
-    int d_id;
+    //int d_id;
     int d_poids;
     vector<int> d_suc;
     vector<int> d_pred;
