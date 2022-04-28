@@ -378,7 +378,6 @@ bool widgetGraph::verifieCout_NonVide()
     }
 }
 
-
 void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, const vector<int>& succ)
 {
     auto node = new widgetNode(this, noeud);

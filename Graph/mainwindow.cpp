@@ -667,6 +667,7 @@ void MainWindow::onClickDijkstra_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner le(s) chemin(s) le(s) plus court(s) d'un graphe a partir d'un sommet de depart donne.\n"
                     "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
+                    "Pour lancer cet algorithme, il faut avoir saisi un cout dont les valeurs non determinees valent -1. De plus, le graphe doit etre oriente.\n"
                     "Son resultat est donne sous la forme de deux tableaux representant respectivement le poids minimal du chemin (d) et le chemin (pr).\n"
                     "La complexite de cet algorithme est en O( .. )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dijkstra",texte,QMessageBox::Close};
@@ -676,6 +677,7 @@ void MainWindow::onClickDijkstra_INFO()
 void MainWindow::onClickDantzig_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner la matrice de cout la plus optimale possible en tenant compte des raccourcis proposes par le graphe compte tenu de ses poids.\n"
+                    "Pour lancer cet algorithme, il faut avoir un graphe non oriente ainsi qu'une matrice des couts implementees de 0 si il n'y a pas d'arc ou si le poids vaut 0.\n"
                     "Son resultat est donne sous la forme d'une matrice appellee matrice des couts.\n"
                     "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
                     "La complexite de cet algorithme est en O( .. )";
@@ -687,6 +689,7 @@ void MainWindow::onClickKruskal_INFO()
 {
     QString texte = "Cet algorithme a pour but de determiner un arbre recouvrant minimal d'un graphe non oriente.\n"
                     "Il est par exemple utilise pour simplifier des cablages.\n"
+                    "Afin de lancer cet algorithme, le graphe doit etre non oriente. De plus, une matrice des couts doit etre implementees.\n"
                     "Son resultat est donne sous la forme d'un nouveau graphe.\n"
                     "La complexite de cet algorithme est en O( .. )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Kruskal",texte,QMessageBox::Close};
@@ -697,6 +700,7 @@ void MainWindow::onClickPrufer_encode_INFO()
 {
     QString texte = "Cet algorithme a pour but de coder un graphe donne sous la forme d'un tableau de Prufer.\n"
                     "Il peut etre utile pour representer n'importe quel probleme sous forme d'un tableau d'entier unique.\n"
+                    "Afin de lancer cet algorithme, le graphe saisi doit etre non oriente et tous les sommets ne doivent pas etre predeceeseurs et successeurs."
                     "Son resultat est donne sous la forme d'un tableau d'entier.\n"
                     "La complexite de cet algorithme est en O( .. )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Prufer [encodage]",texte,QMessageBox::Close};

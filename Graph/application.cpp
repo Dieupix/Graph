@@ -373,27 +373,79 @@ void application::algorithmes()
     case 4:
     {
         if(verifieOrdonnancement())
-        {
-            vector<int> long_critique;
-            vector<int> duree, fp, app;
-            vector<string> taches;
-            string tache;
-            cout<<"Veuillez saisir les taches une pas une sous la forme Nom_de_la_tache>Duree>Predecesseur_1-Predecesseur_2-... OU '0' si aucun"<<endl;
-            cout<<"Quand la saisie est terminee, saisir -1"<<endl;
-            cin>>tache;
-            while(tache[0] != -1)
-            {
-                for(unsigned i = 0 ; i < tache.length() ; ++i)
                 {
-                    //...
+                    vector<int> long_critique;
+                    vector<int> duree, fp, app;
+                    vector<string> taches;
+                    string tache;
+                    int tps;
+                    int nb_taches = 1;
+                    int nb_total_taches, nb_total_arcs;
+
+                    cout<<"Combien de taches allez-vous saisir ?"<<endl;
+                    cin>>nb_total_taches;
+                    cout<<"Combien d arcs allez-vous saisir ?"<<endl;
+                    cin>>nb_total_arcs;
+
+                    app.push_back(nb_total_taches);
+                    app.push_back(1);
+                    fp.push_back(app[0] + nb_total_arcs);
+
+                    cout<<"Veuillez saisir les taches une pas une"<<endl;
+
+                    int cpt = 1;
+                    int ind_crt = 1;
+                    while(cpt != nb_total_taches+1)
+                    {
+                        vector<int> pred_courant;
+                        cout<<"Saisir le nom de la tache : "<<nb_taches<<endl;
+                        cin>>tache;
+                        cout<<"Saisir la duree ce cette tache"<<endl;
+                        cin>>tps;
+                        int pred = 1;
+                        cout<<"Saisie des predecesseurs - tapez -1 pour finir la liste "<<endl;
+                        while(pred != -1)
+                        {
+                            cout<<"Saisir le predecesseur "<<pred<<" de la tache "<<nb_taches<<endl;
+                            cin>>pred;
+                            if(pred > 0)
+                            {
+                                pred_courant.push_back(pred);
+                            }
+                        }
+                        duree.push_back(tps);
+                        taches.push_back(tache);
+                        for(unsigned k = 0 ; k < pred_courant.size() ; ++k)
+                        {
+                            fp.push_back(pred_courant[k]);
+                            ++ind_crt;
+                        }
+                        fp.push_back(0);
+                        ++ind_crt;
+                        int taille_crt = app.size();
+                        if(taille_crt <= nb_total_taches+1)
+                            app.push_back(ind_crt);
+
+                        printVector(fp);
+                        printVector(app);
+                        printVector(duree);
+                        ++nb_taches;
+                        ++cpt;
+                    }
+
+                    englobe_Ordonnancement(duree,fp,app,long_critique);
+                    string s = "";
+                    s += "FS : \n";
+                    s += toStringVector(d_graphe.getFS());
+                    s += "\n";
+                    s += "APS : \n";
+                    s += toStringVector(d_graphe.getAPS());
+                    s += "\n";
+                    s += "Longueur critique : \n";
+                    s += toStringVector(long_critique);
+                    cout<<"Resultat de l'ordonnancement :"<<s<<endl;
                 }
-            }
-            englobe_Ordonnancement(duree,fp,app,long_critique);
-            string s = "";
-            //..
-            cout<<"Resultat de l'ordonnancement :"<<s<<endl;
-        }
-        break;
+                break;
     }
     case 5:
     {

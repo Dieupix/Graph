@@ -635,6 +635,7 @@ string Graph::toString() const
 
     return toPrint;
 }
+
 // ---------- End of public funtions ----------
 
 
