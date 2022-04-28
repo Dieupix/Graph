@@ -246,35 +246,54 @@ void Kruskal(const Graph& g, Graph &t)
         graphe graphReturn;
         vector<int> FS  = g.getFS();
         vector<int> APS = g.getAPS();
-        graphReturn.n = APS.size();
+        //graphReturn.n = APS.size();
+        graphReturn.n = APS[0];
         vector<vector<int>> cout = g.getCouts();
         int j = 1;
-
+        int taille_a = 0;
         for(unsigned i = 1; i < APS.size(); i++)
         {
             while(FS[j] != 0)
             {
-                ar.s = FS[j];
-                ar.t = i+1;
-                ar.p = cout[i][FS[j]-1];
-
-                graphReturn.a.push_back(ar);
+                int succ  = FS[j];
+                int pred  = i;
+                bool flag = true;
+                int n = 0;
+                while(flag && n < taille_a)
+                {
+                    if((succ == graphReturn.a[n].s && pred == graphReturn.a[n].t) || (succ == graphReturn.a[n].t && pred == graphReturn.a[n].s))
+                    {
+                         if(flag)
+                         {
+                             flag = false;
+                         }
+                    }
+                    ++n;
+                }
+                if(flag)
+                {
+                    ar.s = succ;
+                    ar.t = pred;
+                    ar.p = cout[i][FS[j]];
+                    graphReturn.a.push_back(ar);
+                    ++taille_a;
+                }
                 j++;
             }
             j++;
         }
         graphReturn.m = graphReturn.a.size();
 
-        //TRIE DU GRAPHE EN FONCTION DES COUTS ET DES ARRETES
-        double p;
-            for (int i = 0; i < graphReturn.m - 1; i++)
-                for (int j = i + 1; j < graphReturn.m; j++)
-                    if ((graphReturn.a[j].p < graphReturn.a[i].p) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].s < graphReturn.a[i].t) || (graphReturn.a[j].p == graphReturn.a[i].p && graphReturn.a[j].t < graphReturn.a[i].t))
-                    {
-                        p = graphReturn.a[j].p;
-                        graphReturn.a[j].p = graphReturn.a[i].p;
-                        graphReturn.a[i].p = p;
-                    }
+        //TRIE DU GRAPHE EN FONCTION DES COUTS ET DES ARETES
+        arete tmp;
+        for (int i = 0; i < graphReturn.m - 1; i++)
+            for (int cpt = i + 1; cpt < graphReturn.m; cpt++)
+                if ((graphReturn.a[cpt].p < graphReturn.a[i].p) || (graphReturn.a[cpt].p == graphReturn.a[i].p && graphReturn.a[cpt].s < graphReturn.a[i].t) || (graphReturn.a[cpt].p == graphReturn.a[i].p && graphReturn.a[cpt].t < graphReturn.a[i].t))
+                {
+                    tmp = graphReturn.a[cpt];
+                    graphReturn.a[cpt] = graphReturn.a[i];
+                    graphReturn.a[i] = tmp;
+                }
 
         //INITIALISATION DES DONNEES
         int n = graphReturn.n;
@@ -292,7 +311,7 @@ void Kruskal(const Graph& g, Graph &t)
 
         //KRUSKAL
         graphe GraphFinal;
-        GraphFinal.a.resize(n-1);
+        GraphFinal.a.resize(graphReturn.n-1);
         int x;
         int y;
         int i = 0; int cpt = 0;
@@ -304,6 +323,7 @@ void Kruskal(const Graph& g, Graph &t)
             if(x != y)
             {
                 GraphFinal.a[cpt++] = graphReturn.a[i];
+
                 if(NbElem[i] < NbElem[cpt])
                 {
                     int aux = i;
@@ -326,26 +346,39 @@ void Kruskal(const Graph& g, Graph &t)
         GraphFinal.n = graphReturn.n;
         GraphFinal.m = graphReturn.n - 1;
 
-        vector<vector<int>> matriceCout(APS[0]);
-        vector<vector<int>> matrice(APS[0]);
+        vector<vector<int>> matriceCout(APS[0]+1);
+        vector<vector<int>> matrice(APS[0]+1);
         for(unsigned i = 0; i < matrice.size(); i++)
         {
-            matrice[i].resize(APS[0]);
+            matrice[i].resize(APS[0]+1);
+            matriceCout[i].resize(APS[0]+1);
             for(unsigned j = 0; j < matrice[i].size(); j++)
             {
-                vector<vector<int>> matriceCout(APS[0]);
+                matriceCout[i][j] = 0;
                 matrice[i][j] = 0;
             }
         }
 
+        for(unsigned i = 0 ; i < GraphFinal.a.size() ; ++i)
+        {
+            std::cout<<GraphFinal.a[i].s<<"-"<<GraphFinal.a[i].t<<"-"<<GraphFinal.a[i].p<<endl;
+        }
+
+
+/*
         for(unsigned i = 0; i < GraphFinal.a.size(); i++)
         {
             matriceCout[GraphFinal.a[i].s][GraphFinal.a[i].t] = GraphFinal.a[i].p;
             matrice[GraphFinal.a[i].s][GraphFinal.a[i].t] = 1;
         }
 
-        t.setMatrice(matrice);
-        t.setCout(matriceCout);
+        for(unsigned i = 1 ; i < matrice.size() ; ++i)
+        {
+            printVector(matrice[i]);
+        }
+*/
+        //t.setMatrice(matrice);
+        //t.setCout(matriceCout);
 }
 
 void mat_distance(const vector<int>& FS, const vector<int>& APS, vector<vector<int>>& matriceDistance)

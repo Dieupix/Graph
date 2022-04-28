@@ -252,7 +252,11 @@ void widgetGraph::englobe_Kruskal()
         transformeVersFS_APS();
     }
     Kruskal(d_g,t);
-    loadGraph(t);
+
+    for(int i = 1 ; i < t.getMatAdj().size() ; ++i)
+        printVector(t.getMatAdj()[i]);
+
+    //loadGraph(t);
 }
 
 void widgetGraph::englobe_Ordonnancement(const vector<int>& duree_taches, const vector<int>& fp, const vector<int>& app, vector<int>& longueur_critique)
@@ -283,8 +287,8 @@ vector<int> widgetGraph::englobe_Prufer_encode()
     {
         transformeVersMatrice();
     }
-    //vector<vector<int>> mat = d_g.getMatAdj();
-    //Prufer_encode(mat, p);
+    vector<vector<int>> mat = d_g.getMatAdj();
+    Prufer_encode(mat, p);
     return p;
 }
 

@@ -168,7 +168,7 @@ void vue::setupMenuFichier()
 
 void vue::setupMenuAlgo()
 {
-    auto menuAlgo = d_fenetre->menuBar()->addMenu("&Algorithm");
+    auto menuAlgo = d_fenetre->menuBar()->addMenu("&Algorithmes");
 
     auto actionDistance = new QAction{"Distance"};
     actionDistance->setToolTip("Distance algorithme");
@@ -795,7 +795,6 @@ vector<int> vue::getFpOrd()
     QString s = this->d_taches->toPlainText();
     vector<int> fp;
     QStringList list = s.split(',');
-    //fp.push_back(0);
     for(unsigned i = 0 ; i < list.size() ; ++i)
     {
         QStringList nom = list[i].split('>');

@@ -449,7 +449,6 @@ bool MainWindow::verifiePruferDecode(const vector<int>& p)
         int nb_max_sommets = m+2;
         for(unsigned i = 1 ; i <= m ; ++i)
         {
-            cout<<"p["<<i<<"] = "<<p[i]<<endl;
             if(p[i] <= 0 || p[i] > nb_max_sommets)
             {
                 QString s = "P n'est pas correctement saisi : p[";
