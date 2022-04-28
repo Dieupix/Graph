@@ -12,6 +12,7 @@ void saisieFSAPS::onClick_valider()
 {
     d_FS = d_vue.getFSSaisie();
     d_APS = d_vue.getAPSSaisie();
+    d_checkOriente = d_vue.getBoxOrienteSaisie();
     d_Check = d_vue.getBoxSaisie();
     if(d_Check)
         d_cout = d_vue.getCoutSaisie();
@@ -39,4 +40,9 @@ vector<vector<int>> saisieFSAPS::getCout()
 bool saisieFSAPS::getCheck()
 {
     return d_Check;
+}
+
+bool saisieFSAPS::getCheckOriente()
+{
+    return d_checkOriente;
 }

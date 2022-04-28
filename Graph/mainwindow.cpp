@@ -790,24 +790,26 @@ void MainWindow::onValideSaisieFSAPS()
     //A faire quand on pourra charger des graphes
     vector<int> FS = menuFSAPS->getFS();
     vector<int> APS = menuFSAPS->getAPS();
-    Graph g{FS, APS};
+    Graph g{FS, APS, menuFSAPS->getCheckOriente()};
     if(menuFSAPS->getCheck())
     {
         vector<vector<int>> cout = menuFSAPS->getCout();
         g.setCout(cout);
     }
+    cout<<g.getEst_oriente();
     d_wg.loadGraph(g);
 }
 
 void MainWindow::onValideSaisieMatrice()
 {
     vector<vector<int>> matrice = menuMatrice->getMatrice();
-    Graph g{matrice};
+    Graph g{matrice, menuMatrice->getCheckOriente()};
     if(menuMatrice->getCheck())
     {
         vector<vector<int>> cout = menuMatrice->getCout();
         g.setCout(cout);
     }
+    cout<<g.getEst_oriente();
     d_wg.loadGraph(g);
 }
 

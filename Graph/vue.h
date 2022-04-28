@@ -33,6 +33,7 @@ public:
     vector<int> getAPSSaisie();
     vector<vector<int>> getCoutSaisie();
     bool getBoxSaisie();
+    bool getBoxOrienteSaisie();
 
     vector<vector<int>> getMatriceSaisie();
 
@@ -73,6 +74,7 @@ private://FENETRE DONT ON GERE L'INTERFACE
     QLineEdit* d_APSSaisie;
     QTextEdit* d_coutSaisie;
     QCheckBox* d_coutBox;
+    QCheckBox* d_checkOriente;
 
     QLineEdit* d_n;
     QLineEdit* d_m;

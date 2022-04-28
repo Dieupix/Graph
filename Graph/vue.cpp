@@ -153,10 +153,10 @@ void vue::setupMenuFichier()
     menuGraph->addAction(actionAjout);
     connect(actionAjout, &QAction::triggered, this, &vue::onAjout);
 
-    auto actionSupprimer = new QAction{"Supprimer Noeud"};
+    /*auto actionSupprimer = new QAction{"Supprimer Noeud"};
     actionSupprimer->setToolTip("Supprimer Noeud");
     menuGraph->addAction(actionSupprimer);
-    connect(actionSupprimer, &QAction::triggered, this, &vue::onSuppression);
+    connect(actionSupprimer, &QAction::triggered, this, &vue::onSuppression);*/
 
     menuGraph->addSeparator();
 
@@ -370,6 +370,14 @@ void vue::fenetreSaisieMatrice()
 
     layoutInfo->addLayout(layoutCout,1);
 
+    auto layoutOriente= new QHBoxLayout{};
+    auto labelOriente = new QLabel{"Oriente ? "};
+    layoutOriente->addWidget(labelOriente,1);
+    d_checkOriente = new QCheckBox{};
+    layoutOriente->addWidget(d_checkOriente);
+
+    layoutInfo->addLayout(layoutOriente,1);
+
     auto mainLayout = new QVBoxLayout;
     mainLayout->addLayout(layoutInfo);
     mainLayout->addLayout(layoutBas);
@@ -416,6 +424,14 @@ void vue::fenetreSaisieFSAPS()
     layoutCout->addWidget(d_coutSaisie);
 
     layoutInfo->addLayout(layoutCout,1);
+
+    auto layoutOriente= new QHBoxLayout{};
+    auto labelOriente = new QLabel{"Oriente ? "};
+    layoutOriente->addWidget(labelOriente,1);
+    d_checkOriente = new QCheckBox{};
+    layoutOriente->addWidget(d_checkOriente);
+
+    layoutInfo->addLayout(layoutOriente,1);
 
     auto layoutBas = new QHBoxLayout{};
 
@@ -844,6 +860,11 @@ vector<int> vue::getFSSaisie()
 bool vue::getBoxSaisie()
 {
     return d_coutBox->isChecked();
+}
+
+bool vue::getBoxOrienteSaisie()
+{
+     return d_checkOriente->isChecked();
 }
 
 int vue::getN()
