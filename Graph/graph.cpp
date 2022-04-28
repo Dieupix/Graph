@@ -681,7 +681,7 @@ bool Graph::loadFrom(std::istream& ist)
                             }
                             else
                             {
-                                std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is initialized but not used" << std::endl;
+                                std::cout << "INFO: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is initialized but not used" << std::endl;
                             }
 
                             subSequence = couts1;
@@ -738,7 +738,8 @@ bool Graph::loadFrom(std::istream& ist)
                         }
                         else if(tmp.find(']') == 0)
                         {
-                            std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"Couts[]\" is initialized but not used" << std::endl;
+                            std::cout << "INFO: loadGraph: line:" << line << " - parameter \"Couts[]\" is initialized but not used" << std::endl;
+
                             sequence = Sommets;
                         }
                         else
