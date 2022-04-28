@@ -846,7 +846,6 @@ bool vue::getBoxSaisie()
     return d_coutBox->isChecked();
 }
 
-<<<<<<< HEAD
 int vue::getN()
 {
     return d_n->text().toInt();
@@ -881,9 +880,9 @@ vector<vector<int>> vue::getMatriceSaisie()
            }
     }
     return matrice;
-=======
+}
+
 void vue::setWidgetGraph(widgetGraph* wg)
 {
     d_wg = wg;
->>>>>>> d14c4c4d37a2c964052c5ca4d53cea1b2aa82154
 }

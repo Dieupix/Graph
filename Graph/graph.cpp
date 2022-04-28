@@ -284,6 +284,17 @@ void Graph::setCout(const vector<vector<int>>& mat)
     //usingFsAndAps = false;
     verifIntegritee();
 }
+
+void Graph::setUsingFsAndAps(bool usingFsAps)
+{
+    usingFsAndAps = usingFsAps;
+    verifIntegritee();
+}
+void Graph::setA_des_poids(bool apoids)
+{
+    a_des_poids = apoids;
+    verifIntegritee();
+}
 // ---------- End of setters ----------
 
 

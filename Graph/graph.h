@@ -184,7 +184,8 @@ public:
     void setMatrice(const vector<vector<int>>& mat);
 
     void setCout(const vector<vector<int>>& mat);
-
+    void setUsingFsAndAps(bool usingFsAps);
+    void setA_des_poids(bool apoids);
     // Functions
     /**
      * @brief ajouterNoeud

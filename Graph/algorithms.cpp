@@ -796,7 +796,7 @@ void versGrapheReduit(const vector<int>& cfc, const vector<int>& prem,const vect
             if(mat[i][j] == 1)
                 nb_arcs++;
 
-    mat[0][1] = prem[0] + nb_arcs;
+    mat[0][1] = nb_arcs;
 } //fin de la fonction
 
 //Fonction du prof -- Faux pour le moment

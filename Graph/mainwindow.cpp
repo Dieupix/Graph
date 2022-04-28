@@ -775,7 +775,7 @@ void MainWindow::onValideSaisieFSAPS()
     //A faire quand on pourra charger des graphes
     vector<int> FS = menuFSAPS->getFS();
     vector<int> APS = menuFSAPS->getAPS();
-    Graph g{FS, APS, false};
+    Graph g{FS, APS};
     if(menuFSAPS->getCheck())
     {
         vector<vector<int>> cout = menuFSAPS->getCout();
