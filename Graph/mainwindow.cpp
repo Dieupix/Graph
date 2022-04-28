@@ -2,7 +2,7 @@
 #include<iostream>
 #include<QMessageBox>
 
-MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph()}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}, menuMatrice{new class saisieMatrice}
+MainWindow::MainWindow(QMainWindow* parent) : QMainWindow{parent}, d_wg{new widgetGraph(1500, 1000)}, d_vue{this}, menuPruferD{new menuPruferDecode}, menuDijkstra{new menudijkstra}, menuOrd{new menuOrdonnancement}, menuS{new menuAjout}, menuSuppr{new menuSupprimer}, menuFSAPS{new class saisieFSAPS}, menuMatrice{new class saisieMatrice}
 {
     d_vue.creeInterface(d_wg);
 
@@ -470,7 +470,7 @@ void MainWindow::charge()
     QString filters =   "Fichiers de Graph (*.graph);;"
                         "Tous les fichiers (*)";
 
-    QString fileName = QFileDialog::getOpenFileName(this, "Choix du fichier", QDir::currentPath(), filters);
+    QString fileName = QFileDialog::getOpenFileName(this, windowTitle(), QDir::currentPath(), filters);
 
     if(fileName.isEmpty())
     {

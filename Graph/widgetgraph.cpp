@@ -20,12 +20,12 @@ widgetGraph::widgetGraph(unsigned sceneSizeW, unsigned sceneSizeH, QWidget *pare
 
 void widgetGraph::setup()
 {
-    setMinimumSize(sceneSizeW, sceneSizeH);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
+    //scale(qreal(0.8), qreal(0.8));
+    scale(qreal(1), qreal(1));
 
     scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -33,14 +33,14 @@ void widgetGraph::setup()
     scene->setSceneRect(-(int)sceneSizeW, -(int)sceneSizeH / 2, sceneSizeW * 2, sceneSizeH);
     setScene(scene);
 
-    d_g = Graph();
-    loadGraph(d_g);
-
     // Exemple
     //const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
     //const vector<int> aps {3, 1, 4, 6};
-    vector<int> APS{6, 1, 5, 7, 10, 13, 16};
-    vector<int> FS{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
+    //vector<int> APS{6, 1, 5, 7, 10, 13, 16};
+    //vector<int> FS{18, 2, 3, 5, 0, 1, 0, 2, 5, 0, 3, 5, 0, 2, 6, 0, 1, 2, 0};
+
+    d_g = Graph();
+    loadGraph(d_g);
     ajouterNoeud(Noeud(2), {0, 1, 0}, {0, 0, 0});
     ajouterNoeud(Noeud(3), {0, 1, 0, 0}, {0, 0, 1, 0});
     ajouterNoeud(Noeud(4), {0, 0, 1, 1, 0}, {0, 0, 1, 0, 0});
@@ -142,7 +142,11 @@ void widgetGraph::drawBackground(QPainter *painter, const QRectF &rect)
     // Texte
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
                     sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Cliquez et bouger les noeuds, zoomez avec la molette de la souris ou les boutons '+' et '-'"));
+    QString message("Cliquez et déplacez les noeuds"
+                    ", zoomez avec la molette de la souris ou les boutons '+' et '-'"
+                    ", utilisez les flèches directionnelles pour déplacer le graphe"
+                    ", recentrez le graphe avec la barre espace"
+                    ".");
 
     QFont font = painter->font();
     font.setBold(true);

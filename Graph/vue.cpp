@@ -5,8 +5,9 @@ vue::vue(QMainWindow* fenetre) : d_fenetre{fenetre}
 
 void vue::creeInterface(widgetGraph& wg)
 {
-    //setWindowState(Qt::WindowMaximized);
+    d_fenetre->setWindowState(Qt::WindowMaximized);
     d_fenetre->setWindowTitle("Graphe");
+    d_fenetre->setMinimumSize(600, 600);
 
     auto central = new QWidget;
     auto mainLayout = new QVBoxLayout;
@@ -16,14 +17,6 @@ void vue::creeInterface(widgetGraph& wg)
     setupMenu();
 
     mainLayout->addWidget(new QLabel("Votre graphe :"), 0, Qt::AlignLeft);
-
-/*
-    const vector<int> fs {6, 2, 3, 0, 3, 0, 0};
-    const vector<int> aps {3, 1, 4, 6};
-    Graph g(fs,aps);
-    auto widGraph = new widgetGraph(g);
-    mainLayout->addWidget(widGraph);
-*/
 
     // POUR AJOUTER LE GRAPH DANS LA VUE
     wgLayout = new QVBoxLayout();
