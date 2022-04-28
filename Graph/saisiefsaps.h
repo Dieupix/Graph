@@ -13,6 +13,7 @@ public:
     vector<int> getAPS();
     vector<vector<int>> getCout();
     bool getCheck();
+    bool getCheckOriente();
 signals:
     void envoieSaisieFSAPS();
 
@@ -24,6 +25,7 @@ private:
     vector<int> d_APS;
     vector<vector<int>> d_cout;
     bool d_Check;
+    bool d_checkOriente;
 };
 
 #endif // SAISIEFSAPS_H

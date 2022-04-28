@@ -14,6 +14,7 @@ public:
     bool getCheck();
     int getN();
     int getM();
+    bool getCheckOriente();
 signals:
     void envoieSaisieMatrice();
 
@@ -26,6 +27,7 @@ private:
     bool d_check;
     int d_n;
     int d_m;
+    bool d_checkOriente;
 };
 
 #endif // SAISIEMATRICE_H
