@@ -418,14 +418,16 @@ void application::algorithmes()
     {
         if(verifieDantzig())
         {
-            englobe_Dantzig();
-            string str = "";
-            str += "Nouveau cout : \n";
-            for(unsigned i = 0 ; i < d_graphe.getCouts().size() ; ++i)
+            if(englobe_Dantzig())
             {
-                str += toStringVector(d_graphe.getCouts()[i]) + "\n";
+                string str = "";
+                str += "Nouveau cout : \n";
+                for(unsigned i = 0 ; i < d_graphe.getCouts().size() ; ++i)
+                {
+                    str += toStringVector(d_graphe.getCouts()[i]) + "\n";
+                }
+                cout<<"Resultat de Dantzig :"<<str<<endl;
             }
-            cout<<"Resultat de Dantzig :"<<str<<endl;
         }
         break;
     }
@@ -890,12 +892,18 @@ bool application::verifiePruferDecode(const vector<int>& p)
 }
 
 
-void application::englobe_Dantzig()
+bool application::englobe_Dantzig()
 {
-    vector<vector<int>> c;
+    vector<vector<int>> c = d_graphe.getCouts();
     if(Dantzig(c))
     {
         d_graphe.setCout(c);
+        return true;
+    }
+    else
+    {
+        std::cerr<<"Erreur DANTZIG : presence d'un circuit absorbant"<<endl;
+        return false;
     }
 }
 

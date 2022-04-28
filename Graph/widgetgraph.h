@@ -26,7 +26,7 @@ public:
     bool                getOriente() const;
     Graph               getGraph() const;
 
-    void                englobe_Dantzig         ();
+    bool                englobe_Dantzig         ();
     void                englobe_Dijkstra        (int sommet_depart,vector<int>& d, vector<int>& pr);
     vector<vector<int>> englobe_Distance        ();
     void                englobe_Kruskal         ();

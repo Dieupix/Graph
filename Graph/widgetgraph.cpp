@@ -208,12 +208,17 @@ Graph widgetGraph::getGraph() const
     return d_g;
 }
 
-void widgetGraph::englobe_Dantzig()
+bool widgetGraph::englobe_Dantzig()
 {
-    vector<vector<int>> c;
+    vector<vector<int>> c = d_g.getCouts();
     if(Dantzig(c))
     {
         d_g.setCout(c);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 

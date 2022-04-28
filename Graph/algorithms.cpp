@@ -21,7 +21,7 @@ bool Dantzig(vector<vector<int>>& c)
             }
             if(c[i][k+1] + c[k+1][i] < 0)
             {
-                cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
+                //cout<<"Presence d'un circuit absorbant passant par "<<i<<" et "<<k+1<<" ."<<endl;
                 return false;
             }
         }

@@ -360,6 +360,7 @@ bool MainWindow::verifieDantzig()
         info->exec();
         return false;
     }
+    return false;
 }
 
 bool MainWindow::verifieKruskal()
@@ -572,7 +573,23 @@ void MainWindow::onClick_Dantzig()
 {
     if(verifieDantzig())
     {
-        d_wg.englobe_Dantzig();
+        if(d_wg.englobe_Dantzig())
+        {
+            QString s = "";
+            s += "cout : ";
+            for(unsigned i = 0 ; i < d_wg.getCouts().size() ; ++i)
+            {
+                s += s.fromStdString(toStringVector(d_wg.getCouts()[i]));
+                s += "\n";
+            }
+            auto info = new QMessageBox{QMessageBox::Information,"Resultat Dantzig :",s,QMessageBox::Ok};
+            info->exec();
+        }
+        else
+        {
+            auto info = new QMessageBox{QMessageBox::Warning,"Erreur Dantzig :","Presence d'un circuit absorbant : ",QMessageBox::Ok};
+            info->exec();
+        }
     }
 }
 
@@ -744,7 +761,6 @@ void MainWindow::onValiderDijkstra()
     vector<int> d, pr;
     if(verifieDijkstra(menuDijkstra->getSommet()))
     {
-        cout<<"VALIDE";
         d_wg.englobe_Dijkstra(menuDijkstra->getSommet(),d,pr);
         QString s = "";
         s += "distance : ";
@@ -755,7 +771,6 @@ void MainWindow::onValiderDijkstra()
         auto info = new QMessageBox{QMessageBox::Information,"Resultat de Dijkstra",s,QMessageBox::Ok};
         info->exec();
     }
-    else cout<<"OKKK";
 }
 
 void MainWindow::onValiderOrdonnancement()
