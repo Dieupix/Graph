@@ -522,6 +522,11 @@ bool Graph::loadFrom(std::istream& ist)
                         iss >> k;
                         fs[j] = k;
                         tmp.erase(0, std::to_string(k).size());
+
+                        if(tmp.find(']') != string::npos)
+                        {
+                            loadedFs = true;
+                        }
                     }
                     else
                     {
@@ -629,8 +634,6 @@ bool Graph::loadFrom(std::istream& ist)
                         }
                         else if(tmp.find(']') == 0)
                         {
-                            std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is initialized but not used" << std::endl;
-
                             subSequence = couts1;
                             sequence = Couts;
                         }
