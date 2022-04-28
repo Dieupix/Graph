@@ -646,7 +646,7 @@ void MainWindow::onClickTarjan_INFO()
                     "Son resultat est donne sous la forme d'un nouveau graphe (le graphe reduit).\n"
                     "De plus, les bases des deux graphes seront aussi indiquees.\n"
                     "Pour rappel, la base d'un graphe est l'ensemble des sommets necessaires pour qu'a partir de ce dernier, on puisse atteindre n'importe quel sommet.\n"
-                    "La complexite de cet algorithme est en O( .. )";
+                    "La complexite de cet algorithme est en O( n )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Tarjan",texte,QMessageBox::Close};
     info->exec();
 }
@@ -668,7 +668,7 @@ void MainWindow::onClickDijkstra_INFO()
                     "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
                     "Pour lancer cet algorithme, il faut avoir saisi un cout dont les valeurs non determinees valent -1. De plus, le graphe doit etre oriente.\n"
                     "Son resultat est donne sous la forme de deux tableaux representant respectivement le poids minimal du chemin (d) et le chemin (pr).\n"
-                    "La complexite de cet algorithme est en O( .. )";
+                    "La complexite de cet algorithme est en O( a + n x log(n) )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dijkstra",texte,QMessageBox::Close};
     info->exec();
 }
@@ -679,7 +679,7 @@ void MainWindow::onClickDantzig_INFO()
                     "Pour lancer cet algorithme, il faut avoir un graphe non oriente ainsi qu'une matrice des couts implementees de 0 si il n'y a pas d'arc ou si le poids vaut 0.\n"
                     "Son resultat est donne sous la forme d'une matrice appellee matrice des couts.\n"
                     "Il est utilise, comme la distance, pour determiner le plus court chemin entre deux points (villes, réseau, ...) mais en tenant compte des poids des arcs.\n"
-                    "La complexite de cet algorithme est en O( .. )";
+                    "La complexite de cet algorithme est en O( N/V )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Dantzig",texte,QMessageBox::Close};
     info->exec();
 }
@@ -690,7 +690,7 @@ void MainWindow::onClickKruskal_INFO()
                     "Il est par exemple utilise pour simplifier des cablages.\n"
                     "Afin de lancer cet algorithme, le graphe doit etre non oriente. De plus, une matrice des couts doit etre implementees.\n"
                     "Son resultat est donne sous la forme d'un nouveau graphe.\n"
-                    "La complexite de cet algorithme est en O( .. )";
+                    "La complexite de cet algorithme est en O( A log(A) )";
     auto info = new QMessageBox{QMessageBox::Information,"Information : Algorithme de Kruskal",texte,QMessageBox::Close};
     info->exec();
 }

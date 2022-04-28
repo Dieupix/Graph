@@ -46,7 +46,7 @@ void Noeud::print(std::ostream& os) const
 
 string Noeud::toString() const
 {
-    return "Noeud{id=" + std::to_string(d_id) + ", info= \"" + d_info + "\"}";
+    return "Noeud{id=" + std::to_string(d_id) + ", info=\"" + d_info + "\"}";
 }
 
 std::ostream& operator<<(std::ostream& os, const Noeud& n)

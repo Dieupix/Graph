@@ -213,7 +213,7 @@ public:
      *
      * @return
      */
-    void loadFrom(std::istream& ist); ///@todo - Alex : to be implemented
+    bool loadFrom(std::istream& ist); ///@todo - Alex : to be implemented
     /**
      * @brief matAdj_to_FS_APS
      *
