@@ -90,19 +90,9 @@ void testDistance()
 
 void testLoadGraph()
 {
-
-    /*
-    Graph g{FS_1, APS_1, cout_1};
-    string fileName = "graph1.graph";
-    */
-
-    /*
-    Graph g{matAdj_3};
-    string fileName = "graph2.graph";
-    */
-
     Graph g;
-    string fileName = "graph1.graph";
+    //string fileName = "graph1.graph";
+    string fileName = "graph2.graph";
 
     std::ifstream ifs(fileName);
 

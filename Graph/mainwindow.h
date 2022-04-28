@@ -13,6 +13,8 @@
 #include "saisiefsaps.h"
 #include "saisiematrice.h"
 
+#include <fstream>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

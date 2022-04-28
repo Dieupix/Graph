@@ -410,6 +410,7 @@ void widgetGraph::ajouterNoeud(const Noeud& noeud, const vector<int>& pred, cons
 void widgetGraph::loadFrom(std::istream& ist)
 {
     d_g.loadFrom(ist);
+    loadGraph(d_g);
 }
 
 void widgetGraph::transformeVersMatrice()

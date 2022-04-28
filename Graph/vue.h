@@ -6,6 +6,7 @@
 #include "widgetgraph.h"
 
 #include <QBoxLayout>
+#include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
