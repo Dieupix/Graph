@@ -474,11 +474,11 @@ void MainWindow::charge()
 
     if(fileName.isEmpty())
     {
-
+        //Afficher message d'erreur
     }
     else if(!fileName.endsWith(".graph"))
     {
-
+        //Afficher message d'erreur
     }
     else
     {
@@ -486,7 +486,7 @@ void MainWindow::charge()
 
         if(!ifs)
         {
-
+            //Afficher message d'erreur
         }
         else
         {

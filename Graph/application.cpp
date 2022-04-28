@@ -213,67 +213,7 @@ void application::fichier()
     }
     else
     {
-        int cout;
-        int n;
-        int m;
-        fin>>cout;
-        if(cout == 0)
-        {
-            fin>>m;
-            vector<int> fs,aps;
-            fs.push_back(m);
-            for(int i = 1 ; i <= m ; ++i)
-            {
-                fin>>n;
-                fs.push_back(n);
-            }
-            fin>>m;
-            aps.push_back(m);
-            for(int i = 1 ; i<= m ; ++i)
-            {
-                fin>>n;
-                aps.push_back(n);
-            }
-            d_graphe.setFSandAPS(fs,aps);
-        }
-        else //il y a un cout
-        {
-            fin>>m;
-            vector<int> fs,aps;
-            vector<vector<int>> cout;
-            fs.push_back(m);
-            for(int i = 1 ; i <= m ; ++i)
-            {
-                fin>>n;
-                fs.push_back(n);
-            }
-            fin>>m;
-            aps.push_back(m);
-            for(int i = 1 ; i<= m ; ++i)
-            {
-                fin>>n;
-                aps.push_back(n);
-            }
-            int taille;
-            int nb_arcs;
-            fin>>taille;
-            cout.resize(taille+1);
-            cout[0].resize(2);
-            cout[0][0] = taille;
-            fin>>nb_arcs;
-            cout[0][1] = nb_arcs;
-
-            for(int i = 0 ; i<= taille ; ++i)
-            {
-                for(int j = 0 ; j < taille ; ++j)
-                {
-                    fin>>n;
-                    cout[i][j] = n;
-                }
-            }
-            d_graphe.setFSandAPS(fs,aps);
-            d_graphe.setCout(cout);
-        }
+        d_graphe.loadFrom(fin);
     }
 }
 
