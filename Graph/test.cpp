@@ -3,7 +3,7 @@
 
 void test()
 {
-     //testTransforme_FP_APP_TO_FS_APS();
+
 }
 
 /* -------------------------------------------------- */
@@ -90,8 +90,19 @@ void testDistance()
 
 void testLoadGraph()
 {
+
+    /*
+    Graph g{FS_1, APS_1, cout_1};
+    string fileName = "graph1.graph";
+    */
+
+    /*
+    Graph g{matAdj_3};
+    string fileName = "graph2.graph";
+    */
+
     Graph g;
-    string fileName = "";
+    string fileName = "graph1.graph";
 
     std::ifstream ifs(fileName);
 

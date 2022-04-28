@@ -87,45 +87,49 @@ bool Graph::verifIntegriteeSommets_MatAdj()
 
 
 // ---------- Constructors ----------
-Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1}, usingFsAndAps{true}, est_oriente{est_oriente}
+Graph::Graph(bool est_oriente) : FS{1, 0}, APS{1, 1},
+    usingFsAndAps{true}, est_oriente{est_oriente}, a_des_poids{false}
 {
     initialiserSommets();
 }
 
-Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS}, usingFsAndAps{true}, est_oriente{true}
+Graph::Graph(const vector<int>& FS, const vector<int>& APS) : FS{FS}, APS{APS},
+    usingFsAndAps{true}, est_oriente{true}, a_des_poids{false}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
-Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAdj}, usingFsAndAps{false}, est_oriente{est_oriente}
+Graph::Graph(const vector<vector<int>>& matAdj, bool est_oriente) : matAdj{matAdj},
+    usingFsAndAps{false}, est_oriente{est_oriente}, a_des_poids{false}
 {
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<int>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{true}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}, a_des_poids{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
 Graph::Graph(const vector<int>& FS, const vector<int>& APS, const vector<vector<int>>& couts) : FS{FS}, APS{APS},
-    usingFsAndAps{true}, couts{couts}, est_oriente{true}
+    usingFsAndAps{true}, couts{couts}, est_oriente{true}, a_des_poids{true}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
 }
 
 Graph::Graph(const vector<vector<int>>& matAdj, const vector<vector<int>>& cout, bool est_oriente) : matAdj{matAdj},
-    usingFsAndAps{false}, couts{cout}, est_oriente{est_oriente}
+    usingFsAndAps{false}, couts{cout}, est_oriente{est_oriente}, a_des_poids{true}
 {
     initialiserSommets(matAdj[0][0]);
     verifIntegritee();
 }
 
-Graph::Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente) : FS{FS}, APS{APS},  usingFsAndAps{true} ,est_oriente{est_oriente}
+Graph::Graph(const vector<int>& FS, const vector<int>& APS, bool est_oriente) : FS{FS}, APS{APS},
+    usingFsAndAps{true}, est_oriente{est_oriente}, a_des_poids{false}
 {
     initialiserSommets(APS[0]);
     verifIntegritee();
@@ -395,29 +399,416 @@ Graph Graph::loadGraphFrom(std::istream& ist)
     return g;
 }
 
-void Graph::loadFrom(std::istream& ist)
+bool Graph::loadFrom(std::istream& ist)
 {
+    enum sequence : unsigned {est_oriente, usingFsAndAps, a_des_poids,
+                              FS,
+                              APS,
+                              MatAdj, loadMatAdj, matAdj1, matAdj2,
+                              Couts, loadCouts, couts1, couts2,
+                              Sommets, loadSommets};
+
     stringstream buffer;
     buffer << ist.rdbuf();
     string buf = buffer.str();
     char c = '0';
-    unsigned i = 0, sequence = 0;
+    unsigned i = 0, sequence = est_oriente, line = 0;
     string tmp = "";
+    Graph g;
+    bool loaded = true;
+
+    vector<int> fs, aps;
+    bool loadedFs = false;
+
+    vector<vector<int>> matAdj;
+    unsigned subSequence = matAdj1;
+
+    vector<vector<int>> couts;
+
 
     for(i = 0; i < buf.size(); ++i)
     {
         c = buf[i];
         if(c == '\n' or c == '\r')
         {
+            ++line;
             if(tmp != "")
             {
                 switch(sequence)
                 {
-                case 0:
-                    if(tmp[0] == 'e' and tmp[1] == 's' and tmp[2] == 't' and tmp[3] == 'O' and tmp[4] == 'r')
+                case est_oriente:
+                    if(tmp.find("est_oriente=") != string::npos)
+                    {
+                        if(tmp.find("true") != string::npos) g.setOriente(true);
+                        else if(tmp.find("false") != string::npos) g.setOriente(false);
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - value must be \"true\" or \"false\"" << std::endl;
+                            loaded = false;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"est_oriente\" is missing" << std::endl;
+                        loaded = false;
+                    }
+                    sequence = usingFsAndAps;
+                    break;
+
+                case usingFsAndAps:
+                    if(tmp.find("usingFsAndAps=") != string::npos)
+                    {
+                        if(tmp.find("true") != string::npos) g.setUsingFsAndAps(true);
+                        else if(tmp.find("false") != string::npos) g.setUsingFsAndAps(false);
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - value must be \"true\" or \"false\"" << std::endl;
+                            loaded = false;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"usingFsAnsAps\" is missing" << std::endl;
+                        loaded = false;
+                    }
+                    sequence = a_des_poids;
+                    break;
+
+                case a_des_poids:
+                    if(tmp.find("a_des_poids=") != string::npos)
+                    {
+                        if(tmp.find("true") != string::npos) g.setA_des_poids(true);
+                        else if(tmp.find("false") != string::npos) g.setA_des_poids(false);
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - value must be \"true\" or \"false\"" << std::endl;
+                            loaded = false;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"a_des_poids\" is missing" << std::endl;
+                        loaded = false;
+                    }
+                    sequence = FS;
+                    break;
+
+                case FS:
+                    if(tmp.find("FS[") != string::npos)
+                    {
+                        int k = 0;
+                        std::istringstream iss(tmp);
+                        while(!(iss >> k))
+                        {
+                            tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                        }
+                        tmp.erase(0, std::to_string(k).size());
+                        while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                        iss = std::istringstream(tmp);
+
+                        fs.resize(k+1, 0);
+                        fs[0] = k;
+                        int j;
+                        for(j = 1; j < fs[0]; ++j)
+                        {
+                            iss >> k;
+                            fs[j] = k;
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                        }
+
+                        iss >> k;
+                        fs[j] = k;
+                        tmp.erase(0, std::to_string(k).size());
+
+                        if(tmp.find("]") != string::npos) loadedFs = true;
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"FS[]\" is not closed" << std::endl;
+                            loaded = false;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"FS[]\" is missing" << std::endl;
+                        loaded = false;
+                    }
+                    sequence = APS;
+                    break;
+
+                case APS:
+                    if(tmp.find("APS[") != string::npos)
+                    {
+                        int k = 0;
+                        std::istringstream iss(tmp);
+                        while(!(iss >> k))
+                        {
+                            tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                        }
+                        tmp.erase(0, std::to_string(k).size());
+                        while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                        iss = std::istringstream(tmp);
+
+                        aps.resize(k+1, 0);
+                        aps[0] = k;
+                        int j;
+                        for(j = 1; j < aps[0]; ++j)
+                        {
+                            iss >> k;
+                            aps[j] = k;
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                        }
+
+                        iss >> k;
+                        aps[j] = k;
+                        tmp.erase(0, std::to_string(k).size());
+
+                        if(tmp.find("]") != string::npos)
+                        {
+                            if(loadedFs and g.usingFsAndAps)
+                            {
+                                g.setFSandAPS(fs, aps);
+                            }
+                            else
+                            {
+                                std::cout << "INFO: loadGraph: line:" << line << " - parameter \"FS[]\" and \"APS[]\" are initialized but not used" << std::endl;
+                            }
+                        }
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"APS[]\" is not closed" << std::endl;
+                            loaded = false;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"APS[]\" is missing" << std::endl;
+                        loaded = false;
+                    }
+                    sequence = MatAdj;
+                    break;
+
+                case MatAdj:
+                    if(tmp.find("MatAdj[") != string::npos)
+                    {
+                        sequence = loadMatAdj;
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is missing" << std::endl;
+                        loaded = false;
+                        sequence = Couts;
+                    }
+                    break;
+
+                case loadMatAdj:
+
+                    switch (subSequence) {
+                    case matAdj1:
+                        if(tmp.find('[') == 0 and tmp.find(']') != string::npos)
+                        {
+                            int k = 0;
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            std::istringstream iss(tmp);
+                            iss >> k;
+
+                            matAdj.push_back(vector<int>(2, 0));
+                            matAdj[0][0] = k;
+
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                            iss >> k;
+
+                            matAdj[0][1] = k;
+
+                            subSequence = matAdj2;
+                        }
+                        else if(tmp.find(']') == 0)
+                        {
+                            std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is initialized but not used" << std::endl;
+
+                            subSequence = couts1;
+                            sequence = Couts;
+                        }
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is missing" << std::endl;
+                            loaded = false;
+                        }
+                        break;
+
+                    case matAdj2:
+                        if(tmp.find('[') == 0 and tmp.find(']') != 2)
+                        {
+                            matAdj.push_back(vector<int>(matAdj[0][0]+1, 0));
+
+                            int k = 0;
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            std::istringstream iss(tmp);
+                            iss >> k;
+
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+
+                            int pos = matAdj.size()-1;
+                            int j;
+                            for(j = 1; j < matAdj[0][0]-1; ++j)
+                            {
+                                iss >> k;
+                                matAdj[pos][j] = k;
+
+                                tmp.erase(0, std::to_string(k).size());
+                                while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                                iss = std::istringstream(tmp);
+                            }
+                            iss >> k;
+                            matAdj[pos][j] = k;
+                            tmp.erase(0, std::to_string(k).size());
+
+                        }
+                        else if(tmp.find(']') == 0)
+                        {
+                            if(!g.usingFsAndAps)
+                            {
+                                g.setMatrice(matAdj);
+                            }
+                            else
+                            {
+                                std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"MatAdj[]\" is initialized but not used" << std::endl;
+                            }
+
+                            subSequence = couts1;
+                            sequence = Couts;
+                        }
+                        else
+                        {
+                            loaded = false;
+                        }
+                        break;
+
+                    default:
+                        std::cerr << "ERROR: loadGraph: subSequence=" << subSequence << std::endl;
+                        break;
+                    }
+
+                    break;
+
+                case Couts:
+                    if(tmp.find("Couts[") != string::npos)
+                    {
+                        sequence = loadCouts;
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"Couts[]\" is missing" << std::endl;
+                        loaded = false;
+                        sequence = Sommets;
+                    }
+                    break;
+
+                case loadCouts:
+
+                    switch (subSequence) {
+                    case couts1:
+                        if(tmp.find('[') == 0 and tmp.find(']') != string::npos)
+                        {
+                            int k = 0;
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            std::istringstream iss(tmp);
+                            iss >> k;
+
+                            couts.push_back(vector<int>(2, 0));
+                            couts[0][0] = k;
+
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+                            iss >> k;
+
+                            couts[0][1] = k;
+
+                            subSequence = couts2;
+                        }
+                        else if(tmp.find(']') == 0)
+                        {
+                            std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"Couts[]\" is initialized but not used" << std::endl;
+                            sequence = Sommets;
+                        }
+                        else
+                        {
+                            std::cerr << "ERROR: loadGraph: line:" << line << " - parameter \"Couts[]\" is missing" << std::endl;
+                            loaded = false;
+                        }
+                        break;
+
+                    case couts2:
+                        if(tmp.find('[') == 0 and tmp.find(']') != 2)
+                        {
+                            couts.push_back(vector<int>(couts[0][0]+1, 0));
+
+                            int k = 0;
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            std::istringstream iss(tmp);
+                            iss >> k;
+
+                            tmp.erase(0, std::to_string(k).size());
+                            while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                            iss = std::istringstream(tmp);
+
+                            int pos = couts.size()-1;
+                            int j;
+                            for(j = 1; j < couts[0][0]-1; ++j)
+                            {
+                                iss >> k;
+                                couts[pos][j] = k;
+
+                                tmp.erase(0, std::to_string(k).size());
+                                while(!tmp.empty() and (tmp[0] < '0' or tmp[0] > '9')) tmp.erase(0, 1);
+                                iss = std::istringstream(tmp);
+                            }
+                            iss >> k;
+                            couts[pos][j] = k;
+                            tmp.erase(0, std::to_string(k).size());
+
+                        }
+                        else if(tmp.find(']') == 0)
+                        {
+                            if(g.a_des_poids)
+                            {
+                                g.setCout(couts);
+                            }
+                            else
+                            {
+                                std::cerr << "INFO: loadGraph: line:" << line << " - parameter \"Couts[]\" is initialized but not used" << std::endl;
+                            }
+
+                            sequence = Sommets;
+                        }
+                        else
+                        {
+                            loaded = false;
+                        }
+                        break;
+
+                    default:
+                        std::cerr << "ERROR: loadGraph: subSequence=" << subSequence << std::endl;
+                        break;
+                    }
+
+                    break;
+
+                case Sommets:
                     break;
 
                 default:
+                    std::cerr << "ERROR: loadGraph: sequence=" << sequence << std::endl;
                     break;
                 }
             }
@@ -434,37 +825,10 @@ void Graph::loadFrom(std::istream& ist)
 
     }
 
+    g.initialiserSommets(g.APS[0]);
 
-
-    switch(sequence)
-    {
-    case 0:
-        ist >> tmp;
-        if(tmp == "estOriente:")
-        {
-            ist >> tmp;
-            if(tmp == "true") est_oriente = true;
-            else if(tmp == "false") est_oriente = false;
-            else std::cerr << "pas bon" << std::endl;
-        }
-        else std::cerr << "pas bon" << std::endl;
-        ++sequence;
-        break;
-
-    case 1:
-        ist >> tmp;
-        if(tmp == "FS:")
-        {
-            int nb;
-            ist >> nb;
-
-
-        }
-        break;
-
-    default:
-        break;
-    }
+    if(loaded)*this = g;
+    return loaded;
 }
 
 void Graph::matAdj_to_FS_APS(vector<int> &FS, vector<int> &APS) const
@@ -501,63 +865,75 @@ void Graph::print(std::ostream& ost) const
 
 void Graph::saveIn(std::ostream& ost) const
 {
-    string toPrint = "estOriente: ";
+    string toPrint = "est_oriente=";
     toPrint += (est_oriente ? "true" : "false");
     toPrint += "\n";
 
-    if(usingFsAndAps)
+    toPrint += "usingFsAndAps=";
+    toPrint += (usingFsAndAps ? "true" : "false");
+    toPrint += "\n";
+
+    toPrint += "a_des_poids=";
+    toPrint += (a_des_poids ? "true" : "false");
+    toPrint += "\n";
+
+    toPrint += "FS[";
+    unsigned i = 0;
+    for(i = 0; i < FS.size() - 1; ++i)
     {
-        toPrint += "FS: [";
-        unsigned i = 0;
-        for(i = 0; i < FS.size() - 1; ++i)
-        {
-            toPrint += std::to_string(FS[i]) + ", ";
-        }
-        toPrint += std::to_string(FS[i]) + "]\n";
-
-        toPrint += "APS: [";
-        for(i = 0; i < APS.size() - 1; ++i)
-        {
-            toPrint += std::to_string(APS[i]) + ", ";
-        }
-        toPrint += std::to_string(APS[i]) + "]\n";
-
-    } else {
-        toPrint += "MATADJ: {\n";
-        unsigned i = 0, j = 0;
-        for(i = 0; i < matAdj.size(); ++i)
-        {
-            toPrint += "{";
-            for(j = 0; j < matAdj[i].size() - 1; ++j)
-            {
-                toPrint += std::to_string(matAdj[i][j]) + ", ";
-            }
-            toPrint += std::to_string(matAdj[i][j]) + "}\n";
-        }
-        toPrint += "}\n";
+        toPrint += std::to_string(FS[i]) + ", ";
     }
+    toPrint += std::to_string(FS[i]) + "]";
+    toPrint += "\n";
 
-    if(a_des_poids)
+    toPrint += "APS[";
+    for(i = 0; i < APS.size() - 1; ++i)
     {
-        toPrint += "Couts: {\n";
-        unsigned i = 0, j = 0;
-        for(i = 0; i < couts.size(); ++i)
-        {
-            toPrint += "{";
-            for(j = 0; j < couts[i].size() - 1; ++j)
-            {
-                toPrint += std::to_string(couts[i][j]) + ", ";
-            }
-            toPrint += std::to_string(couts[i][j]) + "}\n";
-        }
-        toPrint += "}\n";
+        toPrint += std::to_string(APS[i]) + ", ";
     }
+    toPrint += std::to_string(APS[i]) + "]";
+    toPrint += "\n";
 
-    for(unsigned i = 0; i < sommets.size(); ++i)
+    toPrint += "MatAdj[";
+    toPrint += "\n";
+    unsigned j = 0;
+    for(i = 0; i < matAdj.size(); ++i)
+    {
+        toPrint += "[";
+        for(j = 0; j < matAdj[i].size() - 1; ++j)
+        {
+            toPrint += std::to_string(matAdj[i][j]) + ", ";
+        }
+        toPrint += std::to_string(matAdj[i][j]) + "]";
+        toPrint += "\n";
+    }
+    toPrint += "]";
+    toPrint += "\n";
+
+    toPrint += "Couts[";
+    toPrint += "\n";
+    for(i = 0; i < couts.size(); ++i)
+    {
+        toPrint += "[";
+        for(j = 0; j < couts[i].size() - 1; ++j)
+        {
+            toPrint += std::to_string(couts[i][j]) + ", ";
+        }
+        toPrint += std::to_string(couts[i][j]) + "]";
+        toPrint += "\n";
+    }
+    toPrint += "]";
+    toPrint += "\n";
+
+    toPrint += "Sommets[";
+    toPrint += "\n";
+    for(i = 1; i < sommets.size(); ++i)
     {
         toPrint += sommets[i]->toString();
         toPrint += "\n";
     }
+    toPrint += "]";
+    toPrint += "\n";
 
     ost << toPrint;
 }
@@ -575,62 +951,55 @@ string Graph::toString() const
     toPrint += ", a_des_poids=";
     toPrint += (a_des_poids ? "true" : "false");
 
-    if(usingFsAndAps)
+    toPrint += ", FS[";
+    unsigned i = 0;
+    for(i = 0; i < FS.size() - 1; ++i)
     {
-        toPrint += ", FS[";
-        unsigned i = 0;
-        for(i = 0; i < FS.size() - 1; ++i)
-        {
-            toPrint += std::to_string(FS[i]) + ", ";
-        }
-        toPrint += std::to_string(FS[i]) + "]";
-
-        toPrint += ", APS[";
-        for(i = 0; i < APS.size() - 1; ++i)
-        {
-            toPrint += std::to_string(APS[i]) + ", ";
-        }
-        toPrint += std::to_string(APS[i]) + "]";
-
-    } else {
-        toPrint += ", MATADJ[";
-        unsigned i = 0, j = 0;
-        for(i = 0; i < matAdj.size(); ++i)
-        {
-            toPrint += "[";
-            for(j = 0; j < matAdj[i].size() - 1; ++j)
-            {
-                toPrint += std::to_string(matAdj[i][j]) + ", ";
-            }
-            toPrint += std::to_string(matAdj[i][j]) + "]";
-        }
-        toPrint += "]";
+        toPrint += std::to_string(FS[i]) + ", ";
     }
+    toPrint += std::to_string(FS[i]) + "]";
 
-    if(a_des_poids)
+    toPrint += ", APS[";
+    for(i = 0; i < APS.size() - 1; ++i)
     {
-        toPrint += ", Couts[";
-        unsigned i = 0, j = 0;
-        for(i = 0; i < couts.size(); ++i)
-        {
-            toPrint += "[";
-            for(j = 0; j < couts[i].size() - 1; ++j)
-            {
-                toPrint += std::to_string(couts[i][j]) + ", ";
-            }
-            toPrint += std::to_string(couts[i][j]) + "]";
-        }
-        toPrint += "]";
+        toPrint += std::to_string(APS[i]) + ", ";
     }
+    toPrint += std::to_string(APS[i]) + "]";
 
-    if(!sommets.empty())
+    toPrint += ", MatAdj[";
+    unsigned j = 0;
+    for(i = 0; i < matAdj.size(); ++i)
     {
+        toPrint += "[";
+        for(j = 0; j < matAdj[i].size() - 1; ++j)
+        {
+            toPrint += std::to_string(matAdj[i][j]) + ", ";
+        }
+        toPrint += std::to_string(matAdj[i][j]) + "]";
+    }
+    toPrint += "]";
+
+    toPrint += ", Couts[";
+    for(i = 0; i < couts.size(); ++i)
+    {
+        toPrint += "[";
+        for(j = 0; j < couts[i].size() - 1; ++j)
+        {
+            toPrint += std::to_string(couts[i][j]) + ", ";
+        }
+        toPrint += std::to_string(couts[i][j]) + "]";
+    }
+    toPrint += "]";
+
+    toPrint += ", sommets[";
+    for(i = 1; i < sommets.size()-1; ++i)
+    {
+        toPrint += sommets[i]->toString();
         toPrint += ", ";
-        for(unsigned i = 1; i < sommets.size(); ++i)
-        {
-            toPrint += sommets[i]->toString();
-        }
     }
+    toPrint += sommets[i]->toString();
+    toPrint += "]";
+
     toPrint += "}";
 
     return toPrint;
