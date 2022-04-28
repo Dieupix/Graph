@@ -205,6 +205,13 @@ void application::fichier()
     cout<<"Veuillez saisir le nom du fichier "<<endl;
     string s;
     cin>>s;
+
+    if(s.rfind(".graph") == string::npos)
+    {
+        std::cerr<<"Erreur, l'extension doit etre \".graph\"."<<endl;
+        return;
+    }
+
     std::ifstream fin;
     fin.open(s);
     if(fin.is_open() == false)
