@@ -467,24 +467,41 @@ bool MainWindow::verifiePruferDecode(const vector<int>& p)
 
 void MainWindow::charge()
 {
-    //Chargement d'un widgetGraph
-    //Ajouter un istream
-    //d_wg.loadFrom();
+    QString filters =   "Fichiers de Graph (*.graph);;"
+                        "Tous les fichiers (*)";
+
+    QString fileName = QFileDialog::getOpenFileName(this, "Choix du fichier", QDir::currentPath(), filters);
+
+    if(fileName.isEmpty())
+    {
+
+    }
+    else if(!fileName.endsWith(".graph"))
+    {
+
+    }
+    else
+    {
+        std::ifstream ifs(fileName.toStdString());
+
+        if(!ifs)
+        {
+
+        }
+        else
+        {
+            d_wg.loadFrom(ifs);
+        }
+    }
 }
 
 void MainWindow::saisieMatrice()
 {
-    //Saisie d'un widgetGraph
-    //Ajouter un ostream
-    //d_wg.save();
     menuMatrice->show();
 }
 
 void MainWindow::saisieFSAPS()
 {
-    //Saisie d'un widgetGraph
-    //Ajouter un ostream
-    //d_wg.save();
     menuFSAPS->show();
 }
 
