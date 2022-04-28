@@ -54,7 +54,6 @@ void application::load()
         std::cout<<"> 1. Via FS/APS ?"<<std::endl;
         std::cout<<"> 2. Via la matrice ?"<<std::endl;
         std::cout<<"> 3. Via un fichier ?"<<std::endl;
-        std::cout<<"> 4. Via la position des aretes ?"<<std::endl;
         std::cin>>choix;
     }while(choix < 0 || choix > 3);
 
