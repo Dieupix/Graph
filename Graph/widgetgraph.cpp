@@ -281,7 +281,7 @@ void widgetGraph::englobe_Prufer_decode(const vector<int>& p)
     vector<vector<int>> mat;
     Prufer_decode(p, mat);
 
-    loadGraph(Graph{mat});
+    loadGraph(Graph{mat,false});
 }
 
 vector<int> widgetGraph::englobe_Prufer_encode()
