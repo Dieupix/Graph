@@ -660,7 +660,7 @@ bool Graph::loadFrom(std::istream& ist)
 
                             int pos = matAdj.size()-1;
                             int j;
-                            for(j = 1; j < matAdj[0][0]-1; ++j)
+                            for(j = 1; j < matAdj[0][0]; ++j)
                             {
                                 iss >> k;
                                 matAdj[pos][j] = k;
