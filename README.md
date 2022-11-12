@@ -61,6 +61,7 @@ Merci à [Discord](https://discord.com) pour la communication au sein du groupe.
 Merci à [Doctest](https://github.com/doctest/doctest) pour le framework.\
 Merci à [GanttProject](https://www.ganttproject.biz) pour son application GanttProject.\
 Merci à [Google](https://google.com) pour ses applications telles que Doc, Drive, etc.\
+Merci à [Sonarcloud](https://sonarcloud.com) pour son application.\
 Merci à [shields.io](https://shields.io) pour la création des badges.
 
 Un grand merci à [GitHub](https://github.com) pour l'hébergement du projet.
